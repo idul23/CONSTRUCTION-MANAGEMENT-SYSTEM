@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Project - Construction Management System</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        .header {
+            background: #222;
+            color: white;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .header a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            width: 600px;
+            max-width: calc(100% - 30px);
+            margin: 30px auto;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #222;
+            text-decoration: none;
+        }
+
+        .form-box {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 11px;
+            margin-bottom: 18px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #222;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background: #444;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #842029;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .required {
+            color: #c62828;
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                display: block;
+            }
+
+            .header div {
+                margin-top: 10px;
+            }
+
+            .container {
+                margin-top: 20px;
+            }
+
+            .form-box {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+
+        <h1>Construction MS</h1>
+
+        <div>
+            <a href="/dashboard">Dashboard</a>
+            &nbsp; | &nbsp;
+            <a href="/projects">Projects</a>
+            &nbsp; | &nbsp;
+            <a href="/logout">Logout</a>
+        </div>
+
+    </div>
+
+
+    <div class="container">
+
+        <a href="/projects" class="back">
+            ← Back to Projects
+        </a>
+
+
+        <div class="form-box">
+
+            <h2>Add New Project</h2>
+
+
+            <% if (error) { %>
+
+                <div class="error">
+                    <%= error %>
+                </div>
+
+            <% } %>
+
+
+            <form action="/projects/add" method="POST">
+
+                <label for="project_name">
+                    Project Name <span class="required">*</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="project_name"
+                    name="project_name"
+                    placeholder="Enter project name"
+                    required
+                >
+
+
+                <label for="location">
+                    Location <span class="required">*</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="location"
+                    name="location"
+                    placeholder="Enter project location"
+                    required
+                >
+
+
+                <label for="client_id">
+                    Client <span class="required">*</span>
+                </label>
+
+                <select
+                    id="client_id"
+                    name="client_id"
+                    required
+                >
+
+                    <option value="">
+                        Select Client
+                    </option>
+
+                    <% clients.forEach(client => { %>
+
+                        <option value="<%= client.client_id %>">
+                            <%= client.client_name %>
+                        </option>
+
+                    <% }) %>
+
+                </select>
+
+
+                <label for="manager_id">
+                    Project Manager <span class="required">*</span>
+                </label>
+
+                <select
+                    id="manager_id"
+                    name="manager_id"
+                    required
+                >
+
+                    <option value="">
+                        Select Manager
+                    </option>
+
+                    <% managers.forEach(manager => { %>
+
+                        <option value="<%= manager.user_id %>">
+                            <%= manager.username %>
+                        </option>
+
+                    <% }) %>
+
+                </select>
+
+
+                <label for="start_date">
+                    Start Date <span class="required">*</span>
+                </label>
+
+                <input
+                    type="date"
+                    id="start_date"
+                    name="start_date"
+                    required
+                >
+
+
+                <label for="end_date">
+                    End Date
+                </label>
+
+                <input
+                    type="date"
+                    id="end_date"
+                    name="end_date"
+                >
+
+
+                <label for="total_budget">
+                    Total Budget <span class="required">*</span>
+                </label>
+
+                <input
+                    type="number"
+                    id="total_budget"
+                    name="total_budget"
+                    placeholder="Enter budget"
+                    min="0"
+                    step="0.01"
+                    required
+                >
+
+
+                <label for="status">
+                    Status <span class="required">*</span>
+                </label>
+
+                <select
+                    id="status"
+                    name="status"
+                    required
+                >
+
+                    <option value="planning">
+                        Planning
+                    </option>
+
+                    <option value="ongoing">
+                        Ongoing
+                    </option>
+
+                    <option value="completed">
+                        Completed
+                    </option>
+
+                    <option value="on_hold">
+                        On Hold
+                    </option>
+
+                    <option value="cancelled">
+                        Cancelled
+                    </option>
+
+                </select>
+
+
+                <button type="submit">
+                    Add Project
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

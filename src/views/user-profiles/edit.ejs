@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit User Profile</title>
+</head>
+<body>
+
+    <p>
+        <a href="/user-profiles">← Back to User Profiles</a>
+    </p>
+
+    <h1>Edit User Profile</h1>
+
+    <% if (error) { %>
+        <p><%= error %></p>
+    <% } %>
+
+    <form
+        action="/user-profiles/edit/<%= profile.profile_id %>"
+        method="POST"
+    >
+
+        <p>
+            <label>User:</label><br>
+
+            <select name="user_id" required>
+
+                <% users.forEach(userRecord => { %>
+
+                    <option
+                        value="<%= userRecord.user_id %>"
+                        <%= Number(userRecord.user_id) === Number(profile.user_id) ? "selected" : "" %>
+                    >
+                        <%= userRecord.username %>
+                    </option>
+
+                <% }) %>
+
+            </select>
+        </p>
+
+        <p>
+            <label>First Name:</label><br>
+
+            <input
+                type="text"
+                name="first_name"
+                maxlength="80"
+                value="<%= profile.first_name %>"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Last Name:</label><br>
+
+            <input
+                type="text"
+                name="last_name"
+                maxlength="80"
+                value="<%= profile.last_name %>"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Phone:</label><br>
+
+            <input
+                type="text"
+                name="phone"
+                maxlength="30"
+                value="<%= profile.phone || "" %>"
+            >
+        </p>
+
+        <button type="submit">
+            Update User Profile
+        </button>
+
+    </form>
+
+</body>
+</html>

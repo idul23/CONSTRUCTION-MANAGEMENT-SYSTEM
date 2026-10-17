@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Edit Task</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            width: 500px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 15px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <a class="back" href="/tasks">
+        ← Back to Tasks
+    </a>
+
+    <h1>Edit Task</h1>
+
+    <% if (error) { %>
+
+        <div class="error">
+            <%= error %>
+        </div>
+
+    <% } %>
+
+
+    <div class="form-container">
+
+        <form
+            action="/tasks/edit/<%= task.task_id %>"
+            method="POST"
+        >
+
+
+            <label for="phase_id">
+                Project Phase
+            </label>
+
+            <select
+                id="phase_id"
+                name="phase_id"
+                required
+            >
+
+                <% phases.forEach(phase => { %>
+
+                    <option
+                        value="<%= phase.phase_id %>"
+                        <%= Number(task.phase_id) === Number(phase.phase_id) ? "selected" : "" %>
+                    >
+
+                        <%= phase.Project
+                            ? phase.Project.project_name
+                            : "No Project"
+                        %>
+
+                        -
+
+                        <%= phase.phase_name %>
+
+                    </option>
+
+                <% }) %>
+
+            </select>
+
+
+            <label for="task_name">
+                Task Name
+            </label>
+
+            <input
+                type="text"
+                id="task_name"
+                name="task_name"
+                value="<%= task.task_name %>"
+                required
+            >
+
+
+            <label for="start_date">
+                Start Date
+            </label>
+
+            <input
+                type="date"
+                id="start_date"
+                name="start_date"
+                value="<%= task.start_date %>"
+                required
+            >
+
+
+            <label for="due_date">
+                Due Date
+            </label>
+
+            <input
+                type="date"
+                id="due_date"
+                name="due_date"
+                value="<%= task.due_date %>"
+                required
+            >
+
+
+            <label for="progress_pct">
+                Progress (%)
+            </label>
+
+            <input
+                type="number"
+                id="progress_pct"
+                name="progress_pct"
+                min="0"
+                max="100"
+                value="<%= task.progress_pct %>"
+                required
+            >
+
+
+            <label for="status">
+                Status
+            </label>
+
+            <select
+                id="status"
+                name="status"
+                required
+            >
+
+                <option
+                    value="pending"
+                    <%= task.status === "pending" ? "selected" : "" %>
+                >
+                    Pending
+                </option>
+
+                <option
+                    value="in_progress"
+                    <%= task.status === "in_progress" ? "selected" : "" %>
+                >
+                    In Progress
+                </option>
+
+                <option
+                    value="completed"
+                    <%= task.status === "completed" ? "selected" : "" %>
+                >
+                    Completed
+                </option>
+
+                <option
+                    value="on_hold"
+                    <%= task.status === "on_hold" ? "selected" : "" %>
+                >
+                    On Hold
+                </option>
+
+            </select>
+
+
+            <button type="submit">
+                Update Task
+            </button>
+
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>

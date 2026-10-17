@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Add Attendance</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            width: 500px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 15px;
+        }
+
+        .no-assignments {
+            color: #666;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+    <a
+        class="back"
+        href="/attendance"
+    >
+        ← Back to Attendance
+    </a>
+
+
+    <h1>Add Attendance</h1>
+
+
+    <% if (error) { %>
+
+        <div class="error">
+            <%= error %>
+        </div>
+
+    <% } %>
+
+
+    <div class="form-container">
+
+
+        <% if (assignments.length === 0) { %>
+
+            <p class="no-assignments">
+                No task assignments found.
+            </p>
+
+            <p>
+                Assign a worker to a task first before adding attendance.
+            </p>
+
+        <% } else { %>
+
+
+            <form
+                action="/attendance/add"
+                method="POST"
+            >
+
+
+                <label for="assignment_id">
+                    Worker and Task
+                </label>
+
+
+                <select
+                    id="assignment_id"
+                    name="assignment_id"
+                    required
+                >
+
+
+                    <option value="">
+                        Select Worker and Task
+                    </option>
+
+
+                    <% assignments.forEach(assignment => { %>
+
+
+                        <option
+                            value="<%= assignment.assignment_id %>"
+                        >
+
+
+                            <% if (
+                                assignment.Worker
+                            ) { %>
+
+                                <%= assignment.Worker.first_name %>
+                                <%= assignment.Worker.last_name %>
+
+                            <% } else { %>
+
+                                No Worker
+
+                            <% } %>
+
+
+                            -
+
+                            
+                            <% if (
+                                assignment.Task
+                            ) { %>
+
+                                <%= assignment.Task.task_name %>
+
+                            <% } else { %>
+
+                                No Task
+
+                            <% } %>
+
+
+                        </option>
+
+
+                    <% }) %>
+
+
+                </select>
+
+
+                <label for="work_date">
+                    Work Date
+                </label>
+
+
+                <input
+                    type="date"
+                    id="work_date"
+                    name="work_date"
+                    required
+                >
+
+
+                <label for="time_in">
+                    Time In
+                </label>
+
+
+                <input
+                    type="time"
+                    id="time_in"
+                    name="time_in"
+                >
+
+
+                <label for="time_out">
+                    Time Out
+                </label>
+
+
+                <input
+                    type="time"
+                    id="time_out"
+                    name="time_out"
+                >
+
+
+                <label for="hours_worked">
+                    Hours Worked
+                </label>
+
+
+                <input
+                    type="number"
+                    id="hours_worked"
+                    name="hours_worked"
+                    min="0"
+                    step="0.01"
+                    value="8"
+                    required
+                >
+
+
+                <button type="submit">
+                    Add Attendance
+                </button>
+
+
+            </form>
+
+
+        <% } %>
+
+
+    </div>
+
+
+</body>
+
+</html>

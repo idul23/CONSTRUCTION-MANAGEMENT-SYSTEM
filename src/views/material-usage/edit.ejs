@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Material Usage</title>
+</head>
+<body>
+
+    <p>
+        <a href="/material-usage">← Back to Material Usage</a>
+    </p>
+
+    <h1>Edit Material Usage</h1>
+
+    <% if (error) { %>
+        <p><%= error %></p>
+    <% } %>
+
+    <form action="/material-usage/edit/<%= usageRecord.usage_id %>" method="POST">
+
+        <p>
+            <label>Task:</label><br>
+
+            <select name="task_id" required>
+
+                <% tasks.forEach(task => { %>
+
+                    <option
+                        value="<%= task.task_id %>"
+                        <%= Number(task.task_id) === Number(usageRecord.task_id) ? "selected" : "" %>
+                    >
+                        <%= task.task_name %>
+                    </option>
+
+                <% }) %>
+
+            </select>
+        </p>
+
+        <p>
+            <label>Material:</label><br>
+
+            <select name="material_id" required>
+
+                <% materials.forEach(material => { %>
+
+                    <option
+                        value="<%= material.material_id %>"
+                        <%= Number(material.material_id) === Number(usageRecord.material_id) ? "selected" : "" %>
+                    >
+                        <%= material.name %>
+                    </option>
+
+                <% }) %>
+
+            </select>
+        </p>
+
+        <p>
+            <label>Quantity Used:</label><br>
+
+            <input
+                type="number"
+                name="quantity_used"
+                step="0.01"
+                min="0"
+                value="<%= usageRecord.quantity_used %>"
+                required
+            >
+
+        </p>
+
+        <p>
+            <label>Usage Date:</label><br>
+
+            <input
+                type="date"
+                name="usage_date"
+                value="<%= usageRecord.usage_date %>"
+                required
+            >
+
+        </p>
+
+        <button type="submit">Update Material Usage</button>
+
+    </form>
+
+</body>
+</html>

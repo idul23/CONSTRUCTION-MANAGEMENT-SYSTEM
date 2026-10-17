@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Audit Logs</title>
+</head>
+<body>
+
+    <p>
+        <a href="/dashboard">← Back to Dashboard</a>
+    </p>
+
+    <h1>Audit Logs</h1>
+
+    <% if (logs.length === 0) { %>
+
+        <p>No audit log records found.</p>
+
+    <% } else { %>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Changed By</th>
+                    <th>Table</th>
+                    <th>Record ID</th>
+                    <th>Action</th>
+                    <th>Old Values</th>
+                    <th>New Values</th>
+                    <th>Date and Time</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <% logs.forEach(log => { %>
+
+                    <tr>
+
+                        <td>
+                            <%= log.log_id %>
+                        </td>
+
+                        <td>
+                            <%= log.changedByUser
+                                ? log.changedByUser.username
+                                : "System" %>
+                        </td>
+
+                        <td>
+                            <%= log.table_name %>
+                        </td>
+
+                        <td>
+                            <%= log.record_id || "" %>
+                        </td>
+
+                        <td>
+                            <%= log.action_type %>
+                        </td>
+
+                        <td>
+                            <%= log.old_values
+                                ? JSON.stringify(log.old_values)
+                                : "" %>
+                        </td>
+
+                        <td>
+                            <%= log.new_values
+                                ? JSON.stringify(log.new_values)
+                                : "" %>
+                        </td>
+
+                        <td>
+                            <%= log.changed_at %>
+                        </td>
+
+                    </tr>
+
+                <% }) %>
+
+            </tbody>
+
+        </table>
+
+    <% } %>
+
+</body>
+</html>

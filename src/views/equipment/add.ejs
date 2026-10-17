@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Equipment</title>
+</head>
+<body>
+
+    <p>
+        <a href="/equipment">← Back to Equipment</a>
+    </p>
+
+    <h1>Add Equipment</h1>
+
+    <% if (error) { %>
+        <p><%= error %></p>
+    <% } %>
+
+    <form action="/equipment/add" method="POST">
+
+        <p>
+            <label>Equipment Name:</label><br>
+
+            <input
+                type="text"
+                name="name"
+                placeholder="Example: Concrete Mixer"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Equipment Type:</label><br>
+
+            <input
+                type="text"
+                name="equip_type"
+                placeholder="Example: Construction Equipment"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Serial Number:</label><br>
+
+            <input
+                type="text"
+                name="serial_no"
+                placeholder="Example: CM-001"
+            >
+        </p>
+
+        <p>
+            <label>Daily Rate:</label><br>
+
+            <input
+                type="number"
+                name="daily_rate"
+                step="0.01"
+                min="0"
+                placeholder="1500"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Condition:</label><br>
+
+            <select name="condition" required>
+                <option value="">Select Condition</option>
+                <option value="Good">Good</option>
+                <option value="Fair">Fair</option>
+                <option value="Needs Repair">Needs Repair</option>
+                <option value="Under Maintenance">Under Maintenance</option>
+            </select>
+        </p>
+
+        <button type="submit">Save Equipment</button>
+
+    </form>
+
+</body>
+</html>

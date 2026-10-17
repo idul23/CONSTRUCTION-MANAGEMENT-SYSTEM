@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Add Supplier</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        .form-container {
+            width: 500px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 15px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <a
+        class="back"
+        href="/suppliers"
+    >
+        ← Back to Suppliers
+    </a>
+
+    <h1>Add Supplier</h1>
+
+    <% if (error) { %>
+
+        <div class="error">
+            <%= error %>
+        </div>
+
+    <% } %>
+
+    <div class="form-container">
+
+        <form
+            action="/suppliers/add"
+            method="POST"
+        >
+
+            <label for="name">
+                Supplier Name
+            </label>
+
+            <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Example: ABC Construction Supply"
+                required
+            >
+
+
+            <label for="contact_no">
+                Contact Number
+            </label>
+
+            <input
+                type="text"
+                id="contact_no"
+                name="contact_no"
+                placeholder="Example: 09123456789"
+            >
+
+
+            <label for="address">
+                Address
+            </label>
+
+            <textarea
+                id="address"
+                name="address"
+                placeholder="Example: Jagna, Bohol"
+            ></textarea>
+
+
+            <button type="submit">
+                Add Supplier
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>

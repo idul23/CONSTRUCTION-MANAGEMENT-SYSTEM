@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tasks</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .top-links {
+            margin-bottom: 20px;
+        }
+
+        .add-button {
+            display: inline-block;
+            padding: 10px 15px;
+            background: #222;
+            color: white;
+            margin-left: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #f2f2f2;
+        }
+
+        .edit {
+            color: blue;
+            margin-right: 10px;
+        }
+
+        .delete {
+            color: red;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+
+        .progress {
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="top-links">
+
+        <a href="/dashboard">
+            ← Back to Dashboard
+        </a>
+
+        <a
+            class="add-button"
+            href="/tasks/add"
+        >
+            + Add Task
+        </a>
+
+    </div>
+
+
+    <h1>Tasks</h1>
+
+
+    <% if (tasks.length === 0) { %>
+
+        <p>No tasks found.</p>
+
+    <% } else { %>
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>ID</th>
+                    <th>Task Name</th>
+                    <th>Project</th>
+                    <th>Phase</th>
+                    <th>Start Date</th>
+                    <th>Due Date</th>
+                    <th>Progress</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                <% tasks.forEach(task => { %>
+
+                    <tr>
+
+                        <td>
+                            <%= task.task_id %>
+                        </td>
+
+                        <td>
+                            <%= task.task_name %>
+                        </td>
+
+                        <td>
+                            <%= task.ProjectPhase &&
+                                task.ProjectPhase.Project
+                                ? task.ProjectPhase.Project.project_name
+                                : "No Project"
+                            %>
+                        </td>
+
+                        <td>
+                            <%= task.ProjectPhase
+                                ? task.ProjectPhase.phase_name
+                                : "No Phase"
+                            %>
+                        </td>
+
+                        <td>
+                            <%= task.start_date || "-" %>
+                        </td>
+
+                        <td>
+                            <%= task.due_date || "-" %>
+                        </td>
+
+                        <td class="progress">
+                            <%= task.progress_pct || 0 %>%
+                        </td>
+
+                        <td class="status">
+                            <%= task.status %>
+                        </td>
+
+                        <td>
+
+                            <a
+                                class="edit"
+                                href="/tasks/edit/<%= task.task_id %>"
+                            >
+                                Edit
+                            </a>
+
+                            <a
+                                class="delete"
+                                href="/tasks/delete/<%= task.task_id %>"
+                                onclick="return confirm('Are you sure you want to delete this task?');"
+                            >
+                                Delete
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                <% }) %>
+
+            </tbody>
+
+        </table>
+
+    <% } %>
+
+</body>
+</html>

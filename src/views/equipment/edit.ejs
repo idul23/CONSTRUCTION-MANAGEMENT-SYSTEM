@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Equipment</title>
+</head>
+<body>
+
+    <p>
+        <a href="/equipment">← Back to Equipment</a>
+    </p>
+
+    <h1>Edit Equipment</h1>
+
+    <% if (error) { %>
+        <p><%= error %></p>
+    <% } %>
+
+    <form
+        action="/equipment/edit/<%= equipment.equipment_id %>"
+        method="POST"
+    >
+
+        <p>
+            <label>Equipment Name:</label><br>
+
+            <input
+                type="text"
+                name="name"
+                value="<%= equipment.name %>"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Equipment Type:</label><br>
+
+            <input
+                type="text"
+                name="equip_type"
+                value="<%= equipment.equip_type %>"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Serial Number:</label><br>
+
+            <input
+                type="text"
+                name="serial_no"
+                value="<%= equipment.serial_no || '' %>"
+            >
+        </p>
+
+        <p>
+            <label>Daily Rate:</label><br>
+
+            <input
+                type="number"
+                name="daily_rate"
+                step="0.01"
+                min="0"
+                value="<%= equipment.daily_rate %>"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Condition:</label><br>
+
+            <select name="condition" required>
+
+                <option value="Good"
+                    <%= equipment.condition === "Good" ? "selected" : "" %>>
+                    Good
+                </option>
+
+                <option value="Fair"
+                    <%= equipment.condition === "Fair" ? "selected" : "" %>>
+                    Fair
+                </option>
+
+                <option value="Needs Repair"
+                    <%= equipment.condition === "Needs Repair" ? "selected" : "" %>>
+                    Needs Repair
+                </option>
+
+                <option value="Under Maintenance"
+                    <%= equipment.condition === "Under Maintenance" ? "selected" : "" %>>
+                    Under Maintenance
+                </option>
+
+            </select>
+        </p>
+
+        <button type="submit">Update Equipment</button>
+
+    </form>
+
+</body>
+</html>

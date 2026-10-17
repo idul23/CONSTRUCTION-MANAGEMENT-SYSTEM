@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Material</title>
+</head>
+<body>
+
+    <p>
+        <a href="/materials">← Back to Materials</a>
+    </p>
+
+    <h1>Add Material</h1>
+
+    <% if (error) { %>
+        <p><%= error %></p>
+    <% } %>
+
+    <form action="/materials/add" method="POST">
+
+        <p>
+            <label>Supplier:</label><br>
+
+            <select name="supplier_id" required>
+                <option value="">Select Supplier</option>
+
+                <% if (suppliers && suppliers.length > 0) { %>
+
+                    <% suppliers.forEach(supplier => { %>
+                        <option value="<%= supplier.supplier_id %>">
+                            <%= supplier.name %>
+                        </option>
+                    <% }) %>
+
+                <% } %>
+            </select>
+        </p>
+
+        <p>
+            <label>Material Name:</label><br>
+            <input
+                type="text"
+                name="name"
+                placeholder="Example: Cement"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Category:</label><br>
+            <input
+                type="text"
+                name="category"
+                placeholder="Example: Construction"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Unit:</label><br>
+            <input
+                type="text"
+                name="unit"
+                placeholder="Example: bag"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Unit Cost:</label><br>
+            <input
+                type="number"
+                name="unit_cost"
+                step="0.01"
+                min="0"
+                placeholder="250"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Stock Quantity:</label><br>
+            <input
+                type="number"
+                name="stock_qty"
+                step="0.01"
+                min="0"
+                placeholder="100"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Reorder Level:</label><br>
+            <input
+                type="number"
+                name="reorder_level"
+                step="0.01"
+                min="0"
+                placeholder="20"
+                required
+            >
+        </p>
+
+        <button type="submit">Save Material</button>
+
+    </form>
+
+</body>
+</html>

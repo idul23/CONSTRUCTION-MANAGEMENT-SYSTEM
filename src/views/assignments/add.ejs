@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Add Task Assignment</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            width: 500px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 15px;
+        }
+
+        .no-data {
+            color: #666;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+    <a
+        class="back"
+        href="/assignments"
+    >
+        ← Back to Assignments
+    </a>
+
+
+    <h1>Add Task Assignment</h1>
+
+
+    <% if (error) { %>
+
+        <div class="error">
+            <%= error %>
+        </div>
+
+    <% } %>
+
+
+    <div class="form-container">
+
+
+        <% if (tasks.length === 0) { %>
+
+            <p class="no-data">
+                No tasks found.
+            </p>
+
+            <p>
+                Create a task first before assigning a worker.
+            </p>
+
+        <% } else if (workers.length === 0) { %>
+
+            <p class="no-data">
+                No active workers found.
+            </p>
+
+            <p>
+                Add an active worker first before creating an assignment.
+            </p>
+
+        <% } else { %>
+
+
+            <form
+                action="/assignments/add"
+                method="POST"
+            >
+
+
+                <label for="task_id">
+                    Task
+                </label>
+
+                <select
+                    id="task_id"
+                    name="task_id"
+                    required
+                >
+
+                    <option value="">
+                        Select Task
+                    </option>
+
+                    <% tasks.forEach(task => { %>
+
+                        <option
+                            value="<%= task.task_id %>"
+                        >
+
+                            <%= task.task_name %>
+
+                        </option>
+
+                    <% }) %>
+
+                </select>
+
+
+                <label for="worker_id">
+                    Worker
+                </label>
+
+                <select
+                    id="worker_id"
+                    name="worker_id"
+                    required
+                >
+
+                    <option value="">
+                        Select Worker
+                    </option>
+
+                    <% workers.forEach(worker => { %>
+
+                        <option
+                            value="<%= worker.worker_id %>"
+                        >
+
+                            <%= worker.first_name %>
+                            <%= worker.last_name %>
+
+                        </option>
+
+                    <% }) %>
+
+                </select>
+
+
+                <label for="assigned_role">
+                    Assigned Role
+                </label>
+
+                <input
+                    type="text"
+                    id="assigned_role"
+                    name="assigned_role"
+                    placeholder="Example: Carpenter"
+                >
+
+
+                <label for="progress_pct">
+                    Progress (%)
+                </label>
+
+                <input
+                    type="number"
+                    id="progress_pct"
+                    name="progress_pct"
+                    min="0"
+                    max="100"
+                    value="0"
+                    required
+                >
+
+
+                <label for="status">
+                    Status
+                </label>
+
+                <select
+                    id="status"
+                    name="status"
+                    required
+                >
+
+                    <option value="assigned">
+                        Assigned
+                    </option>
+
+                    <option value="in_progress">
+                        In Progress
+                    </option>
+
+                    <option value="completed">
+                        Completed
+                    </option>
+
+                    <option value="on_hold">
+                        On Hold
+                    </option>
+
+                </select>
+
+
+                <button type="submit">
+                    Add Assignment
+                </button>
+
+
+            </form>
+
+
+        <% } %>
+
+
+    </div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add User</title>
+</head>
+<body>
+
+    <p>
+        <a href="/users">← Back to Users</a>
+    </p>
+
+    <h1>Add User</h1>
+
+    <% if (error) { %>
+        <p><%= error %></p>
+    <% } %>
+
+    <form action="/users/add" method="POST">
+
+        <p>
+            <label>Role:</label><br>
+
+            <select name="role_id" required>
+
+                <option value="">
+                    Select Role
+                </option>
+
+                <% roles.forEach(role => { %>
+
+                    <option value="<%= role.role_id %>">
+                        <%= role.role_name %>
+                    </option>
+
+                <% }) %>
+
+            </select>
+        </p>
+
+        <p>
+            <label>Username:</label><br>
+
+            <input
+                type="text"
+                name="username"
+                maxlength="80"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Email:</label><br>
+
+            <input
+                type="email"
+                name="email"
+                maxlength="120"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Password:</label><br>
+
+            <input
+                type="password"
+                name="password"
+                required
+            >
+        </p>
+
+        <p>
+            <label>
+                <input
+                    type="checkbox"
+                    name="is_active"
+                    checked
+                >
+                Active
+            </label>
+        </p>
+
+        <button type="submit">
+            Save User
+        </button>
+
+    </form>
+
+</body>
+</html>

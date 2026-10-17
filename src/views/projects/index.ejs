@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Projects - Construction Management System</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        .header {
+            background: #222;
+            color: white;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .header a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            padding: 30px;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .top h2 {
+            margin: 0;
+        }
+
+        .button {
+            background: #222;
+            color: white;
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 5px;
+        }
+
+        .button:hover {
+            background: #444;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #222;
+            text-decoration: none;
+        }
+
+        .table-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        th {
+            background: #f1f1f1;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+
+        .edit {
+            color: #1565c0;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        .delete {
+            color: #c62828;
+            text-decoration: none;
+        }
+
+        .edit:hover,
+        .delete:hover {
+            text-decoration: underline;
+        }
+
+        .empty {
+            text-align: center;
+            color: #777;
+            padding: 30px;
+        }
+
+        @media (max-width: 700px) {
+            .header {
+                display: block;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            .top {
+                display: block;
+            }
+
+            .button {
+                display: inline-block;
+                margin-top: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+
+        <h1>Construction MS</h1>
+
+        <div>
+            <a href="/dashboard">Dashboard</a>
+            &nbsp; | &nbsp;
+            <a href="/logout">Logout</a>
+        </div>
+
+    </div>
+
+
+    <div class="container">
+
+        <a href="/dashboard" class="back">
+            ← Back to Dashboard
+        </a>
+
+
+        <div class="top">
+
+            <h2>Projects</h2>
+
+            <a href="/projects/add" class="button">
+                + Add Project
+            </a>
+
+        </div>
+
+
+        <div class="table-container">
+
+            <% if (projects.length === 0) { %>
+
+                <div class="empty">
+                    No projects found.
+                </div>
+
+            <% } else { %>
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Project Name</th>
+                            <th>Client</th>
+                            <th>Manager</th>
+                            <th>Location</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Budget</th>
+                            <th>Remaining</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <% projects.forEach(project => { %>
+
+                            <tr>
+
+                                <td>
+                                    <%= project.project_id %>
+                                </td>
+
+                                <td>
+                                    <%= project.project_name %>
+                                </td>
+
+                                <td>
+                                    <%= project.Client ? project.Client.client_name : "-" %>
+                                </td>
+
+                                <td>
+                                    <%= project.manager ? project.manager.username : "-" %>
+                                </td>
+
+                                <td>
+                                    <%= project.location %>
+                                </td>
+
+                                <td>
+                                    <%= project.start_date %>
+                                </td>
+
+                                <td>
+                                    <%= project.end_date || "-" %>
+                                </td>
+
+                                <td>
+                                    ₱<%= Number(project.total_budget).toLocaleString("en-PH", {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %>
+                                </td>
+
+                                <td>
+                                    ₱<%= Number(project.remaining_budget).toLocaleString("en-PH", {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }) %>
+                                </td>
+
+                                <td class="status">
+                                    <%= project.status %>
+                                </td>
+
+                                <td>
+
+                                    <a
+                                        href="/projects/edit/<%= project.project_id %>"
+                                        class="edit"
+                                    >
+                                        Edit
+                                    </a>
+
+                                    <a
+                                        href="/projects/delete/<%= project.project_id %>"
+                                        class="delete"
+                                        onclick="return confirm('Are you sure you want to delete this project?');"
+                                    >
+                                        Delete
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        <% }) %>
+
+                    </tbody>
+
+                </table>
+
+            <% } %>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

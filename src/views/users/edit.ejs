@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit User</title>
+</head>
+<body>
+
+    <p>
+        <a href="/users">← Back to Users</a>
+    </p>
+
+    <h1>Edit User</h1>
+
+    <% if (error) { %>
+        <p><%= error %></p>
+    <% } %>
+
+    <form
+        action="/users/edit/<%= userRecord.user_id %>"
+        method="POST"
+    >
+
+        <p>
+            <label>Role:</label><br>
+
+            <select name="role_id" required>
+
+                <% roles.forEach(role => { %>
+
+                    <option
+                        value="<%= role.role_id %>"
+                        <%= Number(role.role_id) === Number(userRecord.role_id) ? "selected" : "" %>
+                    >
+                        <%= role.role_name %>
+                    </option>
+
+                <% }) %>
+
+            </select>
+        </p>
+
+        <p>
+            <label>Username:</label><br>
+
+            <input
+                type="text"
+                name="username"
+                maxlength="80"
+                value="<%= userRecord.username %>"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Email:</label><br>
+
+            <input
+                type="email"
+                name="email"
+                maxlength="120"
+                value="<%= userRecord.email %>"
+                required
+            >
+        </p>
+
+        <p>
+            <label>New Password:</label><br>
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Leave blank to keep current password"
+            >
+        </p>
+
+        <p>
+            <label>
+                <input
+                    type="checkbox"
+                    name="is_active"
+                    <%= userRecord.is_active ? "checked" : "" %>
+                >
+                Active
+            </label>
+        </p>
+
+        <button type="submit">
+            Update User
+        </button>
+
+    </form>
+
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Project Member</title>
+</head>
+<body>
+
+    <p>
+        <a href="/project-members">← Back to Project Members</a>
+    </p>
+
+    <h1>Add Project Member</h1>
+
+    <% if (error) { %>
+        <p><%= error %></p>
+    <% } %>
+
+    <form action="/project-members/add" method="POST">
+
+        <p>
+            <label>Project:</label><br>
+
+            <select name="project_id" required>
+
+                <option value="">
+                    Select Project
+                </option>
+
+                <% projects.forEach(project => { %>
+
+                    <option value="<%= project.project_id %>">
+                        <%= project.project_name %>
+                    </option>
+
+                <% }) %>
+
+            </select>
+        </p>
+
+        <p>
+            <label>User:</label><br>
+
+            <select name="user_id" required>
+
+                <option value="">
+                    Select User
+                </option>
+
+                <% users.forEach(userRecord => { %>
+
+                    <option value="<%= userRecord.user_id %>">
+                        <%= userRecord.username %>
+                    </option>
+
+                <% }) %>
+
+            </select>
+        </p>
+
+        <p>
+            <label>Project Role:</label><br>
+
+            <input
+                type="text"
+                name="project_role"
+                maxlength="80"
+                placeholder="Example: Project Manager"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Assigned Date:</label><br>
+
+            <input
+                type="date"
+                name="assigned_date"
+            >
+        </p>
+
+        <p>
+            <label>
+                <input
+                    type="checkbox"
+                    name="is_active"
+                    checked
+                >
+                Active
+            </label>
+        </p>
+
+        <button type="submit">
+            Save Project Member
+        </button>
+
+    </form>
+
+</body>
+</html>

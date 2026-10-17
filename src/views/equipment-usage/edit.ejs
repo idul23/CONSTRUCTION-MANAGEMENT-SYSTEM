@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Equipment Usage</title>
+</head>
+<body>
+
+    <p>
+        <a href="/equipment-usage">← Back to Equipment Usage</a>
+    </p>
+
+    <h1>Edit Equipment Usage</h1>
+
+    <% if (error) { %>
+        <p><%= error %></p>
+    <% } %>
+
+    <form
+        action="/equipment-usage/edit/<%= usageRecord.usage_id %>"
+        method="POST"
+    >
+
+        <p>
+            <label>Task:</label><br>
+
+            <select name="task_id" required>
+
+                <% tasks.forEach(task => { %>
+
+                    <option
+                        value="<%= task.task_id %>"
+                        <%= Number(task.task_id) === Number(usageRecord.task_id) ? "selected" : "" %>
+                    >
+                        <%= task.task_name %>
+                    </option>
+
+                <% }) %>
+
+            </select>
+        </p>
+
+        <p>
+            <label>Equipment:</label><br>
+
+            <select name="equipment_id" required>
+
+                <% equipment.forEach(item => { %>
+
+                    <option
+                        value="<%= item.equipment_id %>"
+                        <%= Number(item.equipment_id) === Number(usageRecord.equipment_id) ? "selected" : "" %>
+                    >
+                        <%= item.name %>
+                    </option>
+
+                <% }) %>
+
+            </select>
+        </p>
+
+        <p>
+            <label>Date Used:</label><br>
+
+            <input
+                type="date"
+                name="date_used"
+                value="<%= usageRecord.date_used %>"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Hours Used:</label><br>
+
+            <input
+                type="number"
+                name="hours_used"
+                step="0.01"
+                min="0"
+                value="<%= usageRecord.hours_used %>"
+                required
+            >
+        </p>
+
+        <button type="submit">Update Equipment Usage</button>
+
+    </form>
+
+</body>
+</html>

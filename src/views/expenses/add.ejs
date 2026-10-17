@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Expense</title>
+</head>
+<body>
+
+    <p>
+        <a href="/expenses">← Back to Expenses</a>
+    </p>
+
+    <h1>Add Expense</h1>
+
+    <% if (error) { %>
+        <p><%= error %></p>
+    <% } %>
+
+    <% if (projects.length === 0) { %>
+
+        <p>No projects found. Please create a project first.</p>
+
+    <% } %>
+
+    <form action="/expenses/add" method="POST">
+
+        <p>
+            <label>Project:</label><br>
+
+            <select name="project_id" required>
+
+                <option value="">
+                    Select Project
+                </option>
+
+                <% projects.forEach(project => { %>
+
+                    <option value="<%= project.project_id %>">
+                        <%= project.project_name %>
+                    </option>
+
+                <% }) %>
+
+            </select>
+        </p>
+
+        <p>
+            <label>Category:</label><br>
+
+            <input
+                type="text"
+                name="category"
+                placeholder="Example: Labor"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Amount:</label><br>
+
+            <input
+                type="number"
+                name="amount"
+                step="0.01"
+                min="0"
+                placeholder="5000"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Description:</label><br>
+
+            <textarea
+                name="description"
+                rows="4"
+                cols="40"
+                placeholder="Example: Payment for construction workers"
+            ></textarea>
+        </p>
+
+        <p>
+            <label>Expense Date:</label><br>
+
+            <input
+                type="date"
+                name="expense_date"
+                required
+            >
+        </p>
+
+        <button type="submit">
+            Save Expense
+        </button>
+
+    </form>
+
+</body>
+</html>

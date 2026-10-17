@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Expense</title>
+</head>
+<body>
+
+    <p>
+        <a href="/expenses">← Back to Expenses</a>
+    </p>
+
+    <h1>Edit Expense</h1>
+
+    <% if (error) { %>
+        <p><%= error %></p>
+    <% } %>
+
+    <form
+        action="/expenses/edit/<%= expense.expense_id %>"
+        method="POST"
+    >
+
+        <p>
+            <label>Project:</label><br>
+
+            <select name="project_id" required>
+
+                <% projects.forEach(project => { %>
+
+                    <option
+                        value="<%= project.project_id %>"
+                        <%= Number(project.project_id) === Number(expense.project_id) ? "selected" : "" %>
+                    >
+                        <%= project.project_name %>
+                    </option>
+
+                <% }) %>
+
+            </select>
+        </p>
+
+        <p>
+            <label>Category:</label><br>
+
+            <input
+                type="text"
+                name="category"
+                value="<%= expense.category %>"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Amount:</label><br>
+
+            <input
+                type="number"
+                name="amount"
+                step="0.01"
+                min="0"
+                value="<%= expense.amount %>"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Description:</label><br>
+
+            <textarea
+                name="description"
+                rows="4"
+                cols="40"
+            ><%= expense.description || "" %></textarea>
+        </p>
+
+        <p>
+            <label>Expense Date:</label><br>
+
+            <input
+                type="date"
+                name="expense_date"
+                value="<%= expense.expense_date %>"
+                required
+            >
+        </p>
+
+        <button type="submit">
+            Update Expense
+        </button>
+
+    </form>
+
+</body>
+</html>
+

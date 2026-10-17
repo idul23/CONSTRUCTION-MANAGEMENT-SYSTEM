@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Construction Management System</title>
+</head>
+<body>
+
+    <h1>Construction Management System</h1>
+
+    <p>
+        Welcome, <%= user.username %> |
+        <%= user.role_name %> |
+        <a href="/logout">Logout</a>
+    </p>
+
+    <hr>
+
+    <h2>Dashboard</h2>
+
+    <table border="1" cellpadding="10" cellspacing="0">
+        <tr>
+            <th>Total Projects</th>
+            <td><%= totalProjects %></td>
+        </tr>
+
+        <tr>
+            <th>Active Workers</th>
+            <td><%= activeWorkers %></td>
+        </tr>
+
+        <tr>
+            <th>Total Tasks</th>
+            <td><%= totalTasks %></td>
+        </tr>
+
+        <tr>
+            <th>Materials</th>
+            <td><%= totalMaterials %></td>
+        </tr>
+
+        <tr>
+            <th>Today's Attendance</th>
+            <td><%= todayAttendance %></td>
+        </tr>
+
+        <tr>
+            <th>Total Expenses</th>
+            <td>
+                ₱<%= Number(totalExpenses).toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }) %>
+            </td>
+        </tr>
+    </table>
+
+    <hr>
+
+    <h2>System Modules</h2>
+
+    <p>
+        <a href="/projects">Projects</a>
+    </p>
+
+    <p>
+        <a href="/workers">Workers</a>
+    </p>
+
+    <p>
+        <a href="/worker-skills">Worker Skills</a>
+    </p>
+
+    <p>
+        <a href="/project-members">Project Members</a>
+    </p>
+
+    <p>
+        <a href="/user-profiles">User Profiles</a>
+    </p>
+
+    <p>
+        <a href="/tasks">Tasks</a>
+    </p>
+
+    <p>
+        <a href="/phases">Project Phases</a>
+    </p>
+
+    <p>
+        <a href="/assignments">Task Assignments</a>
+    </p>
+
+    <p>
+        <a href="/attendance">Attendance</a>
+    </p>
+
+    <p>
+        <a href="/materials">Materials</a>
+    </p>
+
+    <p>
+        <a href="/material-usage">Material Usage</a>
+    </p>
+
+    <p>
+        <a href="/suppliers">Suppliers</a>
+    </p>
+
+    <p>
+        <a href="/equipment">Equipment</a>
+    </p>
+
+    <p>
+        <a href="/equipment-usage">Equipment Usage</a>
+    </p>
+
+    <p>
+        <a href="/expenses">Expenses</a>
+    </p>
+
+    <p>
+        <a href="/reports">Reports</a>
+    </p>
+
+    <% if (user.role_name === "Administrator") { %>
+
+        <p>
+            <a href="/users">User Management</a>
+        </p>
+
+        <p>
+            <a href="/audit-logs">Audit Logs</a>
+        </p>
+
+    <% } %>
+
+    <hr>
+
+    <h2>Recent Projects</h2>
+
+    <% if (recentProjects.length === 0) { %>
+
+        <p>No projects found.</p>
+
+    <% } else { %>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Project Name</th>
+                    <th>Location</th>
+                    <th>Budget</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <% recentProjects.forEach(project => { %>
+
+                    <tr>
+                        <td>
+                            <%= project.project_id %>
+                        </td>
+
+                        <td>
+                            <%= project.project_name %>
+                        </td>
+
+                        <td>
+                            <%= project.location %>
+                        </td>
+
+                        <td>
+                            ₱<%= Number(project.total_budget || 0).toLocaleString("en-US", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            }) %>
+                        </td>
+
+                        <td>
+                            <%= project.status %>
+                        </td>
+                    </tr>
+
+                <% }) %>
+
+            </tbody>
+
+        </table>
+
+    <% } %>
+
+    <hr>
+
+    <h2>Recent Tasks</h2>
+
+    <% if (recentTasks.length === 0) { %>
+
+        <p>No tasks found.</p>
+
+    <% } else { %>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Task Name</th>
+                    <th>Start Date</th>
+                    <th>Due Date</th>
+                    <th>Progress</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <% recentTasks.forEach(task => { %>
+
+                    <tr>
+
+                        <td>
+                            <%= task.task_id %>
+                        </td>
+
+                        <td>
+                            <%= task.task_name %>
+                        </td>
+
+                        <td>
+                            <%= task.start_date %>
+                        </td>
+
+                        <td>
+                            <%= task.due_date %>
+                        </td>
+
+                        <td>
+                            <%= task.progress_pct %>%
+                        </td>
+
+                        <td>
+                            <%= task.status %>
+                        </td>
+
+                    </tr>
+
+                <% }) %>
+
+            </tbody>
+
+        </table>
+
+    <% } %>
+
+</body>
+</html>

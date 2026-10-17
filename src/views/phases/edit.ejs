@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Project Phase</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            width: 500px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <a class="back" href="/phases">
+        ← Back to Project Phases
+    </a>
+
+    <h1>Edit Project Phase</h1>
+
+    <% if (error) { %>
+
+        <div class="error">
+            <%= error %>
+        </div>
+
+    <% } %>
+
+
+    <div class="form-container">
+
+        <form
+            action="/phases/edit/<%= phase.phase_id %>"
+            method="POST"
+        >
+
+            <label for="project_id">
+                Project
+            </label>
+
+            <select
+                id="project_id"
+                name="project_id"
+                required
+            >
+
+                <% projects.forEach(project => { %>
+
+                    <option
+                        value="<%= project.project_id %>"
+                        <%= Number(project.project_id) === Number(phase.project_id) ? "selected" : "" %>
+                    >
+                        <%= project.project_name %>
+                    </option>
+
+                <% }) %>
+
+            </select>
+
+
+            <label for="phase_name">
+                Phase Name
+            </label>
+
+            <input
+                type="text"
+                id="phase_name"
+                name="phase_name"
+                value="<%= phase.phase_name %>"
+                required
+            >
+
+
+            <label for="start_date">
+                Start Date
+            </label>
+
+            <input
+                type="date"
+                id="start_date"
+                name="start_date"
+                value="<%= phase.start_date %>"
+                required
+            >
+
+
+            <label for="end_date">
+                End Date
+            </label>
+
+            <input
+                type="date"
+                id="end_date"
+                name="end_date"
+                value="<%= phase.end_date || '' %>"
+            >
+
+
+            <label for="planned_cost">
+                Planned Cost
+            </label>
+
+            <input
+                type="number"
+                id="planned_cost"
+                name="planned_cost"
+                step="0.01"
+                min="0"
+                value="<%= phase.planned_cost || 0 %>"
+                required
+            >
+
+
+            <button type="submit">
+                Update Project Phase
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+</html>

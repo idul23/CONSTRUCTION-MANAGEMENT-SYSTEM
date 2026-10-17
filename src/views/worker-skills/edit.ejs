@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Worker Skill</title>
+</head>
+<body>
+
+    <p>
+        <a href="/worker-skills">← Back to Worker Skills</a>
+    </p>
+
+    <h1>Edit Worker Skill</h1>
+
+    <% if (error) { %>
+        <p><%= error %></p>
+    <% } %>
+
+    <form
+        action="/worker-skills/edit/<%= workerSkill.worker_id %>/<%= workerSkill.skill_id %>"
+        method="POST"
+    >
+
+        <p>
+            <label>Worker:</label><br>
+
+            <select name="worker_id" required>
+
+                <% workers.forEach(worker => { %>
+
+                    <option
+                        value="<%= worker.worker_id %>"
+                        <%= Number(worker.worker_id) === Number(workerSkill.worker_id) ? "selected" : "" %>
+                    >
+                        <%= worker.first_name %> <%= worker.last_name %>
+                    </option>
+
+                <% }) %>
+
+            </select>
+        </p>
+
+        <p>
+            <label>Skill:</label><br>
+
+            <select name="skill_id" required>
+
+                <% skills.forEach(skill => { %>
+
+                    <option
+                        value="<%= skill.skill_id %>"
+                        <%= Number(skill.skill_id) === Number(workerSkill.skill_id) ? "selected" : "" %>
+                    >
+                        <%= skill.skill_name %>
+                    </option>
+
+                <% }) %>
+
+            </select>
+        </p>
+
+        <p>
+            <label>Proficiency:</label><br>
+
+            <input
+                type="text"
+                name="proficiency"
+                maxlength="50"
+                value="<%= workerSkill.proficiency || "" %>"
+            >
+        </p>
+
+        <p>
+            <label>Years of Experience:</label><br>
+
+            <input
+                type="number"
+                name="years_exp"
+                min="0"
+                value="<%= workerSkill.years_exp %>"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Certified Date:</label><br>
+
+            <input
+                type="date"
+                name="certified_date"
+                value="<%= workerSkill.certified_date || "" %>"
+            >
+        </p>
+
+        <button type="submit">
+            Update Worker Skill
+        </button>
+
+    </form>
+
+</body>
+</html>

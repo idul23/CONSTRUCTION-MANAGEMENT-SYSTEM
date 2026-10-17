@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Equipment Usage</title>
+</head>
+<body>
+
+    <p>
+        <a href="/equipment-usage">← Back to Equipment Usage</a>
+    </p>
+
+    <h1>Add Equipment Usage</h1>
+
+    <% if (error) { %>
+        <p><%= error %></p>
+    <% } %>
+
+    <% if (tasks.length === 0) { %>
+        <p>No tasks found. Please create a task first.</p>
+    <% } %>
+
+    <% if (equipment.length === 0) { %>
+        <p>No equipment found. Please create equipment first.</p>
+    <% } %>
+
+    <form action="/equipment-usage/add" method="POST">
+
+        <p>
+            <label>Task:</label><br>
+
+            <select name="task_id" required>
+                <option value="">Select Task</option>
+
+                <% tasks.forEach(task => { %>
+                    <option value="<%= task.task_id %>">
+                        <%= task.task_name %>
+                    </option>
+                <% }) %>
+            </select>
+        </p>
+
+        <p>
+            <label>Equipment:</label><br>
+
+            <select name="equipment_id" required>
+                <option value="">Select Equipment</option>
+
+                <% equipment.forEach(item => { %>
+                    <option value="<%= item.equipment_id %>">
+                        <%= item.name %>
+                    </option>
+                <% }) %>
+            </select>
+        </p>
+
+        <p>
+            <label>Date Used:</label><br>
+
+            <input
+                type="date"
+                name="date_used"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Hours Used:</label><br>
+
+            <input
+                type="number"
+                name="hours_used"
+                step="0.01"
+                min="0"
+                required
+            >
+        </p>
+
+        <button type="submit">Save Equipment Usage</button>
+
+    </form>
+
+</body>
+</html>

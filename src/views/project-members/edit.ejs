@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Project Member</title>
+</head>
+<body>
+
+    <p>
+        <a href="/project-members">← Back to Project Members</a>
+    </p>
+
+    <h1>Edit Project Member</h1>
+
+    <% if (error) { %>
+        <p><%= error %></p>
+    <% } %>
+
+    <form
+        action="/project-members/edit/<%= projectMember.project_id %>/<%= projectMember.user_id %>"
+        method="POST"
+    >
+
+        <p>
+            <label>Project:</label><br>
+
+            <select name="project_id" required>
+
+                <% projects.forEach(project => { %>
+
+                    <option
+                        value="<%= project.project_id %>"
+                        <%= Number(project.project_id) === Number(projectMember.project_id) ? "selected" : "" %>
+                    >
+                        <%= project.project_name %>
+                    </option>
+
+                <% }) %>
+
+            </select>
+        </p>
+
+        <p>
+            <label>User:</label><br>
+
+            <select name="user_id" required>
+
+                <% users.forEach(userRecord => { %>
+
+                    <option
+                        value="<%= userRecord.user_id %>"
+                        <%= Number(userRecord.user_id) === Number(projectMember.user_id) ? "selected" : "" %>
+                    >
+                        <%= userRecord.username %>
+                    </option>
+
+                <% }) %>
+
+            </select>
+        </p>
+
+        <p>
+            <label>Project Role:</label><br>
+
+            <input
+                type="text"
+                name="project_role"
+                maxlength="80"
+                value="<%= projectMember.project_role %>"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Assigned Date:</label><br>
+
+            <input
+                type="date"
+                name="assigned_date"
+                value="<%= projectMember.assigned_date || "" %>"
+            >
+        </p>
+
+        <p>
+            <label>
+                <input
+                    type="checkbox"
+                    name="is_active"
+                    <%= projectMember.is_active ? "checked" : "" %>
+                >
+                Active
+            </label>
+        </p>
+
+        <button type="submit">
+            Update Project Member
+        </button>
+
+    </form>
+
+</body>
+</html>

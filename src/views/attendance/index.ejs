@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Attendance</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .top-links {
+            margin-bottom: 20px;
+        }
+
+        .top-links a {
+            margin-right: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .actions a {
+            margin-right: 10px;
+        }
+
+        .no-records {
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="top-links">
+        <a href="/dashboard">← Back to Dashboard</a>
+
+        <% if (user.role_name === "Administrator" || user.role_name === "Site Staff") { %>
+            <a href="/attendance/add">+ Add Attendance</a>
+        <% } %>
+    </div>
+
+    <h1>Attendance</h1>
+
+    <% if (attendance.length === 0) { %>
+
+        <p class="no-records">No attendance records found.</p>
+
+    <% } else { %>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Worker</th>
+                    <th>Task</th>
+                    <th>Work Date</th>
+                    <th>Time In</th>
+                    <th>Time Out</th>
+                    <th>Hours Worked</th>
+                    <th>Labor Cost</th>
+
+                    <% if (user.role_name === "Administrator" || user.role_name === "Site Staff") { %>
+                        <th>Actions</th>
+                    <% } %>
+                </tr>
+            </thead>
+
+            <tbody>
+                <% attendance.forEach(record => { %>
+                    <tr>
+                        <td><%= record.attendance_id %></td>
+
+                        <td>
+                            <% if (record.TaskAssignment && record.TaskAssignment.Worker) { %>
+                                <%= record.TaskAssignment.Worker.first_name %>
+                                <%= record.TaskAssignment.Worker.last_name %>
+                            <% } else { %>
+                                No Worker
+                            <% } %>
+                        </td>
+
+                        <td>
+                            <% if (record.TaskAssignment && record.TaskAssignment.Task) { %>
+                                <%= record.TaskAssignment.Task.task_name %>
+                            <% } else { %>
+                                No Task
+                            <% } %>
+                        </td>
+
+                        <td><%= record.work_date %></td>
+                        <td><%= record.time_in || "-" %></td>
+                        <td><%= record.time_out || "-" %></td>
+                        <td><%= record.hours_worked %></td>
+
+                        <td>
+                            ₱<%= Number(record.labor_cost || 0).toLocaleString("en-PH", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            }) %>
+                        </td>
+
+                        <% if (user.role_name === "Administrator" || user.role_name === "Site Staff") { %>
+                            <td class="actions">
+                                <a href="/attendance/edit/<%= record.attendance_id %>">Edit</a>
+
+                                <a
+                                    href="/attendance/delete/<%= record.attendance_id %>"
+                                    onclick="return confirm('Are you sure you want to delete this attendance record?');"
+                                >Delete</a>
+                            </td>
+                        <% } %>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+
+    <% } %>
+
+</body>
+</html>

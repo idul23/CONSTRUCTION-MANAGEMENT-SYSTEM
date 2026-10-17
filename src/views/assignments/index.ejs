@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Task Assignments</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .top-links {
+            margin-bottom: 20px;
+        }
+
+        .top-links a {
+            margin-right: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .actions a {
+            margin-right: 10px;
+        }
+
+        .no-records {
+            color: #666;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+    <div class="top-links">
+
+        <a href="/dashboard">
+            ← Back to Dashboard
+        </a>
+
+        <a href="/assignments/add">
+            + Add Assignment
+        </a>
+
+    </div>
+
+
+    <h1>Task Assignments</h1>
+
+
+    <% if (assignments.length === 0) { %>
+
+        <p class="no-records">
+            No task assignments found.
+        </p>
+
+    <% } else { %>
+
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        ID
+                    </th>
+
+                    <th>
+                        Task
+                    </th>
+
+                    <th>
+                        Worker
+                    </th>
+
+                    <th>
+                        Assigned Role
+                    </th>
+
+                    <th>
+                        Progress
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
+                        Assigned By
+                    </th>
+
+                    <th>
+                        Actions
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                <% assignments.forEach(assignment => { %>
+
+                    <tr>
+
+                        <td>
+                            <%= assignment.assignment_id %>
+                        </td>
+
+
+                        <td>
+
+                            <% if (assignment.Task) { %>
+
+                                <%= assignment.Task.task_name %>
+
+                            <% } else { %>
+
+                                No Task
+
+                            <% } %>
+
+                        </td>
+
+
+                        <td>
+
+                            <% if (assignment.Worker) { %>
+
+                                <%= assignment.Worker.first_name %>
+                                <%= assignment.Worker.last_name %>
+
+                            <% } else { %>
+
+                                No Worker
+
+                            <% } %>
+
+                        </td>
+
+
+                        <td>
+                            <%= assignment.assigned_role || "-" %>
+                        </td>
+
+
+                        <td>
+                            <%= assignment.progress_pct %>%
+                        </td>
+
+
+                        <td>
+                            <%= assignment.status %>
+                        </td>
+
+
+                        <td>
+
+                            <% if (assignment.assignedByUser) { %>
+
+                                <%= assignment.assignedByUser.username %>
+
+                            <% } else { %>
+
+                                Unknown
+
+                            <% } %>
+
+                        </td>
+
+
+                        <td class="actions">
+
+                            <a
+                                href="/assignments/edit/<%= assignment.assignment_id %>"
+                            >
+                                Edit
+                            </a>
+
+                            <a
+                                href="/assignments/delete/<%= assignment.assignment_id %>"
+                                onclick="return confirm('Are you sure you want to delete this assignment?');"
+                            >
+                                Delete
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                <% }) %>
+
+            </tbody>
+
+        </table>
+
+
+    <% } %>
+
+
+</body>
+
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Project Phase</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            width: 500px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <a class="back" href="/phases">
+        ← Back to Project Phases
+    </a>
+
+    <h1>Add Project Phase</h1>
+
+    <% if (error) { %>
+
+        <div class="error">
+            <%= error %>
+        </div>
+
+    <% } %>
+
+
+    <div class="form-container">
+
+        <% if (projects.length === 0) { %>
+
+            <p>
+                No projects found.
+            </p>
+
+            <p>
+                Create a project first before adding a phase.
+            </p>
+
+        <% } else { %>
+
+            <form
+                action="/phases/add"
+                method="POST"
+            >
+
+                <label for="project_id">
+                    Project
+                </label>
+
+                <select
+                    id="project_id"
+                    name="project_id"
+                    required
+                >
+
+                    <option value="">
+                        Select Project
+                    </option>
+
+                    <% projects.forEach(project => { %>
+
+                        <option
+                            value="<%= project.project_id %>"
+                        >
+                            <%= project.project_name %>
+                        </option>
+
+                    <% }) %>
+
+                </select>
+
+
+                <label for="phase_name">
+                    Phase Name
+                </label>
+
+                <input
+                    type="text"
+                    id="phase_name"
+                    name="phase_name"
+                    placeholder="Example: Foundation"
+                    required
+                >
+
+
+                <label for="start_date">
+                    Start Date
+                </label>
+
+                <input
+                    type="date"
+                    id="start_date"
+                    name="start_date"
+                    required
+                >
+
+
+                <label for="end_date">
+                    End Date
+                </label>
+
+                <input
+                    type="date"
+                    id="end_date"
+                    name="end_date"
+                >
+
+
+                <label for="planned_cost">
+                    Planned Cost
+                </label>
+
+                <input
+                    type="number"
+                    id="planned_cost"
+                    name="planned_cost"
+                    step="0.01"
+                    min="0"
+                    value="0"
+                    required
+                >
+
+
+                <button type="submit">
+                    Add Project Phase
+                </button>
+
+            </form>
+
+        <% } %>
+
+    </div>
+
+</body>
+</html>
