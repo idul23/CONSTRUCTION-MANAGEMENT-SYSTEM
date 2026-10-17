@@ -3,3 +3,11 @@ node_modules/
 .env
 .env.*
 !.env.example
+
+# PHP local configuration
+config.local.php
+
+# Local database files
+*.sqlite
+*.sqlite3
+*.db
