@@ -1,229 +1,549 @@
+
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-
-    <title>Add Task</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Task | Construction MS</title>
 
     <style>
-
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
+        :root {
+            --navy: #142b4a;
+            --navy-light: #203e63;
+            --orange: #f28c28;
+            --orange-hover: #d97515;
+            --white: #ffffff;
+            --background: #f3f5f9;
+            --border: #e1e6ed;
+            --text: #263445;
+            --muted: #758195;
+            --red: #c93636;
+            --shadow: 0 5px 18px rgba(20, 43, 74, 0.08);
         }
 
-        h1 {
-            margin-bottom: 20px;
-        }
-
-        .form-container {
-            width: 500px;
-        }
-
-        label {
-            display: block;
-            margin-top: 15px;
-            margin-bottom: 5px;
-        }
-
-        input,
-        select {
-            width: 100%;
-            padding: 10px;
+        * {
             box-sizing: border-box;
         }
 
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            cursor: pointer;
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--background);
+            color: var(--text);
         }
 
-        .back {
-            display: inline-block;
+        .topbar {
+            background: var(--navy);
+            min-height: 68px;
+            padding: 0 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 3px 12px rgba(20, 43, 74, 0.15);
+        }
+
+        .brand {
+            color: var(--white);
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .brand span {
+            color: var(--orange);
+        }
+
+        .dashboard-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 11px 22px;
+            background: var(--orange);
+            color: var(--white);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            border: 2px solid var(--orange);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .dashboard-btn:hover {
+            background: var(--orange-hover);
+            border-color: var(--orange-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(242, 140, 40, 0.25);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 35px auto;
+            padding: 0 22px;
+        }
+
+        .breadcrumb {
             margin-bottom: 20px;
+            font-size: 14px;
+            color: var(--muted);
         }
 
-        .error {
-            color: red;
-            margin-bottom: 15px;
+        .breadcrumb a {
+            color: var(--navy-light);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--orange-hover);
+            text-decoration: underline;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            margin: 0 0 9px;
+            color: var(--navy);
+            font-size: 29px;
+            font-weight: 800;
+        }
+
+        .page-heading p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .form-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .form-header {
+            padding: 22px 28px;
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
+            border-bottom: 4px solid var(--orange);
+        }
+
+        .form-header h2 {
+            margin: 0 0 7px;
+            color: var(--white);
+            font-size: 20px;
+        }
+
+        .form-header p {
+            margin: 0;
+            color: #dce5f0;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        form {
+            padding: 28px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 23px 24px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            margin-bottom: 9px;
+            color: var(--navy);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .required {
+            color: var(--red);
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="number"],
+        select {
+            width: 100%;
+            min-height: 45px;
+            padding: 11px 13px;
+            background: var(--white);
+            color: var(--text);
+            font-family: inherit;
+            font-size: 14px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input::placeholder {
+            color: #9aa4b2;
+        }
+
+        input[type="text"]:hover,
+        input[type="date"]:hover,
+        input[type="number"]:hover,
+        select:hover {
+            border-color: var(--orange);
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            border: 2px solid var(--orange-hover);
+            box-shadow: 0 0 0 4px rgba(242, 140, 40, 0.18);
+        }
+
+        .field-help {
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .error-message {
+            margin: 0 28px 0;
+            padding: 13px 15px;
+            color: var(--red);
+            background: #fff1f1;
+            border: 1px solid #f3caca;
+            border-left: 4px solid var(--red);
+            border-radius: 7px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .no-phases-card {
+            padding: 28px;
         }
 
         .no-phases {
-            color: #666;
-            margin-top: 10px;
+            margin: 0 0 10px;
+            color: var(--navy);
+            font-size: 17px;
+            font-weight: 700;
         }
 
+        .no-phases-description {
+            margin: 0 0 22px;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 23px;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 43px;
+            padding: 11px 21px;
+            border-radius: 7px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            color: var(--white);
+            background: var(--orange);
+            border: 1px solid var(--orange);
+        }
+
+        .btn-primary:hover {
+            background: var(--orange-hover);
+            border-color: var(--orange-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(242, 140, 40, 0.22);
+        }
+
+        .btn-secondary {
+            color: var(--navy);
+            background: var(--white);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            color: var(--white);
+            background: var(--navy);
+            border-color: var(--navy);
+        }
+
+        @media (max-width: 600px) {
+            .topbar {
+                min-height: 62px;
+                padding: 12px 16px;
+            }
+
+            .brand {
+                font-size: 17px;
+            }
+
+            .dashboard-btn {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+
+            .container {
+                margin: 25px auto;
+                padding: 0 16px;
+            }
+
+            .page-heading h1 {
+                font-size: 25px;
+            }
+
+            .form-header {
+                padding: 20px;
+            }
+
+            form {
+                padding: 21px 18px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .form-group.full-width {
+                grid-column: auto;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .no-phases-card {
+                padding: 21px 18px;
+            }
+
+            .error-message {
+                margin: 0 18px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                transition: none !important;
+                scroll-behavior: auto !important;
+            }
+        }
     </style>
-
 </head>
-
 <body>
 
-    <a class="back" href="/tasks">
-        ← Back to Tasks
-    </a>
+    <header class="topbar">
+        <div class="brand">CONSTRUCTION <span>MS</span></div>
+        <a href="/dashboard" class="dashboard-btn">Dashboard</a>
+    </header>
 
-    <h1>Add Task</h1>
+    <main class="container">
 
-    <% if (error) { %>
-
-        <div class="error">
-            <%= error %>
+        <div class="breadcrumb">
+            <a href="/tasks">Tasks</a>
+            <span> / Add Task</span>
         </div>
 
-    <% } %>
+        <div class="page-heading">
+            <h1>Add Task</h1>
+            <p>Create a task and assign it to a project phase.</p>
+        </div>
 
+        <section class="form-card">
 
-    <div class="form-container">
+            <div class="form-header">
+                <h2>Task Information</h2>
+                <p>Enter the task details, schedule, progress, and status.</p>
+            </div>
 
-        <% if (phases.length === 0) { %>
+            <% if (typeof error !== "undefined" && error) { %>
+                <div class="error-message">
+                    <%= error %>
+                </div>
+            <% } %>
 
-            <p class="no-phases">
-                No project phases found.
-            </p>
+            <% if (phases.length === 0) { %>
 
-            <p>
-                Create a project phase first before adding a task.
-            </p>
+                <div class="no-phases-card">
+                    <p class="no-phases">No project phases found.</p>
+                    <p class="no-phases-description">
+                        Create a project phase first before adding a task.
+                    </p>
+                    <a href="/tasks" class="btn btn-secondary">Back to Tasks</a>
+                </div>
 
-        <% } else { %>
+            <% } else { %>
 
+                <form action="/tasks/add" method="POST">
 
-            <form
-                action="/tasks/add"
-                method="POST"
-            >
+                    <div class="form-grid">
 
+                        <div class="form-group full-width">
+                            <label for="phase_id">
+                                Project Phase <span class="required">*</span>
+                            </label>
 
-                <label for="phase_id">
-                    Project Phase
-                </label>
+                            <select id="phase_id" name="phase_id" required>
+                                <option value="">Select Project Phase</option>
 
-                <select
-                    id="phase_id"
-                    name="phase_id"
-                    required
-                >
+                                <% phases.forEach(phase => { %>
+                                    <option value="<%= phase.phase_id %>">
+                                        <%= phase.Project
+                                            ? phase.Project.project_name
+                                            : "No Project"
+                                        %>
+                                        - <%= phase.phase_name %>
+                                    </option>
+                                <% }) %>
+                            </select>
 
-                    <option value="">
-                        Select Project Phase
-                    </option>
+                            <span class="field-help">Choose the phase this task belongs to.</span>
+                        </div>
 
-                    <% phases.forEach(phase => { %>
+                        <div class="form-group full-width">
+                            <label for="task_name">
+                                Task Name <span class="required">*</span>
+                            </label>
 
-                        <option
-                            value="<%= phase.phase_id %>"
-                        >
+                            <input
+                                type="text"
+                                id="task_name"
+                                name="task_name"
+                                placeholder="Enter task name"
+                                required
+                            >
+                        </div>
 
-                            <%= phase.Project
-                                ? phase.Project.project_name
-                                : "No Project"
-                            %>
+                        <div class="form-group">
+                            <label for="start_date">
+                                Start Date <span class="required">*</span>
+                            </label>
 
-                            -
+                            <input
+                                type="date"
+                                id="start_date"
+                                name="start_date"
+                                required
+                            >
+                        </div>
 
-                            <%= phase.phase_name %>
+                        <div class="form-group">
+                            <label for="due_date">
+                                Due Date <span class="required">*</span>
+                            </label>
 
-                        </option>
+                            <input
+                                type="date"
+                                id="due_date"
+                                name="due_date"
+                                required
+                            >
+                        </div>
 
-                    <% }) %>
+                        <div class="form-group">
+                            <label for="progress_pct">
+                                Progress (%) <span class="required">*</span>
+                            </label>
 
-                </select>
+                            <input
+                                type="number"
+                                id="progress_pct"
+                                name="progress_pct"
+                                min="0"
+                                max="100"
+                                value="0"
+                                required
+                            >
 
+                            <span class="field-help">Enter a value from 0 to 100.</span>
+                        </div>
 
-                <label for="task_name">
-                    Task Name
-                </label>
+                        <div class="form-group">
+                            <label for="status">
+                                Status <span class="required">*</span>
+                            </label>
 
-                <input
-                    type="text"
-                    id="task_name"
-                    name="task_name"
-                    required
-                >
+                            <select id="status" name="status" required>
+                                <option value="pending">Pending</option>
+                                <option value="in_progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                                <option value="on_hold">On Hold</option>
+                            </select>
+                        </div>
 
+                    </div>
 
-                <label for="start_date">
-                    Start Date
-                </label>
+                    <div class="form-actions">
+                        <a href="/tasks" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Add Task</button>
+                    </div>
 
-                <input
-                    type="date"
-                    id="start_date"
-                    name="start_date"
-                    required
-                >
+                </form>
 
+            <% } %>
 
-                <label for="due_date">
-                    Due Date
-                </label>
+        </section>
 
-                <input
-                    type="date"
-                    id="due_date"
-                    name="due_date"
-                    required
-                >
+    </main>
 
+    <script>
+        const startDate = document.getElementById("start_date");
+        const dueDate = document.getElementById("due_date");
 
-                <label for="progress_pct">
-                    Progress (%)
-                </label>
+        if (startDate && dueDate) {
+            startDate.addEventListener("change", function () {
+                dueDate.min = this.value;
 
-                <input
-                    type="number"
-                    id="progress_pct"
-                    name="progress_pct"
-                    min="0"
-                    max="100"
-                    value="0"
-                    required
-                >
+                if (dueDate.value && dueDate.value < this.value) {
+                    dueDate.value = "";
+                }
+            });
 
-
-                <label for="status">
-                    Status
-                </label>
-
-                <select
-                    id="status"
-                    name="status"
-                    required
-                >
-
-                    <option value="pending">
-                        Pending
-                    </option>
-
-                    <option value="in_progress">
-                        In Progress
-                    </option>
-
-                    <option value="completed">
-                        Completed
-                    </option>
-
-                    <option value="on_hold">
-                        On Hold
-                    </option>
-
-                </select>
-
-
-                <button type="submit">
-                    Add Task
-                </button>
-
-
-            </form>
-
-
-        <% } %>
-
-    </div>
+            dueDate.addEventListener("change", function () {
+                if (startDate.value) {
+                    this.min = startDate.value;
+                }
+            });
+        }
+    </script>
 
 </body>
-
 </html>

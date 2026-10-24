@@ -1,205 +1,522 @@
+
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-
-    <title>Edit Attendance</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Attendance | Construction MS</title>
 
     <style>
+        :root {
+            --navy: #142b4a;
+            --navy-light: #203e63;
+            --orange: #f28c28;
+            --white: #ffffff;
+            --background: #f3f5f9;
+            --border: #e1e6ed;
+            --text: #263445;
+            --muted: #758195;
+            --red: #c93636;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
 
         body {
             font-family: Arial, sans-serif;
-            margin: 30px;
+            margin: 0;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        .header {
+            background: var(--navy);
+            color: var(--white);
+            padding: 18px 4%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 18px;
+            box-shadow: 0 3px 12px rgba(20, 43, 74, 0.12);
+        }
+
+        .brand {
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .brand span {
+            color: var(--orange);
+        }
+
+        .header-nav a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+            padding: 10px 18px;
+            background: var(--orange);
+            color: var(--white);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 7px;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .header-nav a:hover {
+            background: #df7618;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 32px auto;
+            padding: 0 24px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 22px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .breadcrumb a {
+            color: var(--navy);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--orange);
+        }
+
+        .breadcrumb .separator {
+            color: #a5afbd;
+        }
+
+        .page-heading {
+            margin-bottom: 24px;
         }
 
         h1 {
-            margin-bottom: 20px;
+            margin: 0 0 8px;
+            color: var(--navy);
+            font-size: 29px;
+            line-height: 1.3;
         }
 
-        .form-container {
-            width: 500px;
+        .page-subtitle {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .form-box {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(20, 43, 74, 0.06);
+            overflow: hidden;
+        }
+
+        .form-header {
+            padding: 22px 28px;
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
+            color: var(--white);
+            border-bottom: 4px solid var(--orange);
+        }
+
+        .form-header h2 {
+            margin: 0 0 7px;
+            font-size: 20px;
+        }
+
+        .form-header p {
+            margin: 0;
+            color: #d9e3f0;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .form-content {
+            padding: 28px;
+        }
+
+        .section-title {
+            margin: 0 0 22px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            color: var(--navy);
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px 22px;
+        }
+
+        .form-group {
+            min-width: 0;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
         }
 
         label {
             display: block;
-            margin-top: 15px;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            color: var(--navy);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .required {
+            color: var(--red);
         }
 
         input,
         select {
+            display: block;
             width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
+            min-height: 44px;
+            padding: 11px 13px;
+            border: 1px solid #d5dce6;
+            border-radius: 7px;
+            background: var(--white);
+            color: var(--text);
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            cursor: pointer;
+        input:hover,
+        select:hover {
+            border-color: #aab7c8;
         }
 
-        .back {
-            display: inline-block;
-            margin-bottom: 20px;
+        input:focus,
+        select:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.13);
+        }
+
+        .field-hint {
+            margin: 7px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
         }
 
         .error {
-            color: red;
-            margin-bottom: 15px;
+            margin-bottom: 22px;
+            padding: 13px 15px;
+            border: 1px solid #f0c5c5;
+            border-left: 4px solid var(--red);
+            border-radius: 7px;
+            background: #fff1f1;
+            color: #a32626;
+            font-size: 14px;
+            line-height: 1.5;
         }
 
-    </style>
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 22px;
+            border-top: 1px solid var(--border);
+        }
 
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+            padding: 12px 20px;
+            border: 1px solid transparent;
+            border-radius: 7px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease,
+                border-color 0.2s ease, transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .button-primary {
+            background: var(--orange);
+            border-color: var(--orange);
+            color: var(--white);
+        }
+
+        .button-primary:hover {
+            background: #df7618;
+            border-color: #df7618;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(242, 140, 40, 0.2);
+        }
+
+        .button-secondary {
+            background: var(--white);
+            border-color: #cbd4e0;
+            color: var(--navy);
+        }
+
+        .button-secondary:hover {
+            background: var(--navy);
+            border-color: var(--navy);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(20, 43, 74, 0.12);
+        }
+
+        .button:focus-visible,
+        .header-nav a:focus-visible {
+            outline: 3px solid #ffad5c;
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 900px) {
+            .header {
+                align-items: flex-start;
+            }
+
+            .header-nav {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                padding: 17px 18px;
+            }
+
+            .brand {
+                font-size: 19px;
+            }
+
+            .container {
+                margin: 22px auto;
+                padding: 0 14px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            .form-header {
+                padding: 20px;
+            }
+
+            .form-content {
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+
+            .form-group.full-width {
+                grid-column: auto;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+            .form-actions .button {
+                width: 100%;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                transition: none !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
+    <header class="header">
+        <div class="brand">CONSTRUCTION <span>MS</span></div>
 
-    <a
-        class="back"
-        href="/attendance"
-    >
-        ← Back to Attendance
-    </a>
+        <nav class="header-nav">
+            <a href="/dashboard">Dashboard</a>
+        </nav>
+    </header>
 
+    <main class="container">
 
-    <h1>Edit Attendance</h1>
-
-
-    <% if (error) { %>
-
-        <div class="error">
-            <%= error %>
+        <div class="breadcrumb">
+            <a href="/dashboard">Dashboard</a>
+            <span class="separator">/</span>
+            <a href="/attendance">Attendance</a>
+            <span class="separator">/</span>
+            <span>Edit Attendance</span>
         </div>
 
-    <% } %>
+        <div class="page-heading">
+            <h1>Edit Attendance</h1>
+            <p class="page-subtitle">
+                Update the worker assignment, attendance date, time records, and hours worked.
+            </p>
+        </div>
 
+        <div class="form-box">
 
-    <div class="form-container">
+            <div class="form-header">
+                <h2>Attendance Information</h2>
+                <p>Update the attendance details below and save your changes.</p>
+            </div>
 
-        <form
-            action="/attendance/edit/<%= attendance.attendance_id %>"
-            method="POST"
-        >
+            <div class="form-content">
 
+                <% if (error) { %>
+                    <div class="error">
+                        <%= error %>
+                    </div>
+                <% } %>
 
-            <label for="assignment_id">
-                Worker and Task
-            </label>
+                <form
+                    action="/attendance/edit/<%= attendance.attendance_id %>"
+                    method="POST"
+                >
 
+                    <h3 class="section-title">Worker and Work Schedule</h3>
 
-            <select
-                id="assignment_id"
-                name="assignment_id"
-                required
-            >
+                    <div class="form-grid">
 
+                        <div class="form-group full-width">
+                            <label for="assignment_id">
+                                Worker and Task <span class="required">*</span>
+                            </label>
 
-                <% assignments.forEach(assignment => { %>
+                            <select
+                                id="assignment_id"
+                                name="assignment_id"
+                                required
+                            >
+                                <% assignments.forEach(assignment => { %>
+                                    <option
+                                        value="<%= assignment.assignment_id %>"
+                                        <%= Number(attendance.assignment_id) === Number(assignment.assignment_id) ? "selected" : "" %>
+                                    >
+                                        <% if (assignment.Worker) { %>
+                                            <%= assignment.Worker.first_name %> <%= assignment.Worker.last_name %>
+                                        <% } else { %>
+                                            No Worker
+                                        <% } %>
+                                        -
+                                        <% if (assignment.Task) { %>
+                                            <%= assignment.Task.task_name %>
+                                        <% } else { %>
+                                            No Task
+                                        <% } %>
+                                    </option>
+                                <% }) %>
+                            </select>
 
-                    <option
-                        value="<%= assignment.assignment_id %>"
-                        <%= Number(attendance.assignment_id) === Number(assignment.assignment_id) ? "selected" : "" %>
-                    >
+                            <p class="field-hint">
+                                Select the worker and task associated with this attendance record.
+                            </p>
+                        </div>
 
-                        <% if (assignment.Worker) { %>
+                        <div class="form-group">
+                            <label for="work_date">
+                                Work Date <span class="required">*</span>
+                            </label>
 
-                            <%= assignment.Worker.first_name %>
-                            <%= assignment.Worker.last_name %>
+                            <input
+                                type="date"
+                                id="work_date"
+                                name="work_date"
+                                value="<%= attendance.work_date %>"
+                                required
+                            >
+                        </div>
 
-                        <% } else { %>
+                        <div class="form-group">
+                            <label for="hours_worked">
+                                Hours Worked <span class="required">*</span>
+                            </label>
 
-                            No Worker
+                            <input
+                                type="number"
+                                id="hours_worked"
+                                name="hours_worked"
+                                min="0"
+                                step="0.01"
+                                value="<%= attendance.hours_worked || 0 %>"
+                                required
+                            >
 
-                        <% } %>
+                            <p class="field-hint">
+                                Enter the total hours worked for this attendance record.
+                            </p>
+                        </div>
 
-                        -
+                        <div class="form-group">
+                            <label for="time_in">Time In</label>
 
-                        <% if (assignment.Task) { %>
+                            <input
+                                type="time"
+                                id="time_in"
+                                name="time_in"
+                                value="<%= attendance.time_in || '' %>"
+                            >
+                        </div>
 
-                            <%= assignment.Task.task_name %>
+                        <div class="form-group">
+                            <label for="time_out">Time Out</label>
 
-                        <% } else { %>
+                            <input
+                                type="time"
+                                id="time_out"
+                                name="time_out"
+                                value="<%= attendance.time_out || '' %>"
+                            >
+                        </div>
 
-                            No Task
+                    </div>
 
-                        <% } %>
+                    <div class="form-actions">
+                        <a href="/attendance" class="button button-secondary">
+                            Cancel
+                        </a>
 
-                    </option>
+                        <button type="submit" class="button button-primary">
+                            Update Attendance
+                        </button>
+                    </div>
 
-                <% }) %>
+                </form>
 
+            </div>
+        </div>
 
-            </select>
-
-
-            <label for="work_date">
-                Work Date
-            </label>
-
-
-            <input
-                type="date"
-                id="work_date"
-                name="work_date"
-                value="<%= attendance.work_date %>"
-                required
-            >
-
-
-            <label for="time_in">
-                Time In
-            </label>
-
-
-            <input
-                type="time"
-                id="time_in"
-                name="time_in"
-                value="<%= attendance.time_in || '' %>"
-            >
-
-
-            <label for="time_out">
-                Time Out
-            </label>
-
-
-            <input
-                type="time"
-                id="time_out"
-                name="time_out"
-                value="<%= attendance.time_out || '' %>"
-            >
-
-
-            <label for="hours_worked">
-                Hours Worked
-            </label>
-
-
-            <input
-                type="number"
-                id="hours_worked"
-                name="hours_worked"
-                min="0"
-                step="0.01"
-                value="<%= attendance.hours_worked || 0 %>"
-                required
-            >
-
-
-            <button type="submit">
-                Update Attendance
-            </button>
-
-
-        </form>
-
-    </div>
-
+    </main>
 
 </body>
-
 </html>

@@ -1,90 +1,561 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Add User</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add User - Construction MS</title>
+
+    <style>
+        :root {
+            --navy: #142b4a;
+            --navy-light: #203e63;
+            --orange: #f28c28;
+            --white: #ffffff;
+            --background: #f3f5f9;
+            --border: #e1e6ed;
+            --text: #263445;
+            --muted: #758195;
+            --red: #c93636;
+            --orange-hover: #df7618;
+            --shadow: 0 4px 15px rgba(20, 43, 74, 0.07);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        .topbar {
+            background: var(--navy);
+            color: var(--white);
+            padding: 18px 4%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            box-shadow: 0 3px 12px rgba(20, 43, 74, 0.12);
+        }
+
+        .brand {
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: var(--white);
+        }
+
+        .brand span {
+            color: var(--orange);
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dashboard-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            padding: 11px 20px;
+            border-radius: 7px;
+            background: var(--orange);
+            color: var(--white);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            transition: background 0.2s ease, transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .dashboard-btn:hover {
+            background: var(--orange-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(242, 140, 40, 0.25);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 32px auto;
+            padding: 0 24px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 22px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .breadcrumb a {
+            color: var(--navy);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--orange);
+        }
+
+        .breadcrumb-separator {
+            color: #a6afbd;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            margin: 0 0 8px;
+            color: var(--navy);
+            font-size: 29px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .page-heading p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .form-box {
+            overflow: hidden;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .form-header {
+            padding: 22px 28px;
+            color: var(--white);
+            background: linear-gradient(
+                135deg,
+                var(--navy),
+                var(--navy-light)
+            );
+            border-bottom: 4px solid var(--orange);
+        }
+
+        .form-header h2 {
+            margin: 0 0 7px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .form-header p {
+            margin: 0;
+            color: #d9e3f0;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .form-content {
+            padding: 28px;
+        }
+
+        .error {
+            margin-bottom: 22px;
+            padding: 13px 15px;
+            color: #9f2525;
+            background: #fff0f0;
+            border: 1px solid #f2cccc;
+            border-left: 4px solid var(--red);
+            border-radius: 7px;
+            font-size: 14px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .section-title {
+            margin: 0 0 20px;
+            padding-bottom: 12px;
+            color: var(--navy);
+            border-bottom: 1px solid var(--border);
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px 22px;
+        }
+
+        .form-group {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            color: var(--navy);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .required {
+            color: var(--red);
+        }
+
+        input,
+        select {
+            display: block;
+            width: 100%;
+            min-height: 44px;
+            padding: 11px 13px;
+            color: var(--text);
+            background: var(--white);
+            border: 1px solid #d5dce6;
+            border-radius: 7px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input:hover,
+        select:hover {
+            border-color: #aab7c8;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--orange-hover);
+            box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.13);
+        }
+
+        .field-hint {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 44px;
+            padding: 11px 13px;
+            border: 1px solid #d5dce6;
+            border-radius: 7px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .checkbox-group:hover {
+            border-color: #aab7c8;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 17px;
+            height: 17px;
+            min-height: 17px;
+            margin: 0;
+            accent-color: var(--orange);
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 22px;
+            border-top: 1px solid var(--border);
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+            padding: 12px 20px;
+            border: 1px solid transparent;
+            border-radius: 7px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease,
+                border-color 0.2s ease, transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .button-primary {
+            color: var(--white);
+            background: var(--orange);
+            border-color: var(--orange);
+        }
+
+        .button-primary:hover {
+            color: var(--white);
+            background: var(--orange-hover);
+            border-color: var(--orange-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(242, 140, 40, 0.22);
+        }
+
+        .button-secondary {
+            color: var(--navy);
+            background: var(--white);
+            border-color: #d5dce6;
+        }
+
+        .button-secondary:hover {
+            color: var(--white);
+            background: var(--navy);
+            border-color: var(--navy);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(20, 43, 74, 0.15);
+        }
+
+        .button:focus-visible,
+        .dashboard-btn:focus-visible {
+            outline: 3px solid #ffad5c;
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 900px) {
+            .topbar {
+                align-items: flex-start;
+            }
+
+            .topbar-actions {
+                width: auto;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .topbar {
+                padding: 17px 18px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 14px;
+            }
+
+            .brand {
+                font-size: 20px;
+            }
+
+            .topbar-actions {
+                width: 100%;
+            }
+
+            .dashboard-btn {
+                width: 100%;
+            }
+
+            .container {
+                margin: 22px auto;
+                padding: 0 14px;
+            }
+
+            .breadcrumb {
+                margin-bottom: 18px;
+                gap: 7px;
+                font-size: 12px;
+            }
+
+            .page-heading {
+                margin-bottom: 20px;
+            }
+
+            .page-heading h1 {
+                font-size: 25px;
+            }
+
+            .form-header {
+                padding: 20px;
+            }
+
+            .form-header h2 {
+                font-size: 19px;
+            }
+
+            .form-content {
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+
+            .form-group.full-width {
+                grid-column: auto;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+                align-items: stretch;
+            }
+
+            .form-actions .button {
+                width: 100%;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <p>
-        <a href="/users">← Back to Users</a>
-    </p>
+    <header class="topbar">
+        <div class="brand">CONSTRUCTION <span>MS</span></div>
 
-    <h1>Add User</h1>
+        <div class="topbar-actions">
+            <a href="/dashboard" class="dashboard-btn">Dashboard</a>
+        </div>
+    </header>
 
-    <% if (error) { %>
-        <p><%= error %></p>
-    <% } %>
+    <main class="container">
 
-    <form action="/users/add" method="POST">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="/dashboard">Dashboard</a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="/users">Users</a>
+            <span class="breadcrumb-separator">/</span>
+            <span>Add User</span>
+        </nav>
 
-        <p>
-            <label>Role:</label><br>
+        <section class="page-heading">
+            <h1>Add User</h1>
+            <p>Create a new system user and assign an appropriate role.</p>
+        </section>
 
-            <select name="role_id" required>
+        <section class="form-box">
 
-                <option value="">
-                    Select Role
-                </option>
+            <div class="form-header">
+                <h2>User Information</h2>
+                <p>Enter the account details below. Fields marked with an asterisk (*) are required.</p>
+            </div>
 
-                <% roles.forEach(role => { %>
+            <div class="form-content">
 
-                    <option value="<%= role.role_id %>">
-                        <%= role.role_name %>
-                    </option>
+                <% if (error) { %>
+                    <div class="error"><%= error %></div>
+                <% } %>
 
-                <% }) %>
+                <form action="/users/add" method="POST">
 
-            </select>
-        </p>
+                    <h3 class="section-title">Account Details</h3>
 
-        <p>
-            <label>Username:</label><br>
+                    <div class="form-grid">
 
-            <input
-                type="text"
-                name="username"
-                maxlength="80"
-                required
-            >
-        </p>
+                        <div class="form-group full-width">
+                            <label for="role_id">Role <span class="required">*</span></label>
+                            <select name="role_id" id="role_id" required>
+                                <option value="">Select Role</option>
 
-        <p>
-            <label>Email:</label><br>
+                                <% roles.forEach(role => { %>
+                                    <option value="<%= role.role_id %>">
+                                        <%= role.role_name %>
+                                    </option>
+                                <% }) %>
 
-            <input
-                type="email"
-                name="email"
-                maxlength="120"
-                required
-            >
-        </p>
+                            </select>
+                            <span class="field-hint">Choose the role that determines the user's system access.</span>
+                        </div>
 
-        <p>
-            <label>Password:</label><br>
+                        <div class="form-group">
+                            <label for="username">Username <span class="required">*</span></label>
+                            <input
+                                type="text"
+                                name="username"
+                                id="username"
+                                maxlength="80"
+                                required
+                            >
+                            <span class="field-hint">Maximum 80 characters.</span>
+                        </div>
 
-            <input
-                type="password"
-                name="password"
-                required
-            >
-        </p>
+                        <div class="form-group">
+                            <label for="email">Email <span class="required">*</span></label>
+                            <input
+                                type="email"
+                                name="email"
+                                id="email"
+                                maxlength="120"
+                                required
+                            >
+                            <span class="field-hint">Enter a valid email address.</span>
+                        </div>
 
-        <p>
-            <label>
-                <input
-                    type="checkbox"
-                    name="is_active"
-                    checked
-                >
-                Active
-            </label>
-        </p>
+                        <div class="form-group full-width">
+                            <label for="password">Password <span class="required">*</span></label>
+                            <input
+                                type="password"
+                                name="password"
+                                id="password"
+                                required
+                            >
+                            <span class="field-hint">Create a password for this user account.</span>
+                        </div>
 
-        <button type="submit">
-            Save User
-        </button>
+                        <div class="form-group full-width">
+                            <label>Account Status</label>
+                            <div class="checkbox-group">
+                                <input
+                                    type="checkbox"
+                                    name="is_active"
+                                    id="is_active"
+                                    checked
+                                >
+                                <label for="is_active">Active</label>
+                            </div>
+                            <span class="field-hint">New users are active by default. Uncheck to create an inactive account.</span>
+                        </div>
 
-    </form>
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="/users" class="button button-secondary">Cancel</a>
+                        <button type="submit" class="button button-primary">Save User</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </section>
+
+    </main>
 
 </body>
 </html>

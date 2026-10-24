@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,18 +60,38 @@
         }
 
         .navigation a {
-            color: var(--white);
-            text-decoration: none;
-            font-size: 13px;
-            padding: 10px 12px;
-            border-radius: 6px;
-            transition: background 0.2s, color 0.2s;
-        }
-
-        .navigation a:hover,
-        .navigation a.active {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             background: var(--orange);
             color: var(--white);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 11px 20px;
+            border: 1px solid var(--orange);
+            border-radius: 7px;
+            box-shadow: 0 3px 8px rgba(242, 140, 40, 0.2);
+            transition: background 0.2s ease, border-color 0.2s ease,
+                        transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .navigation a:hover {
+            background: #d97515;
+            border-color: #d97515;
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(242, 140, 40, 0.35);
+        }
+
+        .navigation a:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(242, 140, 40, 0.2);
+        }
+
+        .navigation a:focus-visible {
+            outline: 3px solid #ffad5c;
+            outline-offset: 3px;
         }
 
         .container {
@@ -317,7 +338,7 @@
             }
 
             .navigation a {
-                padding: 9px;
+                padding: 9px 16px;
                 font-size: 12px;
             }
 
@@ -374,8 +395,6 @@
 
     <nav class="navigation">
         <a href="/dashboard">Dashboard</a>
-        <a href="/projects" class="active">Projects</a>
-        <a href="/logout">Logout</a>
     </nav>
 </header>
 

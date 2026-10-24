@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +19,9 @@
             --red: #c93636;
         }
 
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
 
         body {
             margin: 0;
@@ -39,8 +42,14 @@
             box-shadow: 0 3px 12px rgba(20, 43, 74, 0.15);
         }
 
-        .brand { font-size: 21px; font-weight: bold; }
-        .brand span { color: var(--orange); }
+        .brand {
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .brand span {
+            color: var(--orange);
+        }
 
         .navigation {
             display: flex;
@@ -50,18 +59,30 @@
         }
 
         .navigation a {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
             color: var(--white);
+            background: var(--orange);
             text-decoration: none;
             font-size: 13px;
-            padding: 10px 12px;
-            border-radius: 6px;
-            transition: background 0.2s, color 0.2s;
+            font-weight: bold;
+            padding: 11px 18px;
+            border: 1px solid transparent;
+            border-radius: 7px;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
         }
 
-        .navigation a:hover,
-        .navigation a.active {
-            background: var(--orange);
+        .navigation a:hover {
+            background: #d97515;
             color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(20, 43, 74, 0.2);
+        }
+
+        .navigation a:active {
+            transform: translateY(0);
+            box-shadow: none;
         }
 
         .container {
@@ -75,16 +96,22 @@
             margin-bottom: 22px;
             color: var(--muted);
             font-size: 14px;
+            line-height: 1.6;
         }
 
         .breadcrumb a {
             color: var(--navy);
             text-decoration: none;
+            transition: color 0.2s;
         }
 
-        .breadcrumb a:hover { color: var(--orange); }
+        .breadcrumb a:hover {
+            color: var(--orange);
+        }
 
-        .page-heading { margin-bottom: 24px; }
+        .page-heading {
+            margin-bottom: 24px;
+        }
 
         h1 {
             color: var(--navy);
@@ -114,7 +141,10 @@
             border-bottom: 4px solid var(--orange);
         }
 
-        .form-header h2 { margin: 0 0 7px; font-size: 20px; }
+        .form-header h2 {
+            margin: 0 0 7px;
+            font-size: 20px;
+        }
 
         .form-header p {
             margin: 0;
@@ -123,7 +153,9 @@
             line-height: 1.5;
         }
 
-        .form-content { padding: 28px; }
+        .form-content {
+            padding: 28px;
+        }
 
         .section-title {
             color: var(--navy);
@@ -140,8 +172,13 @@
             gap: 20px 22px;
         }
 
-        .form-group { min-width: 0; }
-        .form-group.full-width { grid-column: 1 / -1; }
+        .form-group {
+            min-width: 0;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
 
         label {
             display: block;
@@ -151,9 +188,12 @@
             color: var(--navy);
         }
 
-        .required { color: var(--red); }
+        .required {
+            color: var(--red);
+        }
 
-        input, select {
+        input,
+        select {
             display: block;
             width: 100%;
             min-height: 44px;
@@ -168,11 +208,17 @@
             transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        input::placeholder { color: #9aa4b3; }
+        input::placeholder {
+            color: #9aa4b3;
+        }
 
-        input:hover, select:hover { border-color: #aab7c8; }
+        input:hover,
+        select:hover {
+            border-color: #aab7c8;
+        }
 
-        input:focus, select:focus {
+        input:focus,
+        select:focus {
             outline: none;
             border-color: var(--orange);
             box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.13);
@@ -230,9 +276,15 @@
             box-shadow: 0 5px 12px rgba(20, 43, 74, 0.14);
         }
 
-        .button:active { transform: translateY(0); box-shadow: none; }
+        .button:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
 
-        .button-primary { background: var(--orange); color: var(--white); }
+        .button-primary {
+            background: var(--orange);
+            color: var(--white);
+        }
 
         .button-primary:hover {
             background: #d97515;
@@ -251,185 +303,230 @@
             border-color: var(--navy);
         }
 
-        button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+        .button:disabled {
+            opacity: 0.75;
+            cursor: wait;
+            transform: none;
+            box-shadow: none;
+        }
+
+        button:focus-visible,
+        a:focus-visible,
+        input:focus-visible,
+        select:focus-visible {
             outline: 3px solid #ffad5c;
             outline-offset: 3px;
         }
 
         @media (max-width: 900px) {
-            .header { align-items: flex-start; }
-            .navigation { width: 100%; }
+            .header {
+                align-items: flex-start;
+            }
+
+            .navigation {
+                width: 100%;
+            }
         }
 
         @media (max-width: 600px) {
-            .header { padding: 17px 18px; }
-            .navigation { gap: 4px; }
-            .navigation a { padding: 9px; font-size: 12px; }
-            .container { margin: 22px auto; padding: 0 14px; }
-            h1 { font-size: 25px; }
-            .form-header, .form-content { padding: 20px; }
-            .form-grid { grid-template-columns: 1fr; gap: 18px; }
-            .form-group.full-width { grid-column: auto; }
-            .form-actions { flex-direction: column-reverse; align-items: stretch; }
-            .form-actions .button { width: 100%; }
+            .header {
+                padding: 17px 18px;
+            }
+
+            .navigation {
+                gap: 4px;
+            }
+
+            .navigation a {
+                padding: 9px 14px;
+                font-size: 12px;
+            }
+
+            .container {
+                margin: 22px auto;
+                padding: 0 14px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            .form-header,
+            .form-content {
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+
+            .form-group.full-width {
+                grid-column: auto;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+                align-items: stretch;
+            }
+
+            .form-actions .button {
+                width: 100%;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { transition: none !important; }
+            *,
+            *::before,
+            *::after {
+                transition: none !important;
+            }
         }
     </style>
 </head>
 
 <body>
-<header class="header">
-    <div class="brand">CONSTRUCTION <span>MS</span></div>
+    <header class="header">
+        <div class="brand">CONSTRUCTION <span>MS</span></div>
 
-    <nav class="navigation">
-        <a href="/dashboard">Dashboard</a>
-        <a href="/projects">Projects</a>
-        <a href="/workers">Workers</a>
-        <a href="/tasks">Tasks</a>
-        <a href="/phases" class="active">Project Phases</a>
-        <a href="/materials">Materials</a>
-        <a href="/equipment">Equipment</a>
-        <a href="/reports">Reports</a>
-        <a href="/logout">Logout</a>
-    </nav>
-</header>
+        <nav class="navigation">
+            <a href="/dashboard">Dashboard</a>
+        </nav>
+    </header>
 
-<main class="container">
-    <div class="breadcrumb">
-        <a href="/dashboard">Dashboard</a> /
-        <a href="/phases">Project Phases</a> /
-        Edit Project Phase
-    </div>
-
-    <section class="page-heading">
-        <h1>Edit Project Phase</h1>
-        <p class="subtitle">Update the phase assignment, schedule, and planned cost.</p>
-    </section>
-
-    <section class="form-box">
-        <div class="form-header">
-            <h2>Phase Information</h2>
-            <p>Make your changes below and save the updated phase information.</p>
+    <main class="container">
+        <div class="breadcrumb">
+            <a href="/dashboard">Dashboard</a> /
+            <a href="/phases">Project Phases</a> /
+            Edit Project Phase
         </div>
 
-        <div class="form-content">
-            <% if (typeof error !== "undefined" && error) { %>
-                <div class="error" role="alert"><%= error %></div>
-            <% } %>
+        <section class="page-heading">
+            <h1>Edit Project Phase</h1>
+            <p class="subtitle">Update the phase assignment, schedule, and planned cost.</p>
+        </section>
 
-            <form action="/phases/edit/<%= phase.phase_id %>" method="POST" id="phaseForm">
-                <h3 class="section-title">Phase Details</h3>
+        <section class="form-box">
+            <div class="form-header">
+                <h2>Phase Information</h2>
+                <p>Make your changes below and save the updated phase information.</p>
+            </div>
 
-                <div class="form-grid">
-                    <div class="form-group full-width">
-                        <label for="project_id">Project <span class="required">*</span></label>
-                        <select id="project_id" name="project_id" required>
-                            <option value="">Select Project</option>
-                            <% projects.forEach(project => { %>
-                                <option
-                                    value="<%= project.project_id %>"
-                                    <%= Number(project.project_id) === Number(phase.project_id) ? "selected" : "" %>
-                                >
-                                    <%= project.project_name %>
-                                </option>
-                            <% }) %>
-                        </select>
+            <div class="form-content">
+                <% if (typeof error !== "undefined" && error) { %>
+                    <div class="error" role="alert"><%= error %></div>
+                <% } %>
+
+                <form action="/phases/edit/<%= phase.phase_id %>" method="POST" id="phaseForm">
+                    <h3 class="section-title">Phase Details</h3>
+
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="project_id">Project <span class="required">*</span></label>
+                            <select id="project_id" name="project_id" required>
+                                <option value="">Select Project</option>
+                                <% projects.forEach(project => { %>
+                                    <option
+                                        value="<%= project.project_id %>"
+                                        <%= Number(project.project_id) === Number(phase.project_id) ? "selected" : "" %>
+                                    >
+                                        <%= project.project_name %>
+                                    </option>
+                                <% }) %>
+                            </select>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="phase_name">Phase Name <span class="required">*</span></label>
+                            <input
+                                type="text"
+                                id="phase_name"
+                                name="phase_name"
+                                value="<%= phase.phase_name || '' %>"
+                                placeholder="Example: Foundation"
+                                maxlength="150"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="start_date">Start Date <span class="required">*</span></label>
+                            <input
+                                type="date"
+                                id="start_date"
+                                name="start_date"
+                                value="<%= phase.start_date ? String(phase.start_date).slice(0, 10) : '' %>"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="end_date">End Date</label>
+                            <input
+                                type="date"
+                                id="end_date"
+                                name="end_date"
+                                value="<%= phase.end_date ? String(phase.end_date).slice(0, 10) : '' %>"
+                            >
+                            <span class="field-hint">The end date cannot be earlier than the start date.</span>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="planned_cost">Planned Cost (₱) <span class="required">*</span></label>
+                            <input
+                                type="number"
+                                id="planned_cost"
+                                name="planned_cost"
+                                step="0.01"
+                                min="0"
+                                value="<%= phase.planned_cost ?? 0 %>"
+                                required
+                            >
+                            <span class="field-hint">Enter the planned phase cost in Philippine pesos.</span>
+                        </div>
                     </div>
 
-                    <div class="form-group full-width">
-                        <label for="phase_name">Phase Name <span class="required">*</span></label>
-                        <input
-                            type="text"
-                            id="phase_name"
-                            name="phase_name"
-                            value="<%= phase.phase_name || '' %>"
-                            placeholder="Example: Foundation"
-                            maxlength="150"
-                            required
-                        >
+                    <div class="form-actions">
+                        <a href="/phases" class="button button-secondary">Cancel</a>
+                        <button type="submit" class="button button-primary" id="submitButton">Update Project Phase</button>
                     </div>
+                </form>
+            </div>
+        </section>
+    </main>
 
-                    <div class="form-group">
-                        <label for="start_date">Start Date <span class="required">*</span></label>
-                        <input
-                            type="date"
-                            id="start_date"
-                            name="start_date"
-                            value="<%= phase.start_date ? String(phase.start_date).slice(0, 10) : '' %>"
-                            required
-                        >
-                    </div>
+    <script>
+        const phaseForm = document.getElementById("phaseForm");
+        const startDate = document.getElementById("start_date");
+        const endDate = document.getElementById("end_date");
+        const submitButton = document.getElementById("submitButton");
 
-                    <div class="form-group">
-                        <label for="end_date">End Date</label>
-                        <input
-                            type="date"
-                            id="end_date"
-                            name="end_date"
-                            value="<%= phase.end_date ? String(phase.end_date).slice(0, 10) : '' %>"
-                        >
-                        <span class="field-hint">The end date cannot be earlier than the start date.</span>
-                    </div>
+        function validateDates() {
+            endDate.setCustomValidity("");
+            endDate.min = startDate.value || "";
 
-                    <div class="form-group full-width">
-                        <label for="planned_cost">Planned Cost (₱) <span class="required">*</span></label>
-                        <input
-                            type="number"
-                            id="planned_cost"
-                            name="planned_cost"
-                            step="0.01"
-                            min="0"
-                            value="<%= phase.planned_cost ?? 0 %>"
-                            required
-                        >
-                        <span class="field-hint">Enter the planned phase cost in Philippine pesos.</span>
-                    </div>
-                </div>
-
-                <div class="form-actions">
-                    <a href="/phases" class="button button-secondary">Cancel</a>
-                    <button type="submit" class="button button-primary" id="submitButton">Update Project Phase</button>
-                </div>
-            </form>
-        </div>
-    </section>
-</main>
-
-<script>
-    const phaseForm = document.getElementById("phaseForm");
-    const startDate = document.getElementById("start_date");
-    const endDate = document.getElementById("end_date");
-    const submitButton = document.getElementById("submitButton");
-
-    function validateDates() {
-        endDate.setCustomValidity("");
-        endDate.min = startDate.value || "";
-
-        if (startDate.value && endDate.value && endDate.value < startDate.value) {
-            endDate.setCustomValidity("The end date cannot be earlier than the start date.");
+            if (startDate.value && endDate.value && endDate.value < startDate.value) {
+                endDate.setCustomValidity("The end date cannot be earlier than the start date.");
+            }
         }
-    }
 
-    startDate.addEventListener("change", validateDates);
-    endDate.addEventListener("change", validateDates);
+        startDate.addEventListener("change", validateDates);
+        endDate.addEventListener("change", validateDates);
 
-    phaseForm.addEventListener("submit", function(event) {
-        validateDates();
+        phaseForm.addEventListener("submit", function(event) {
+            validateDates();
 
-        if (!phaseForm.checkValidity()) {
-            event.preventDefault();
-            phaseForm.reportValidity();
-            return;
-        }
+            if (!phaseForm.checkValidity()) {
+                event.preventDefault();
+                phaseForm.reportValidity();
+                return;
+            }
 
-        submitButton.disabled = true;
-        submitButton.textContent = "Saving Changes...";
-        submitButton.style.opacity = "0.75";
-        submitButton.style.cursor = "wait";
-    });
-</script>
+            submitButton.disabled = true;
+            submitButton.textContent = "Saving Changes...";
+            submitButton.style.opacity = "0.75";
+            submitButton.style.cursor = "wait";
+        });
+    </script>
 </body>
 </html>

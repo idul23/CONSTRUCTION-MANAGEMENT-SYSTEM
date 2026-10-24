@@ -1,83 +1,508 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Add Equipment Usage</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Equipment Usage | Construction MS</title>
+
+    <style>
+        :root {
+            --navy: #142b4a;
+            --navy-light: #203e63;
+            --orange: #f28c28;
+            --white: #ffffff;
+            --background: #f3f5f9;
+            --border: #e1e6ed;
+            --text: #263445;
+            --muted: #758195;
+            --red: #c93636;
+            --orange-hover: #df7618;
+            --shadow: 0 4px 15px rgba(20, 43, 74, 0.07);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        .topbar {
+            background: var(--navy);
+            color: var(--white);
+            padding: 18px 4%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 18px;
+            box-shadow: var(--shadow);
+        }
+
+        .brand {
+            font-size: 21px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .brand span {
+            color: var(--orange);
+        }
+
+        .dashboard-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            padding: 11px 19px;
+            background: var(--orange);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: background 0.2s ease, transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .dashboard-btn:hover {
+            background: var(--orange-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(242, 140, 40, 0.25);
+        }
+
+        .dashboard-btn:focus-visible,
+        .button:focus-visible {
+            outline: 3px solid #ffad5c;
+            outline-offset: 3px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 32px auto;
+            padding: 0 24px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-bottom: 23px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .breadcrumb a {
+            color: var(--navy);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--orange);
+        }
+
+        .breadcrumb .separator {
+            color: #aab3c0;
+        }
+
+        .page-heading {
+            margin-bottom: 24px;
+        }
+
+        .page-heading h1 {
+            margin: 0 0 9px;
+            color: var(--navy);
+            font-size: 29px;
+            font-weight: 700;
+        }
+
+        .page-heading p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .form-box {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .form-header {
+            padding: 22px 28px;
+            background: linear-gradient(
+                135deg,
+                var(--navy),
+                var(--navy-light)
+            );
+            color: var(--white);
+            border-bottom: 4px solid var(--orange);
+        }
+
+        .form-header h2 {
+            margin: 0 0 7px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .form-header p {
+            margin: 0;
+            color: #dbe5f1;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .form-content {
+            padding: 28px;
+        }
+
+        .section-title {
+            margin: 0 0 21px;
+            padding-bottom: 11px;
+            color: var(--navy);
+            border-bottom: 1px solid var(--border);
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px 22px;
+        }
+
+        .form-group {
+            min-width: 0;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 9px;
+            color: var(--navy);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .required {
+            color: var(--red);
+            margin-left: 3px;
+        }
+
+        .form-group input,
+        .form-group select {
+            display: block;
+            width: 100%;
+            min-height: 44px;
+            padding: 11px 13px;
+            border: 1px solid #d5dce6;
+            border-radius: 7px;
+            background: var(--white);
+            color: var(--text);
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-group input:hover,
+        .form-group select:hover {
+            border-color: #aab7c8;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.13);
+        }
+
+        .field-hint {
+            display: block;
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .error {
+            margin-bottom: 22px;
+            padding: 13px 15px;
+            background: #fff1f1;
+            color: #a61b1b;
+            border: 1px solid #f1caca;
+            border-left: 4px solid var(--red);
+            border-radius: 7px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .notice {
+            margin-bottom: 18px;
+            padding: 13px 15px;
+            background: #fff8ed;
+            color: var(--navy);
+            border: 1px solid #f2d5b5;
+            border-left: 4px solid var(--orange);
+            border-radius: 7px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 22px;
+            border-top: 1px solid var(--border);
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+            padding: 12px 20px;
+            border: 1px solid transparent;
+            border-radius: 7px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease,
+                border-color 0.2s ease, transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(20, 43, 74, 0.12);
+        }
+
+        .button-primary {
+            background: var(--orange);
+            color: var(--white);
+        }
+
+        .button-primary:hover {
+            background: var(--orange-hover);
+        }
+
+        .button-secondary {
+            background: var(--white);
+            color: var(--navy);
+            border-color: #d5dce6;
+        }
+
+        .button-secondary:hover {
+            background: var(--navy);
+            color: var(--white);
+            border-color: var(--navy);
+        }
+
+        @media (max-width: 900px) {
+            .topbar {
+                align-items: flex-start;
+            }
+
+            .topbar-actions {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .topbar {
+                padding: 17px 18px;
+            }
+
+            .brand {
+                font-size: 19px;
+            }
+
+            .container {
+                margin: 22px auto;
+                padding: 0 14px;
+            }
+
+            .breadcrumb {
+                margin-bottom: 19px;
+            }
+
+            .page-heading h1 {
+                font-size: 25px;
+            }
+
+            .form-header {
+                padding: 20px;
+            }
+
+            .form-content {
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 19px;
+            }
+
+            .form-group.full-width {
+                grid-column: auto;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+            .form-actions .button {
+                width: 100%;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <p>
-        <a href="/equipment-usage">← Back to Equipment Usage</a>
-    </p>
+    <header class="topbar">
+        <div class="brand">CONSTRUCTION <span>MS</span></div>
 
-    <h1>Add Equipment Usage</h1>
+        <div class="topbar-actions">
+            <a href="/dashboard" class="dashboard-btn">Dashboard</a>
+        </div>
+    </header>
 
-    <% if (error) { %>
-        <p><%= error %></p>
-    <% } %>
+    <main class="container">
 
-    <% if (tasks.length === 0) { %>
-        <p>No tasks found. Please create a task first.</p>
-    <% } %>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="/dashboard">Dashboard</a>
+            <span class="separator">/</span>
+            <a href="/equipment-usage">Equipment Usage</a>
+            <span class="separator">/</span>
+            <span>Add Equipment Usage</span>
+        </nav>
 
-    <% if (equipment.length === 0) { %>
-        <p>No equipment found. Please create equipment first.</p>
-    <% } %>
+        <section class="page-heading">
+            <h1>Add Equipment Usage</h1>
+            <p>Record the task, equipment, date used, and number of hours the equipment was in use.</p>
+        </section>
 
-    <form action="/equipment-usage/add" method="POST">
+        <section class="form-box">
 
-        <p>
-            <label>Task:</label><br>
+            <div class="form-header">
+                <h2>Equipment Usage Information</h2>
+                <p>Enter the equipment usage details below to add a new usage record.</p>
+            </div>
 
-            <select name="task_id" required>
-                <option value="">Select Task</option>
+            <div class="form-content">
 
-                <% tasks.forEach(task => { %>
-                    <option value="<%= task.task_id %>">
-                        <%= task.task_name %>
-                    </option>
-                <% }) %>
-            </select>
-        </p>
+                <% if (error) { %>
+                    <div class="error"><%= error %></div>
+                <% } %>
 
-        <p>
-            <label>Equipment:</label><br>
+                <% if (tasks.length === 0) { %>
+                    <div class="notice">No tasks found. Please create a task first.</div>
+                <% } %>
 
-            <select name="equipment_id" required>
-                <option value="">Select Equipment</option>
+                <% if (equipment.length === 0) { %>
+                    <div class="notice">No equipment found. Please create equipment first.</div>
+                <% } %>
 
-                <% equipment.forEach(item => { %>
-                    <option value="<%= item.equipment_id %>">
-                        <%= item.name %>
-                    </option>
-                <% }) %>
-            </select>
-        </p>
+                <form action="/equipment-usage/add" method="POST">
 
-        <p>
-            <label>Date Used:</label><br>
+                    <h3 class="section-title">Usage Details</h3>
 
-            <input
-                type="date"
-                name="date_used"
-                required
-            >
-        </p>
+                    <div class="form-grid">
 
-        <p>
-            <label>Hours Used:</label><br>
+                        <div class="form-group">
+                            <label for="task_id">Task <span class="required">*</span></label>
+                            <select id="task_id" name="task_id" required>
+                                <option value="">Select Task</option>
 
-            <input
-                type="number"
-                name="hours_used"
-                step="0.01"
-                min="0"
-                required
-            >
-        </p>
+                                <% tasks.forEach(task => { %>
+                                    <option value="<%= task.task_id %>">
+                                        <%= task.task_name %>
+                                    </option>
+                                <% }) %>
+                            </select>
+                            <span class="field-hint">Select the task associated with this equipment usage.</span>
+                        </div>
 
-        <button type="submit">Save Equipment Usage</button>
+                        <div class="form-group">
+                            <label for="equipment_id">Equipment <span class="required">*</span></label>
+                            <select id="equipment_id" name="equipment_id" required>
+                                <option value="">Select Equipment</option>
 
-    </form>
+                                <% equipment.forEach(item => { %>
+                                    <option value="<%= item.equipment_id %>">
+                                        <%= item.name %>
+                                    </option>
+                                <% }) %>
+                            </select>
+                            <span class="field-hint">Choose the equipment used for the selected task.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date_used">Date Used <span class="required">*</span></label>
+                            <input
+                                type="date"
+                                id="date_used"
+                                name="date_used"
+                                required
+                            >
+                            <span class="field-hint">Select the date the equipment was used.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="hours_used">Hours Used <span class="required">*</span></label>
+                            <input
+                                type="number"
+                                id="hours_used"
+                                name="hours_used"
+                                step="0.01"
+                                min="0"
+                                required
+                            >
+                            <span class="field-hint">Enter the total hours the equipment was used.</span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="/equipment-usage" class="button button-secondary">Cancel</a>
+                        <button type="submit" class="button button-primary">Save Equipment Usage</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </section>
+
+    </main>
 
 </body>
 </html>
