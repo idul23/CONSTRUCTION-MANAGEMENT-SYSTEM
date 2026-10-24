@@ -1,176 +1,445 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Add Project Phase</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Project Phase - Construction MS</title>
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
+        :root {
+            --navy: #142b4a;
+            --navy-light: #203e63;
+            --orange: #f28c28;
+            --white: #ffffff;
+            --background: #f3f5f9;
+            --border: #e1e6ed;
+            --text: #263445;
+            --muted: #758195;
+            --red: #c93636;
         }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        .header {
+            background: var(--navy);
+            color: var(--white);
+            padding: 18px 4%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 18px;
+            box-shadow: 0 3px 12px rgba(20, 43, 74, 0.15);
+        }
+
+        .brand { font-size: 21px; font-weight: bold; }
+        .brand span { color: var(--orange); }
+
+        .navigation {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .navigation a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 13px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .navigation a:hover,
+        .navigation a.active {
+            background: var(--orange);
+            color: var(--white);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 32px auto;
+            padding: 0 24px;
+        }
+
+        .breadcrumb {
+            margin-bottom: 22px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .breadcrumb a {
+            color: var(--navy);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover { color: var(--orange); }
+
+        .page-heading { margin-bottom: 24px; }
 
         h1 {
-            margin-bottom: 20px;
+            color: var(--navy);
+            font-size: 29px;
+            margin: 0 0 8px;
         }
 
-        .form-container {
-            width: 500px;
+        .subtitle {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0;
         }
+
+        .form-box {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 5px 18px rgba(24, 43, 68, 0.05);
+            overflow: hidden;
+        }
+
+        .form-header {
+            padding: 22px 28px;
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
+            color: var(--white);
+            border-bottom: 4px solid var(--orange);
+        }
+
+        .form-header h2 { margin: 0 0 7px; font-size: 20px; }
+
+        .form-header p {
+            margin: 0;
+            color: #dbe4ef;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .form-content { padding: 28px; }
+
+        .section-title {
+            color: var(--navy);
+            font-size: 15px;
+            font-weight: bold;
+            padding-bottom: 12px;
+            margin: 0 0 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px 22px;
+        }
+
+        .form-group { min-width: 0; }
+        .form-group.full-width { grid-column: 1 / -1; }
 
         label {
             display: block;
-            margin-top: 15px;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--navy);
         }
 
-        input,
-        select {
+        .required { color: var(--red); }
+
+        input, select {
+            display: block;
             width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
+            min-height: 44px;
+            padding: 11px 13px;
+            margin: 0;
+            border: 1px solid #d5dce6;
+            border-radius: 7px;
+            background: var(--white);
+            color: var(--text);
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            cursor: pointer;
+        input::placeholder { color: #9aa4b3; }
+
+        input:hover, select:hover { border-color: #aab7c8; }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.13);
         }
 
-        .back {
-            display: inline-block;
-            margin-bottom: 20px;
+        .field-hint {
+            display: block;
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
         }
 
         .error {
-            color: red;
-            margin-bottom: 15px;
+            background: #fdeaea;
+            color: #922b2b;
+            border: 1px solid #f3c6c6;
+            border-left: 4px solid var(--red);
+            padding: 13px 15px;
+            border-radius: 7px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .notice {
+            padding: 16px;
+            margin-bottom: 20px;
+            border-radius: 7px;
+            background: #fff5e9;
+            border: 1px solid #f4d3ad;
+            color: #855018;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 22px;
+            border-top: 1px solid var(--border);
+        }
+
+        .button {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 44px;
+            padding: 12px 20px;
+            border-radius: 7px;
+            border: 1px solid transparent;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(20, 43, 74, 0.14);
+        }
+
+        .button:active { transform: translateY(0); box-shadow: none; }
+
+        .button-primary { background: var(--orange); color: var(--white); }
+
+        .button-primary:hover {
+            background: #d97515;
+            color: var(--white);
+        }
+
+        .button-secondary {
+            background: var(--white);
+            color: var(--navy);
+            border-color: var(--border);
+        }
+
+        .button-secondary:hover {
+            background: var(--navy);
+            color: var(--white);
+            border-color: var(--navy);
+        }
+
+        button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+            outline: 3px solid #ffad5c;
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 900px) {
+            .header { align-items: flex-start; }
+            .navigation { width: 100%; }
+        }
+
+        @media (max-width: 600px) {
+            .header { padding: 17px 18px; }
+            .navigation { gap: 4px; }
+            .navigation a { padding: 9px; font-size: 12px; }
+            .container { margin: 22px auto; padding: 0 14px; }
+            h1 { font-size: 25px; }
+            .form-header, .form-content { padding: 20px; }
+            .form-grid { grid-template-columns: 1fr; gap: 18px; }
+            .form-group.full-width { grid-column: auto; }
+            .form-actions { flex-direction: column-reverse; align-items: stretch; }
+            .form-actions .button { width: 100%; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { transition: none !important; }
         }
     </style>
 </head>
 
 <body>
+<header class="header">
+    <div class="brand">CONSTRUCTION <span>MS</span></div>
 
-    <a class="back" href="/phases">
-        ← Back to Project Phases
-    </a>
+    <nav class="navigation">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/projects">Projects</a>
+        <a href="/workers">Workers</a>
+        <a href="/tasks">Tasks</a>
+        <a href="/phases" class="active">Project Phases</a>
+        <a href="/materials">Materials</a>
+        <a href="/equipment">Equipment</a>
+        <a href="/reports">Reports</a>
+        <a href="/logout">Logout</a>
+    </nav>
+</header>
 
-    <h1>Add Project Phase</h1>
-
-    <% if (error) { %>
-
-        <div class="error">
-            <%= error %>
-        </div>
-
-    <% } %>
-
-
-    <div class="form-container">
-
-        <% if (projects.length === 0) { %>
-
-            <p>
-                No projects found.
-            </p>
-
-            <p>
-                Create a project first before adding a phase.
-            </p>
-
-        <% } else { %>
-
-            <form
-                action="/phases/add"
-                method="POST"
-            >
-
-                <label for="project_id">
-                    Project
-                </label>
-
-                <select
-                    id="project_id"
-                    name="project_id"
-                    required
-                >
-
-                    <option value="">
-                        Select Project
-                    </option>
-
-                    <% projects.forEach(project => { %>
-
-                        <option
-                            value="<%= project.project_id %>"
-                        >
-                            <%= project.project_name %>
-                        </option>
-
-                    <% }) %>
-
-                </select>
-
-
-                <label for="phase_name">
-                    Phase Name
-                </label>
-
-                <input
-                    type="text"
-                    id="phase_name"
-                    name="phase_name"
-                    placeholder="Example: Foundation"
-                    required
-                >
-
-
-                <label for="start_date">
-                    Start Date
-                </label>
-
-                <input
-                    type="date"
-                    id="start_date"
-                    name="start_date"
-                    required
-                >
-
-
-                <label for="end_date">
-                    End Date
-                </label>
-
-                <input
-                    type="date"
-                    id="end_date"
-                    name="end_date"
-                >
-
-
-                <label for="planned_cost">
-                    Planned Cost
-                </label>
-
-                <input
-                    type="number"
-                    id="planned_cost"
-                    name="planned_cost"
-                    step="0.01"
-                    min="0"
-                    value="0"
-                    required
-                >
-
-
-                <button type="submit">
-                    Add Project Phase
-                </button>
-
-            </form>
-
-        <% } %>
-
+<main class="container">
+    <div class="breadcrumb">
+        <a href="/dashboard">Dashboard</a> /
+        <a href="/phases">Project Phases</a> /
+        Add Project Phase
     </div>
 
+    <section class="page-heading">
+        <h1>Add Project Phase</h1>
+        <p class="subtitle">Create a phase and assign it to a construction project.</p>
+    </section>
+
+    <section class="form-box">
+        <div class="form-header">
+            <h2>Phase Information</h2>
+            <p>Enter the project, phase name, schedule, and planned cost.</p>
+        </div>
+
+        <div class="form-content">
+            <% if (typeof error !== "undefined" && error) { %>
+                <div class="error" role="alert"><%= error %></div>
+            <% } %>
+
+            <% if (projects.length === 0) { %>
+                <div class="notice">
+                    No projects are available. Create a project before adding a project phase.
+                </div>
+
+                <div class="form-actions">
+                    <a href="/phases" class="button button-secondary">Back to Project Phases</a>
+                    <a href="/projects/add" class="button button-primary">Add Project</a>
+                </div>
+            <% } else { %>
+                <form action="/phases/add" method="POST" id="phaseForm">
+                    <h3 class="section-title">Phase Details</h3>
+
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="project_id">Project <span class="required">*</span></label>
+                            <select id="project_id" name="project_id" required>
+                                <option value="">Select Project</option>
+                                <% projects.forEach(project => { %>
+                                    <option value="<%= project.project_id %>">
+                                        <%= project.project_name %>
+                                    </option>
+                                <% }) %>
+                            </select>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="phase_name">Phase Name <span class="required">*</span></label>
+                            <input
+                                type="text"
+                                id="phase_name"
+                                name="phase_name"
+                                placeholder="Example: Foundation"
+                                maxlength="150"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="start_date">Start Date <span class="required">*</span></label>
+                            <input type="date" id="start_date" name="start_date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="end_date">End Date</label>
+                            <input type="date" id="end_date" name="end_date">
+                            <span class="field-hint">The end date cannot be earlier than the start date.</span>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="planned_cost">Planned Cost (₱) <span class="required">*</span></label>
+                            <input
+                                type="number"
+                                id="planned_cost"
+                                name="planned_cost"
+                                step="0.01"
+                                min="0"
+                                value="0"
+                                required
+                            >
+                            <span class="field-hint">Enter the planned phase cost in Philippine pesos.</span>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="/phases" class="button button-secondary">Cancel</a>
+                        <button type="submit" class="button button-primary" id="submitButton">Add Project Phase</button>
+                    </div>
+                </form>
+            <% } %>
+        </div>
+    </section>
+</main>
+
+<script>
+    const phaseForm = document.getElementById("phaseForm");
+
+    if (phaseForm) {
+        const startDate = document.getElementById("start_date");
+        const endDate = document.getElementById("end_date");
+        const submitButton = document.getElementById("submitButton");
+
+        function validateDates() {
+            endDate.setCustomValidity("");
+            endDate.min = startDate.value || "";
+
+            if (startDate.value && endDate.value && endDate.value < startDate.value) {
+                endDate.setCustomValidity("The end date cannot be earlier than the start date.");
+            }
+        }
+
+        startDate.addEventListener("change", validateDates);
+        endDate.addEventListener("change", validateDates);
+
+        phaseForm.addEventListener("submit", function(event) {
+            validateDates();
+
+            if (!phaseForm.checkValidity()) {
+                event.preventDefault();
+                phaseForm.reportValidity();
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = "Adding Phase...";
+            submitButton.style.opacity = "0.75";
+            submitButton.style.cursor = "wait";
+        });
+    }
+</script>
 </body>
 </html>

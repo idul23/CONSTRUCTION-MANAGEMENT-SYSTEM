@@ -13,11 +13,11 @@ const WorkerSkill = require("./WorkerSkill");
 const TaskAssignment = require("./TaskAssignment");
 const Attendance = require("./Attendance");
 const MaterialUsage = require("./MaterialUsage");
-const Equipment = require("./Equipment");
+const Equipment = require("./equipment");
 const EquipmentUsage = require("./EquipmentUsage");
 const Expense = require("./Expense");
 const UserProfile = require("./UserProfile");
-const AuditLog = require("./AuditLog");
+const AuditLog = require("./auditlog");
 
 Role.hasMany(User, {
     foreignKey: "role_id"

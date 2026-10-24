@@ -1,125 +1,536 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Add Worker</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Worker - Construction MS</title>
 
     <style>
+        :root {
+            --navy: #142b4a;
+            --navy-light: #203e63;
+            --orange: #f28c28;
+            --white: #ffffff;
+            --background: #f3f5f9;
+            --border: #e1e6ed;
+            --text: #263445;
+            --muted: #758195;
+            --red: #c93636;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
+            margin: 0;
             font-family: Arial, sans-serif;
-            margin: 30px;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        .header {
+            background: var(--navy);
+            color: var(--white);
+            padding: 18px 4%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 18px;
+            box-shadow: 0 3px 12px rgba(20, 43, 74, 0.15);
+        }
+
+        .brand {
+            font-size: 21px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .brand span {
+            color: var(--orange);
+        }
+
+        .navigation {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .navigation a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 13px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .navigation a:hover,
+        .navigation a.active {
+            background: var(--orange);
+            color: var(--white);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 32px auto;
+            padding: 0 24px;
+        }
+
+        .breadcrumb {
+            margin-bottom: 22px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .breadcrumb a {
+            color: var(--navy);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--orange);
+        }
+
+        .page-heading {
+            margin-bottom: 24px;
         }
 
         h1 {
-            margin-bottom: 20px;
+            color: var(--navy);
+            font-size: 29px;
+            margin: 0 0 8px;
         }
 
-        .form-container {
-            width: 500px;
+        .subtitle {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .form-box {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 5px 18px rgba(24, 43, 68, 0.05);
+            overflow: hidden;
+        }
+
+        .form-header {
+            padding: 22px 28px;
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
+            color: var(--white);
+            border-bottom: 4px solid var(--orange);
+        }
+
+        .form-header h2 {
+            margin: 0 0 7px;
+            font-size: 20px;
+        }
+
+        .form-header p {
+            margin: 0;
+            color: #dbe4ef;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .form-content {
+            padding: 28px;
+        }
+
+        .section-title {
+            color: var(--navy);
+            font-size: 15px;
+            font-weight: bold;
+            padding-bottom: 12px;
+            margin: 0 0 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px 22px;
+        }
+
+        .form-group {
+            min-width: 0;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
         }
 
         label {
             display: block;
-            margin-top: 15px;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--navy);
+        }
+
+        .required {
+            color: var(--red);
         }
 
         input,
         select {
+            display: block;
             width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
+            min-height: 44px;
+            padding: 11px 13px;
+            margin: 0;
+            border: 1px solid #d5dce6;
+            border-radius: 7px;
+            background: var(--white);
+            color: var(--text);
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            cursor: pointer;
+        input::placeholder {
+            color: #9aa4b3;
         }
 
-        .back {
-            display: inline-block;
-            margin-bottom: 20px;
+        input:hover,
+        select:hover {
+            border-color: #aab7c8;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.13);
+        }
+
+        .field-hint {
+            display: block;
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
         }
 
         .error {
-            color: red;
-            margin-bottom: 15px;
+            background: #fdeaea;
+            color: #922b2b;
+            border: 1px solid #f3c6c6;
+            border-left: 4px solid var(--red);
+            padding: 13px 15px;
+            border-radius: 7px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 22px;
+            border-top: 1px solid var(--border);
+        }
+
+        .button {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 44px;
+            padding: 12px 20px;
+            border-radius: 7px;
+            border: 1px solid transparent;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(20, 43, 74, 0.14);
+        }
+
+        .button:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        .button-primary {
+            background: var(--orange);
+            color: var(--white);
+        }
+
+        .button-primary:hover {
+            background: #d97515;
+            color: var(--white);
+        }
+
+        .button-secondary {
+            background: var(--white);
+            color: var(--navy);
+            border-color: var(--border);
+        }
+
+        .button-secondary:hover {
+            background: var(--navy);
+            color: var(--white);
+            border-color: var(--navy);
+        }
+
+        button:focus-visible,
+        a:focus-visible,
+        input:focus-visible,
+        select:focus-visible {
+            outline: 3px solid #ffad5c;
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 900px) {
+            .header {
+                align-items: flex-start;
+            }
+
+            .navigation {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                padding: 17px 18px;
+            }
+
+            .navigation {
+                gap: 4px;
+            }
+
+            .navigation a {
+                padding: 9px;
+                font-size: 12px;
+            }
+
+            .container {
+                margin: 22px auto;
+                padding: 0 14px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            .form-header {
+                padding: 20px;
+            }
+
+            .form-content {
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+
+            .form-group.full-width {
+                grid-column: auto;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+                align-items: stretch;
+            }
+
+            .form-actions .button {
+                width: 100%;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                transition: none !important;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <a class="back" href="/workers">← Back to Workers</a>
+<header class="header">
+    <div class="brand">CONSTRUCTION <span>MS</span></div>
 
-    <h1>Add Worker</h1>
+    <nav class="navigation">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/projects">Projects</a>
+        <a href="/workers" class="active">Workers</a>
+        <a href="/logout">Logout</a>
+    </nav>
+</header>
 
-    <% if (error) { %>
-        <div class="error">
-            <%= error %>
-        </div>
-    <% } %>
+<main class="container">
 
-    <div class="form-container">
-
-        <form action="/workers/add" method="POST">
-
-            <label for="first_name">First Name</label>
-            <input
-                type="text"
-                id="first_name"
-                name="first_name"
-                required
-            >
-
-            <label for="last_name">Last Name</label>
-            <input
-                type="text"
-                id="last_name"
-                name="last_name"
-                required
-            >
-
-            <label for="contact_no">Contact Number</label>
-            <input
-                type="text"
-                id="contact_no"
-                name="contact_no"
-            >
-
-            <label for="hourly_rate">Hourly Rate</label>
-            <input
-                type="number"
-                id="hourly_rate"
-                name="hourly_rate"
-                step="0.01"
-                min="0"
-                required
-            >
-
-            <label for="hire_date">Hire Date</label>
-            <input
-                type="date"
-                id="hire_date"
-                name="hire_date"
-                required
-            >
-
-            <label for="is_active">Status</label>
-            <select
-                id="is_active"
-                name="is_active"
-                required
-            >
-                <option value="true">Active</option>
-                <option value="false">Inactive</option>
-            </select>
-
-            <button type="submit">Add Worker</button>
-
-        </form>
-
+    <div class="breadcrumb">
+        <a href="/dashboard">Dashboard</a> /
+        <a href="/workers">Workers</a> /
+        Add Worker
     </div>
+
+    <section class="page-heading">
+        <h1>Add New Worker</h1>
+        <p class="subtitle">Register a worker and enter their contact information, hourly rate, and employment status.</p>
+    </section>
+
+    <section class="form-box">
+
+        <div class="form-header">
+            <h2>Worker Information</h2>
+            <p>Complete the fields below to add a worker to your construction management system.</p>
+        </div>
+
+        <div class="form-content">
+
+            <% if (typeof error !== "undefined" && error) { %>
+                <div class="error" role="alert">
+                    <%= error %>
+                </div>
+            <% } %>
+
+            <form action="/workers/add" method="POST" id="workerForm">
+
+                <h3 class="section-title">Personal Information</h3>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="first_name">
+                            First Name <span class="required">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="first_name"
+                            name="first_name"
+                            placeholder="Enter first name"
+                            maxlength="100"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="last_name">
+                            Last Name <span class="required">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="last_name"
+                            name="last_name"
+                            placeholder="Enter last name"
+                            maxlength="100"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="contact_no">Contact Number</label>
+                        <input
+                            type="text"
+                            id="contact_no"
+                            name="contact_no"
+                            placeholder="Enter contact number"
+                            maxlength="30"
+                        >
+                    </div>
+
+                </div>
+
+                <h3 class="section-title" style="margin-top: 30px;">Employment Details</h3>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="hourly_rate">
+                            Hourly Rate (₱) <span class="required">*</span>
+                        </label>
+                        <input
+                            type="number"
+                            id="hourly_rate"
+                            name="hourly_rate"
+                            placeholder="Enter hourly rate"
+                            step="0.01"
+                            min="0"
+                            required
+                        >
+                        <span class="field-hint">Enter the worker's hourly pay in Philippine pesos.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hire_date">
+                            Hire Date <span class="required">*</span>
+                        </label>
+                        <input
+                            type="date"
+                            id="hire_date"
+                            name="hire_date"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="is_active">
+                            Employment Status <span class="required">*</span>
+                        </label>
+                        <select id="is_active" name="is_active" required>
+                            <option value="true" selected>Active</option>
+                            <option value="false">Inactive</option>
+                        </select>
+                        <span class="field-hint">Choose whether the worker is currently active.</span>
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <a href="/workers" class="button button-secondary">Cancel</a>
+                    <button type="submit" class="button button-primary" id="submitButton">
+                        Add Worker
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </section>
+
+</main>
+
+<script>
+    const workerForm = document.getElementById("workerForm");
+    const submitButton = document.getElementById("submitButton");
+    const hireDateInput = document.getElementById("hire_date");
+
+    workerForm.addEventListener("submit", function(event) {
+        if (!workerForm.checkValidity()) {
+            event.preventDefault();
+            workerForm.reportValidity();
+            return;
+        }
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Adding Worker...";
+        submitButton.style.opacity = "0.75";
+        submitButton.style.cursor = "wait";
+    });
+</script>
 
 </body>
 </html>

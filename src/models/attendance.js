@@ -9,37 +9,30 @@ const Attendance = sequelize.define(
             primaryKey: true,
             autoIncrement: true
         },
-
         assignment_id: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-
         recorded_by: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-
         work_date: {
             type: DataTypes.DATEONLY,
             allowNull: false
         },
-
         time_in: {
             type: DataTypes.TIME,
             allowNull: false
         },
-
         time_out: {
             type: DataTypes.TIME,
             allowNull: false
         },
-
         hours_worked: {
             type: DataTypes.DECIMAL(6, 2),
             allowNull: false
         },
-
         labor_cost: {
             type: DataTypes.DECIMAL(12, 2),
             allowNull: false

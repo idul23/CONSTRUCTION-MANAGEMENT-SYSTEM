@@ -1,3 +1,4 @@
+
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
@@ -9,33 +10,27 @@ const Equipment = sequelize.define(
             primaryKey: true,
             autoIncrement: true
         },
-
         name: {
-            type: DataTypes.STRING(120),
+            type: DataTypes.STRING(150),
             allowNull: false
         },
-
         equip_type: {
-            type: DataTypes.STRING(80),
-            allowNull: true
+            type: DataTypes.STRING(100),
+            allowNull: false
         },
-
         serial_no: {
             type: DataTypes.STRING(100),
-            allowNull: false,
-            unique: true
+            allowNull: true
         },
-
         daily_rate: {
             type: DataTypes.DECIMAL(12, 2),
             allowNull: false,
             defaultValue: 0
         },
-
         condition: {
             type: DataTypes.STRING(50),
             allowNull: false,
-            defaultValue: "good"
+            defaultValue: "Good"
         }
     },
     {

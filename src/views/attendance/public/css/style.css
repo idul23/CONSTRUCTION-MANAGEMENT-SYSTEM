@@ -1,0 +1,313 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --navy: #172b4d;
+    --navy-light: #243b60;
+    --orange: #f28c28;
+    --orange-hover: #dc7415;
+    --background: #f4f6fa;
+    --white: #ffffff;
+    --text: #253247;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --success: #16865c;
+    --danger: #d64545;
+    --shadow: 0 4px 16px rgba(23, 43, 77, 0.07);
+    --shadow-hover: 0 10px 26px rgba(23, 43, 77, 0.13);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 30px;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+h1, h2, h3, h4 {
+    color: var(--navy);
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+h1 {
+    font-size: 28px;
+    letter-spacing: -0.7px;
+    margin: 0 0 22px;
+}
+
+h2 {
+    font-size: 21px;
+    letter-spacing: -0.4px;
+    margin-top: 0;
+}
+
+h3 {
+    font-size: 16px;
+}
+
+p {
+    color: var(--text);
+}
+
+a {
+    color: var(--navy);
+    text-decoration: none;
+    transition: color 0.2s ease, background 0.2s ease,
+                transform 0.2s ease;
+}
+
+a:hover {
+    color: var(--orange-hover);
+}
+
+button,
+input[type="submit"],
+input[type="button"],
+input[type="reset"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--orange);
+    color: var(--white);
+    border: none;
+    padding: 11px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background 0.2s ease, transform 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+input[type="reset"]:hover {
+    background: var(--orange-hover);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(242, 140, 40, 0.25);
+}
+
+button:active,
+input[type="submit"]:active,
+input[type="button"]:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 12px 14px;
+    margin: 6px 0 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--white);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.13);
+}
+
+label {
+    display: inline-block;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--navy);
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+th {
+    background: var(--navy);
+    color: var(--white);
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+th,
+td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+td {
+    font-size: 13px;
+}
+
+tbody tr {
+    transition: background 0.2s ease;
+}
+
+tbody tr:hover td {
+    background: #fff7ed;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 24px 0;
+}
+
+/* Common card styles */
+
+.card,
+.stat-card,
+.section-card,
+.dashboard-card,
+.module-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.card:hover,
+.stat-card:hover,
+.section-card:hover,
+.dashboard-card:hover,
+.module-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+}
+
+/* Links styled as buttons */
+
+.btn,
+.button,
+a.btn,
+a.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    background: var(--orange);
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn:hover,
+.button:hover,
+a.btn:hover,
+a.button:hover {
+    background: var(--orange-hover);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(242, 140, 40, 0.22);
+}
+
+/* Delete and cancel buttons */
+
+.btn-danger,
+.delete-btn {
+    background: var(--danger);
+    color: var(--white);
+}
+
+.btn-danger:hover,
+.delete-btn:hover {
+    background: #b92d2d;
+    color: var(--white);
+}
+
+/* Keyboard accessibility */
+
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid rgba(242, 140, 40, 0.6);
+    outline-offset: 3px;
+}
+
+/* Smaller screens */
+
+@media (max-width: 768px) {
+    body {
+        padding: 16px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 19px;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    th,
+    td {
+        padding: 11px 12px;
+    }
+
+    button,
+    input[type="submit"],
+    input[type="button"] {
+        max-width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}

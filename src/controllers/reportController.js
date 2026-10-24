@@ -2,65 +2,76 @@ const {
     Project,
     Worker,
     Task,
-    Material,
     Expense,
-    Attendance
+    Attendance,
+    Material,
+    Equipment,
+    MaterialUsage,
+    EquipmentUsage
 } = require("../models");
 
 exports.index = async (req, res) => {
     try {
-        const projects = await Project.findAll({
-            order: [["project_id", "DESC"]]
-        });
+        const [
+            projects,
+            workers,
+            tasks,
+            expenses,
+            attendance,
+            materials,
+            equipment,
+            materialUsage,
+            equipmentUsage
+        ] = await Promise.all([
+            Project.findAll(),
+            Worker.findAll(),
+            Task.findAll(),
+            Expense.findAll(),
+            Attendance.findAll(),
+            Material.findAll(),
+            Equipment.findAll(),
+            MaterialUsage.findAll(),
+            EquipmentUsage.findAll()
+        ]);
 
-        const workers = await Worker.findAll({
-            order: [["worker_id", "DESC"]]
-        });
+        const totalExpenses = expenses.reduce(
+            (sum, item) => sum + Number(item.amount || item.expense_amount || item.cost || 0),
+            0
+        );
 
-        const tasks = await Task.findAll({
-            order: [["task_id", "DESC"]]
-        });
+        const totalLaborCost = attendance.reduce(
+            (sum, item) => sum + Number(item.labor_cost || 0),
+            0
+        );
 
-        const materials = await Material.findAll({
-            order: [["material_id", "DESC"]]
-        });
+        const totalMaterialUsageCost = materialUsage.reduce(
+            (sum, item) => sum + Number(item.cost_snapshot || 0),
+            0
+        );
 
-        const expenses = await Expense.findAll({
-            order: [["expense_id", "DESC"]]
-        });
-
-        const attendance = await Attendance.findAll({
-            order: [["attendance_id", "DESC"]]
-        });
-
-        let totalExpenses = 0;
-
-        expenses.forEach(expense => {
-            totalExpenses += Number(expense.amount || 0);
-        });
-
-        let totalLaborCost = 0;
-
-        attendance.forEach(record => {
-            totalLaborCost += Number(record.labor_cost || 0);
-        });
+        const totalEquipmentUsageCost = equipmentUsage.reduce(
+            (sum, item) => sum + Number(item.cost_snapshot || 0),
+            0
+        );
 
         res.render("reports/index", {
             user: req.user,
             projects,
             workers,
             tasks,
-            materials,
             expenses,
             attendance,
+            materials,
+            equipment,
+            materialUsage,
+            equipmentUsage,
             totalExpenses,
-            totalLaborCost
+            totalLaborCost,
+            totalMaterialUsageCost,
+            totalEquipmentUsageCost
         });
-
     } catch (error) {
-        console.error("REPORT ERROR:");
-        console.error(error);
-
-        res.status(500).send("Error loading reports.");
+        console.error("Report controller error:", error);
+        res.status(500).send("Unable to load reports. Check the terminal.");
     }
 };

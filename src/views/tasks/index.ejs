@@ -1,189 +1,1404 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Tasks</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks | Construction Management System</title>
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
+        :root {
+            --navy: #142b4a;
+            --navy-light: #203e63;
+            --orange: #f28c28;
+            --orange-hover: #df7618;
+            --white: #ffffff;
+            --background: #f4f6fa;
+            --text: #263445;
+            --muted: #718096;
+            --border: #e2e8f0;
+            --shadow: 0 4px 15px rgba(20, 43, 74, 0.07);
+            --red: #b42332;
+            --green: #167344;
         }
 
-        h1 {
-            margin-bottom: 20px;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
         }
 
         a {
+            color: inherit;
             text-decoration: none;
         }
 
-        .top-links {
-            margin-bottom: 20px;
+        button,
+        input {
+            font-family: inherit;
         }
 
-        .add-button {
-            display: inline-block;
-            padding: 10px 15px;
-            background: #222;
+        .topbar {
+            height: 68px;
+            width: 100%;
+            background: var(--navy);
             color: white;
-            margin-left: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 0 25px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+        }
+
+        .topbar-left,
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .brand span {
+            color: var(--orange);
+        }
+
+        .menu-toggle {
+            border: none;
+            background: transparent;
+            color: white;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: background 0.2s;
+        }
+
+        .menu-toggle:hover {
+            background: var(--navy-light);
+        }
+
+        .menu-toggle span {
+            width: 22px;
+            height: 2px;
+            background: white;
+            border-radius: 2px;
+            display: block;
+        }
+
+        .welcome {
+            font-size: 13px;
+            color: #e5eaf1;
+            text-align: right;
+            line-height: 1.5;
+        }
+
+        .welcome strong {
+            color: white;
+        }
+
+        .role-badge {
+            display: inline-block;
+            font-size: 11px;
+            background: rgba(242, 140, 40, 0.18);
+            color: #ffbf80;
+            border-radius: 20px;
+            padding: 3px 8px;
+            margin-top: 2px;
+        }
+
+        .logout-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 9px 15px;
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: var(--orange-hover);
+            border-color: var(--orange-hover);
+            color: white;
+        }
+
+        .layout {
+            display: flex;
+            align-items: stretch;
+            min-height: calc(100vh - 68px);
+        }
+
+        .sidebar {
+            width: 250px;
+            flex: 0 0 250px;
+            background: var(--navy);
+            color: white;
+            height: calc(100vh - 68px);
+            position: sticky;
+            top: 68px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            transition: width 0.25s ease, flex-basis 0.25s ease, transform 0.25s ease;
+            z-index: 900;
+            scrollbar-width: thin;
+            scrollbar-color: #49617e var(--navy);
+        }
+
+        .sidebar-heading {
+            padding: 24px 20px 10px;
+            color: #91a4bc;
+            text-transform: uppercase;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 1.4px;
+            white-space: nowrap;
+        }
+
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 12px 15px;
+        }
+
+        .sidebar-nav {
+            padding: 0 10px 20px;
+        }
+
+        .nav-link {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            width: 100%;
+            min-height: 44px;
+            padding: 11px 13px;
+            margin-bottom: 4px;
+            color: #dce4ef;
+            border-radius: 7px;
+            font-size: 13px;
+            white-space: nowrap;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: var(--orange);
+            color: white;
+        }
+
+        .nav-link.active {
+            font-weight: bold;
+        }
+
+        .nav-icon {
+            width: 22px;
+            min-width: 22px;
+            text-align: center;
+            font-size: 17px;
+            line-height: 1;
+        }
+
+        .nav-label {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .main-content {
+            flex: 1;
+            min-width: 0;
+            padding: 30px;
+            transition: padding 0.25s ease;
+        }
+
+        .page-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            color: var(--navy);
+            font-size: 27px;
+            margin-bottom: 7px;
+        }
+
+        .page-heading p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .heading-actions {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 15px;
+            border: 1px solid transparent;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--orange);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--orange-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(242, 140, 40, 0.25);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--navy);
+            border-color: var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--navy);
+            color: white;
+            border-color: var(--navy);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 11px;
+            padding: 22px;
+            box-shadow: var(--shadow);
+            border: 1px solid #edf0f5;
+            min-width: 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 22px rgba(20, 43, 74, 0.11);
+        }
+
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .stat-icon {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: #fff1e3;
+            color: var(--orange);
+            font-size: 21px;
+            flex-shrink: 0;
+        }
+
+        .stat-number {
+            color: var(--navy);
+            font-size: 28px;
+            font-weight: bold;
+            overflow-wrap: anywhere;
+        }
+
+        .stat-note {
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 7px;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid #edf0f5;
+            border-radius: 11px;
+            box-shadow: var(--shadow);
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 20px 22px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-header h2 {
+            color: var(--navy);
+            font-size: 17px;
+            margin-bottom: 5px;
+        }
+
+        .panel-header p {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .search-box {
+            position: relative;
+            width: 270px;
+            max-width: 100%;
+        }
+
+        .search-box span {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            font-size: 17px;
+            pointer-events: none;
+            transition: color 0.2s ease;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 11px 12px 11px 36px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            background: #fff;
+            color: var(--text);
+            font-size: 12px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        .search-box input:hover {
+            border-color: #e97813;
+            box-shadow: 0 0 0 2px rgba(242, 140, 40, 0.18);
+        }
+
+        .search-box:hover span {
+            color: #e97813;
+        }
+
+        .search-box input:focus {
+            border: 1px solid var(--orange-hover);
+            box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.25);
+            background: #fffdfb;
+        }
+
+        .search-box:focus-within span {
+            color: var(--orange-hover);
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         table {
             width: 100%;
+            min-width: 1150px;
             border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th,
-        td {
-            border: 1px solid #ccc;
-            padding: 10px;
             text-align: left;
+            font-size: 13px;
         }
 
-        th {
-            background: #f2f2f2;
+        thead th {
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 15px 18px;
+            white-space: nowrap;
         }
 
-        .edit {
-            color: blue;
-            margin-right: 10px;
+        tbody td {
+            padding: 17px 18px;
+            border-bottom: 1px solid #edf0f5;
+            color: #475569;
+            vertical-align: middle;
         }
 
-        .delete {
-            color: red;
+        tbody tr:last-child td {
+            border-bottom: none;
         }
 
-        .status {
+        tbody tr {
+            transition: background 0.2s;
+        }
+
+        tbody tr:hover {
+            background: #fafbfd;
+        }
+
+        .record-name {
+            color: var(--navy);
             font-weight: bold;
+            font-size: 13px;
+            margin-bottom: 5px;
         }
 
-        .progress {
-            width: 100px;
+        .record-id {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .date {
+            white-space: nowrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            white-space: nowrap;
+            background: #eef2f7;
+            color: #475569;
+        }
+
+        .badge-completed {
+            background: #dff5e8;
+            color: #167344;
+        }
+
+        .badge-progress {
+            background: #fff1e3;
+            color: #bd6411;
+        }
+
+        .badge-pending {
+            background: #e8eef7;
+            color: #365577;
+        }
+
+        .badge-cancelled {
+            background: #fde8e8;
+            color: #b42332;
+        }
+
+        .progress-label {
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--navy);
+        }
+
+        .progress-track {
+            width: 110px;
+            height: 7px;
+            background: #e9edf3;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 7px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--orange);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .actions a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 9px 12px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .edit-link {
+            color: #245da8;
+            background: #eaf2ff;
+            border-color: #d5e4ff !important;
+        }
+
+        .edit-link:hover {
+            color: white;
+            background: var(--navy);
+            border-color: var(--navy) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(20, 43, 74, 0.18);
+        }
+
+        .delete-link {
+            color: var(--red);
+            background: #fde8e8;
+            border-color: #f7d0d0 !important;
+        }
+
+        .delete-link:hover {
+            color: white;
+            background: var(--red);
+            border-color: var(--red) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(180, 35, 50, 0.18);
+        }
+
+        .actions a:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        .empty-state {
+            padding: 45px 20px;
+            text-align: center;
+            color: var(--muted);
+            display: none;
+        }
+
+        .empty-icon {
+            font-size: 32px;
+            color: var(--orange);
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            color: var(--navy);
+            font-size: 16px;
+            margin-bottom: 7px;
+        }
+
+        .empty-state p {
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .table-footer {
+            padding: 16px 22px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .layout.sidebar-collapsed .sidebar {
+            width: 72px;
+            flex-basis: 72px;
+        }
+
+        .layout.sidebar-collapsed .sidebar-heading,
+        .layout.sidebar-collapsed .sidebar-divider,
+        .layout.sidebar-collapsed .nav-label {
+            display: none;
+        }
+
+        .layout.sidebar-collapsed .sidebar-nav {
+            padding: 15px 10px 20px;
+        }
+
+        .layout.sidebar-collapsed .nav-link {
+            justify-content: center;
+            padding: 12px 8px;
+        }
+
+        .layout.sidebar-collapsed .nav-icon {
+            width: 26px;
+            min-width: 26px;
+        }
+
+        .layout.sidebar-collapsed .nav-link::after {
+            content: attr(data-title);
+            position: absolute;
+            left: 62px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--navy-light);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 12px;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            z-index: 1200;
+        }
+
+        .layout.sidebar-collapsed .nav-link:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-overlay {
+            display: none;
+        }
+
+        button:focus-visible,
+        a:focus-visible,
+        input:focus-visible {
+            outline: 3px solid #ffad5c;
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 1200px) {
+            .stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .topbar {
+                height: 62px;
+                padding: 0 14px;
+                gap: 8px;
+            }
+
+            .topbar-left {
+                gap: 8px;
+            }
+
+            .brand {
+                font-size: 17px;
+            }
+
+            .topbar-right {
+                gap: 8px;
+            }
+
+            .welcome {
+                display: none;
+            }
+
+            .logout-btn {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+
+            .layout {
+                min-height: calc(100vh - 62px);
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 62px;
+                left: 0;
+                bottom: 0;
+                height: calc(100vh - 62px);
+                width: 270px;
+                max-width: 85vw;
+                flex-basis: 270px;
+                transform: translateX(-100%);
+                visibility: hidden;
+                box-shadow: none;
+            }
+
+            .layout.sidebar-collapsed .sidebar {
+                width: 270px;
+                flex-basis: 270px;
+            }
+
+            .layout.sidebar-collapsed .sidebar-heading,
+            .layout.sidebar-collapsed .sidebar-divider {
+                display: block;
+            }
+
+            .layout.sidebar-collapsed .nav-label {
+                display: inline;
+            }
+
+            .layout.sidebar-collapsed .nav-link {
+                justify-content: flex-start;
+                padding: 11px 13px;
+            }
+
+            .layout.sidebar-collapsed .nav-link::after {
+                display: none;
+            }
+
+            .layout.mobile-menu-open .sidebar {
+                transform: translateX(0);
+                visibility: visible;
+                box-shadow: 5px 0 20px rgba(0, 0, 0, 0.15);
+            }
+
+            .mobile-overlay {
+                position: fixed;
+                top: 62px;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(15, 23, 42, 0.45);
+                z-index: 800;
+            }
+
+            .layout.mobile-menu-open .mobile-overlay {
+                display: block;
+            }
+
+            .main-content {
+                padding: 22px 16px;
+            }
+
+            .page-heading {
+                align-items: flex-start;
+                flex-direction: column;
+                margin-bottom: 20px;
+            }
+
+            .page-heading h1 {
+                font-size: 24px;
+            }
+
+            .heading-actions {
+                width: 100%;
+            }
+
+            .heading-actions .btn {
+                flex: 1;
+            }
+
+            .stats {
+                gap: 12px;
+                margin-bottom: 20px;
+            }
+
+            .stat-card {
+                padding: 16px;
+            }
+
+            .stat-number {
+                font-size: 24px;
+            }
+
+            .panel-header {
+                padding: 16px;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .actions a {
+                padding: 9px 11px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .brand {
+                font-size: 15px;
+            }
+
+            .heading-actions .btn {
+                padding: 10px;
+                font-size: 12px;
+            }
+        }
+
+        @media print {
+            .topbar,
+            .sidebar,
+            .mobile-overlay,
+            .heading-actions,
+            .search-box,
+            .actions {
+                display: none !important;
+            }
+
+            .main-content {
+                padding: 10px;
+            }
+
+            body {
+                background: white;
+            }
+
+            .panel,
+            .stat-card {
+                box-shadow: none;
+            }
+
+            .table-wrapper {
+                overflow: visible;
+            }
+
+            table {
+                min-width: 0;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <div class="top-links">
+<%
+    const taskRows = typeof tasks !== "undefined" && Array.isArray(tasks)
+        ? tasks
+        : [];
 
-        <a href="/dashboard">
-            ← Back to Dashboard
-        </a>
+    const getTaskStatus = function(task) {
+        return String(task.status || "Pending").trim().toLowerCase().replace(/[_-]+/g, " ");
+    };
 
-        <a
-            class="add-button"
-            href="/tasks/add"
+    const taskCompletedCount = taskRows.filter(function(task) {
+        return getTaskStatus(task) === "completed";
+    }).length;
+
+    const taskProgressCount = taskRows.filter(function(task) {
+        return ["in progress", "ongoing"].includes(getTaskStatus(task));
+    }).length;
+
+    const taskPendingCount = taskRows.filter(function(task) {
+        return ["pending", "planned", "not started"].includes(getTaskStatus(task));
+    }).length;
+
+    const formatTaskDate = function(value) {
+        if (!value) return "N/A";
+
+        const date = new Date(value);
+
+        if (isNaN(date.getTime())) return "N/A";
+
+        return date.toLocaleDateString("en-PH", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            timeZone: "UTC"
+        });
+    };
+
+    const getTaskProgress = function(task) {
+        const value = Number(task.progress_pct);
+        return Math.max(0, Math.min(100, Number.isFinite(value) ? value : 0));
+    };
+
+    const getTaskStatusClass = function(task) {
+        const status = getTaskStatus(task);
+
+        if (status === "completed") return "badge-completed";
+
+        if (["in progress", "ongoing"].includes(status)) {
+            return "badge-progress";
+        }
+
+        if (["cancelled", "canceled"].includes(status)) {
+            return "badge-cancelled";
+        }
+
+        return "badge-pending";
+    };
+%>
+
+<header class="topbar">
+    <div class="topbar-left">
+        <button
+            type="button"
+            class="menu-toggle"
+            id="menuToggle"
+            aria-label="Toggle navigation menu"
+            aria-controls="sidebar"
+            aria-expanded="true"
         >
-            + Add Task
-        </a>
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
 
+        <a href="/dashboard" class="brand">Construction <span>MS</span></a>
     </div>
 
+    <div class="topbar-right">
+        <div class="welcome">
+            Welcome, <strong><%= typeof user !== "undefined" && user ? user.username : "User" %></strong><br>
+            <span class="role-badge"><%= typeof user !== "undefined" && user ? user.role_name : "" %></span>
+        </div>
 
-    <h1>Tasks</h1>
+        <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+</header>
 
+<div class="layout" id="mainLayout">
 
-    <% if (tasks.length === 0) { %>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-heading">Main Menu</div>
 
-        <p>No tasks found.</p>
+        <nav class="sidebar-nav">
+            <a href="/dashboard" class="nav-link" data-title="Dashboard">
+                <span class="nav-icon">⌂</span>
+                <span class="nav-label">Dashboard</span>
+            </a>
 
-    <% } else { %>
+            <a href="/projects" class="nav-link" data-title="Projects">
+                <span class="nav-icon">▣</span>
+                <span class="nav-label">Projects</span>
+            </a>
 
-        <table>
+            <a href="/workers" class="nav-link" data-title="Workers">
+                <span class="nav-icon">♟</span>
+                <span class="nav-label">Workers</span>
+            </a>
 
-            <thead>
+            <a href="/worker-skills" class="nav-link" data-title="Worker Skills">
+                <span class="nav-icon">✦</span>
+                <span class="nav-label">Worker Skills</span>
+            </a>
 
-                <tr>
-                    <th>ID</th>
-                    <th>Task Name</th>
-                    <th>Project</th>
-                    <th>Phase</th>
-                    <th>Start Date</th>
-                    <th>Due Date</th>
-                    <th>Progress</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
+            <a href="/project-members" class="nav-link" data-title="Project Members">
+                <span class="nav-icon">♙</span>
+                <span class="nav-label">Project Members</span>
+            </a>
 
-            </thead>
+            <a href="/user-profiles" class="nav-link" data-title="User Profiles">
+                <span class="nav-icon">◎</span>
+                <span class="nav-label">User Profiles</span>
+            </a>
 
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-heading">Project Management</div>
 
-            <tbody>
+            <a href="/tasks" class="nav-link active" data-title="Tasks">
+                <span class="nav-icon">☑</span>
+                <span class="nav-label">Tasks</span>
+            </a>
 
-                <% tasks.forEach(task => { %>
+            <a href="/project-phases" class="nav-link" data-title="Project Phases">
+                <span class="nav-icon">▤</span>
+                <span class="nav-label">Project Phases</span>
+            </a>
 
-                    <tr>
+            <a href="/assignments" class="nav-link" data-title="Task Assignments">
+                <span class="nav-icon">↗</span>
+                <span class="nav-label">Task Assignments</span>
+            </a>
 
-                        <td>
-                            <%= task.task_id %>
-                        </td>
+            <a href="/attendance" class="nav-link" data-title="Attendance">
+                <span class="nav-icon">◷</span>
+                <span class="nav-label">Attendance</span>
+            </a>
 
-                        <td>
-                            <%= task.task_name %>
-                        </td>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-heading">Resources</div>
 
-                        <td>
-                            <%= task.ProjectPhase &&
-                                task.ProjectPhase.Project
-                                ? task.ProjectPhase.Project.project_name
-                                : "No Project"
-                            %>
-                        </td>
+            <a href="/materials" class="nav-link" data-title="Materials">
+                <span class="nav-icon">▤</span>
+                <span class="nav-label">Materials</span>
+            </a>
 
-                        <td>
-                            <%= task.ProjectPhase
-                                ? task.ProjectPhase.phase_name
-                                : "No Phase"
-                            %>
-                        </td>
+            <a href="/material-usage" class="nav-link" data-title="Material Usage">
+                <span class="nav-icon">↗</span>
+                <span class="nav-label">Material Usage</span>
+            </a>
 
-                        <td>
-                            <%= task.start_date || "-" %>
-                        </td>
+            <a href="/suppliers" class="nav-link" data-title="Suppliers">
+                <span class="nav-icon">♧</span>
+                <span class="nav-label">Suppliers</span>
+            </a>
 
-                        <td>
-                            <%= task.due_date || "-" %>
-                        </td>
+            <a href="/equipment" class="nav-link" data-title="Equipment">
+                <span class="nav-icon">⚒</span>
+                <span class="nav-label">Equipment</span>
+            </a>
 
-                        <td class="progress">
-                            <%= task.progress_pct || 0 %>%
-                        </td>
+            <a href="/equipment-usage" class="nav-link" data-title="Equipment Usage">
+                <span class="nav-icon">↗</span>
+                <span class="nav-label">Equipment Usage</span>
+            </a>
 
-                        <td class="status">
-                            <%= task.status %>
-                        </td>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-heading">Finance and Reports</div>
 
-                        <td>
+            <a href="/expenses" class="nav-link" data-title="Expenses">
+                <span class="nav-icon">₱</span>
+                <span class="nav-label">Expenses</span>
+            </a>
 
-                            <a
-                                class="edit"
-                                href="/tasks/edit/<%= task.task_id %>"
-                            >
-                                Edit
-                            </a>
+            <a href="/reports" class="nav-link" data-title="Reports">
+                <span class="nav-icon">▥</span>
+                <span class="nav-label">Reports</span>
+            </a>
 
-                            <a
-                                class="delete"
-                                href="/tasks/delete/<%= task.task_id %>"
-                                onclick="return confirm('Are you sure you want to delete this task?');"
-                            >
-                                Delete
-                            </a>
+            <% if (typeof user !== "undefined" && user && user.role_name === "Administrator") { %>
+                <div class="sidebar-divider"></div>
+                <div class="sidebar-heading">Administration</div>
 
-                        </td>
+                <a href="/users" class="nav-link" data-title="User Management">
+                    <span class="nav-icon">♙</span>
+                    <span class="nav-label">User Management</span>
+                </a>
 
-                    </tr>
+                <a href="/audit-logs" class="nav-link" data-title="Audit Logs">
+                    <span class="nav-icon">☷</span>
+                    <span class="nav-label">Audit Logs</span>
+                </a>
+            <% } %>
+        </nav>
+    </aside>
 
-                <% }) %>
+    <div class="mobile-overlay" id="mobileOverlay"></div>
 
-            </tbody>
+    <main class="main-content">
 
-        </table>
+        <section class="page-heading">
+            <div>
+                <h1>Task Management</h1>
+                <p>Manage project tasks, deadlines, statuses, and progress.</p>
+            </div>
 
-    <% } %>
+            <div class="heading-actions">
+                <button class="btn btn-secondary" type="button" id="printButton">
+                    <span>⎙</span> Print
+                </button>
+
+                <a href="/tasks/add" class="btn btn-primary">
+                    <span>＋</span> Add Task
+                </a>
+            </div>
+        </section>
+
+        <section class="stats">
+            <div class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-label">Total Tasks</span>
+                    <span class="stat-icon">☑</span>
+                </div>
+
+                <div class="stat-number"><%= taskRows.length %></div>
+                <div class="stat-note">All registered tasks</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-label">Completed Tasks</span>
+                    <span class="stat-icon">✓</span>
+                </div>
+
+                <div class="stat-number"><%= taskCompletedCount %></div>
+                <div class="stat-note">Successfully completed</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-label">In Progress</span>
+                    <span class="stat-icon">◷</span>
+                </div>
+
+                <div class="stat-number"><%= taskProgressCount %></div>
+                <div class="stat-note">Tasks currently underway</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-label">Pending Tasks</span>
+                    <span class="stat-icon">▤</span>
+                </div>
+
+                <div class="stat-number"><%= taskPendingCount %></div>
+                <div class="stat-note">Tasks waiting to start</div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-header">
+                <div>
+                    <h2>Task Records</h2>
+                    <p>View, search, and manage your construction project tasks.</p>
+                </div>
+
+                <div class="search-box">
+                    <span>⌕</span>
+                    <input
+                        type="search"
+                        id="taskSearch"
+                        placeholder="Search tasks..."
+                        aria-label="Search tasks"
+                    >
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table id="tasksTable">
+                    <thead>
+                        <tr>
+                            <th>Task ID</th>
+                            <th>Task Name</th>
+                            <th>Project</th>
+                            <th>Phase</th>
+                            <th>Start Date</th>
+                            <th>Due Date</th>
+                            <th>Progress</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tasksTableBody">
+                        <% taskRows.forEach(function(task) {
+                            const phaseRecord = task.ProjectPhase || task.projectPhase || {};
+                            const projectRecord = phaseRecord.Project || phaseRecord.project || {};
+
+                            const projectName = task.project_name ||
+                                projectRecord.project_name ||
+                                "No Project";
+
+                            const phaseName = phaseRecord.phase_name ||
+                                task.phase_name ||
+                                "No Phase";
+
+                            const progress = getTaskProgress(task);
+                            const statusText = task.status || "Pending";
+                        %>
+                            <tr class="task-row">
+                                <td>
+                                    <span class="badge"><%= task.task_id %></span>
+                                </td>
+
+                                <td>
+                                    <div class="record-name">
+                                        <%= task.task_name || "Unnamed Task" %>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="record-name"><%= projectName %></div>
+                                </td>
+
+                                <td><%= phaseName %></td>
+
+                                <td class="date">
+                                    <%= formatTaskDate(task.start_date) %>
+                                </td>
+
+                                <td class="date">
+                                    <%= formatTaskDate(task.due_date) %>
+                                </td>
+
+                                <td>
+                                    <div class="progress-label"><%= progress %>%</div>
+
+                                    <div class="progress-track">
+                                        <div
+                                            class="progress-fill"
+                                            style="width: <%= progress %>%"
+                                        ></div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="badge <%= getTaskStatusClass(task) %>">
+                                        <%= statusText %>
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <div class="actions">
+                                        <a
+                                            class="edit-link"
+                                            href="/tasks/edit/<%= task.task_id %>"
+                                            title="Edit task"
+                                        >
+                                            <span>✎</span> Edit
+                                        </a>
+
+                                        <a
+                                            class="delete-link"
+                                            href="/tasks/delete/<%= task.task_id %>"
+                                            title="Delete task"
+                                            onclick="return confirm('Are you sure you want to delete this task?');"
+                                        >
+                                            <span>⌫</span> Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+
+                <div class="empty-state" id="emptyState">
+                    <div class="empty-icon">⌕</div>
+                    <h3 id="emptyStateHeading">No tasks found</h3>
+                    <p id="emptyStateMessage">
+                        Try another search or add a new task.
+                    </p>
+
+                    <a href="/tasks/add" class="btn btn-primary" id="emptyAddButton">
+                        <span>＋</span> Add Task
+                    </a>
+                </div>
+            </div>
+
+            <div class="table-footer">
+                Showing <strong id="visibleCount"><%= taskRows.length %></strong>
+                of <strong><%= taskRows.length %></strong> task record(s)
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<script>
+    const mainLayout = document.getElementById("mainLayout");
+    const menuToggle = document.getElementById("menuToggle");
+    const mobileOverlay = document.getElementById("mobileOverlay");
+    const sidebar = document.getElementById("sidebar");
+
+    function isMobileScreen() {
+        return window.matchMedia("(max-width: 768px)").matches;
+    }
+
+    function updateMenuAccessibility() {
+        const expanded = isMobileScreen()
+            ? mainLayout.classList.contains("mobile-menu-open")
+            : !mainLayout.classList.contains("sidebar-collapsed");
+
+        menuToggle.setAttribute("aria-expanded", String(expanded));
+    }
+
+    menuToggle.addEventListener("click", function() {
+        if (isMobileScreen()) {
+            mainLayout.classList.toggle("mobile-menu-open");
+        } else {
+            mainLayout.classList.toggle("sidebar-collapsed");
+        }
+
+        updateMenuAccessibility();
+    });
+
+    mobileOverlay.addEventListener("click", function() {
+        mainLayout.classList.remove("mobile-menu-open");
+        updateMenuAccessibility();
+    });
+
+    sidebar.querySelectorAll("a").forEach(function(link) {
+        link.addEventListener("click", function() {
+            if (isMobileScreen()) {
+                mainLayout.classList.remove("mobile-menu-open");
+                updateMenuAccessibility();
+            }
+        });
+    });
+
+    window.addEventListener("resize", function() {
+        if (!isMobileScreen()) {
+            mainLayout.classList.remove("mobile-menu-open");
+        }
+
+        updateMenuAccessibility();
+    });
+
+    document.getElementById("printButton").addEventListener("click", function() {
+        window.print();
+    });
+
+    const taskSearch = document.getElementById("taskSearch");
+    const tasksTable = document.getElementById("tasksTable");
+    const taskRows = Array.from(document.querySelectorAll(".task-row"));
+
+    const emptyState = document.getElementById("emptyState");
+    const emptyStateHeading = document.getElementById("emptyStateHeading");
+    const emptyStateMessage = document.getElementById("emptyStateMessage");
+    const emptyAddButton = document.getElementById("emptyAddButton");
+    const visibleCount = document.getElementById("visibleCount");
+
+    function filterTasks() {
+        const query = taskSearch.value.trim().toLowerCase();
+        let count = 0;
+
+        taskRows.forEach(function(row) {
+            const matches = row.textContent.toLowerCase().includes(query);
+
+            row.style.display = matches ? "" : "none";
+
+            if (matches) {
+                count++;
+            }
+        });
+
+        visibleCount.textContent = count;
+
+        tasksTable.style.display = count > 0 ? "table" : "none";
+        emptyState.style.display = count === 0 ? "block" : "none";
+
+        if (count === 0 && taskRows.length === 0) {
+            emptyStateHeading.textContent = "No tasks registered";
+            emptyStateMessage.textContent =
+                "Add a task to start organizing your construction project work.";
+            emptyAddButton.style.display = "inline-flex";
+        } else if (count === 0) {
+            emptyStateHeading.textContent = "No matching tasks found";
+            emptyStateMessage.textContent =
+                "Try a different task name, project, phase, date, or status.";
+            emptyAddButton.style.display = "none";
+        }
+    }
+
+    taskSearch.addEventListener("input", filterTasks);
+
+    filterTasks();
+    updateMenuAccessibility();
+</script>
 
 </body>
 </html>

@@ -1,3 +1,4 @@
+
 const express = require("express");
 
 const router = express.Router();
@@ -9,64 +10,62 @@ const {
     requireRole
 } = require("../middleware/authMiddleware");
 
+const viewRoles = requireRole(
+    "Administrator",
+    "Project Manager",
+    "Site Staff"
+);
+
+const manageRoles = requireRole(
+    "Administrator",
+    "Project Manager"
+);
+
+// View project phases
 router.get(
-    "/phases",
+    ["/project-phases", "/phases"],
     requireAuth,
-    requireRole(
-        "Administrator",
-        "Project Manager",
-        "Site Staff"
-    ),
+    viewRoles,
     phaseController.index
 );
 
+// Show add phase form
 router.get(
-    "/phases/add",
+    ["/project-phases/add", "/phases/add"],
     requireAuth,
-    requireRole(
-        "Administrator",
-        "Project Manager"
-    ),
+    manageRoles,
     phaseController.showAddForm
 );
 
+// Create a phase
 router.post(
-    "/phases/add",
+    ["/project-phases/add", "/phases/add"],
     requireAuth,
-    requireRole(
-        "Administrator",
-        "Project Manager"
-    ),
+    manageRoles,
     phaseController.create
 );
 
+// Show edit phase form
 router.get(
-    "/phases/edit/:id",
+    ["/project-phases/edit/:id", "/phases/edit/:id"],
     requireAuth,
-    requireRole(
-        "Administrator",
-        "Project Manager"
-    ),
+    manageRoles,
     phaseController.showEditForm
 );
 
+// Update a phase
 router.post(
-    "/phases/edit/:id",
+    ["/project-phases/edit/:id", "/phases/edit/:id"],
     requireAuth,
-    requireRole(
-        "Administrator",
-        "Project Manager"
-    ),
+    manageRoles,
     phaseController.update
 );
 
+// Delete a phase
 router.get(
-    "/phases/delete/:id",
+    ["/project-phases/delete/:id", "/phases/delete/:id"],
     requireAuth,
-    requireRole(
-        "Administrator",
-        "Project Manager"
-    ),
+    manageRoles,
     phaseController.delete
 );
 
