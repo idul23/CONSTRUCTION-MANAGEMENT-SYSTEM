@@ -3,119 +3,1321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Construction Management System</title>
+    <meta name="theme-color" content="#142b4a">
+    <title>Login | Construction MS</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        body {
+        :root {
+            --navy: #142b4a;
+            --navy-light: #203e63;
+            --navy-dark: #0b1729;
+            --orange: #f28c28;
+            --orange-hover: #df7618;
+            --orange-light: #ffb45f;
+            --bg: #f4f6fa;
+            --white: #ffffff;
+            --text: #263445;
+            --muted: #718096;
+            --border: #e2e8f0;
+            --red: #b42332;
+            --shadow: 0 25px 80px rgba(11, 23, 41, 0.28);
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            padding: 0;
+        }
+
+        html {
+            min-height: 100%;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
             min-height: 100vh;
+            min-height: 100dvh;
+            font-family: "DM Sans", Arial, sans-serif;
+            color: var(--text);
+            overflow-x: hidden;
+            background: var(--navy-dark);
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button,
+        input {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button:focus-visible,
+        input:focus-visible {
+            outline: 3px solid rgba(242, 140, 40, 0.4);
+            outline-offset: 3px;
+        }
+
+        /* BACKGROUND PHOTO */
+
+        .background {
+            position: fixed;
+            inset: -15px;
+            z-index: -3;
+            background-image: url("https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=2400&q=85");
+            background-size: cover;
+            background-position: center;
+            filter: blur(5px);
+            transform: scale(1.04);
+            animation: backgroundReveal 1.2s ease both;
+        }
+
+        .background-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background:
+                linear-gradient(
+                    125deg,
+                    rgba(11, 23, 41, 0.94) 0%,
+                    rgba(20, 43, 74, 0.83) 48%,
+                    rgba(32, 62, 99, 0.75) 100%
+                ),
+                linear-gradient(
+                    0deg,
+                    rgba(11, 23, 41, 0.50),
+                    rgba(242, 140, 40, 0.10)
+                );
+        }
+
+        .background-overlay::before,
+        .background-overlay::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(2px);
+        }
+
+        .background-overlay::before {
+            width: 440px;
+            height: 440px;
+            top: -180px;
+            right: -100px;
+            border: 1px solid rgba(255, 255, 255, 0.13);
+            box-shadow:
+                0 0 0 45px rgba(255, 255, 255, 0.025),
+                0 0 0 100px rgba(255, 255, 255, 0.02);
+        }
+
+        .background-overlay::after {
+            width: 350px;
+            height: 350px;
+            bottom: -200px;
+            left: -100px;
+            background: rgba(242, 140, 40, 0.13);
+            filter: blur(65px);
+        }
+
+        /* PAGE LAYOUT */
+
+        .page {
+            position: relative;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(390px, 0.85fr);
+            align-items: center;
+            gap: clamp(35px, 7vw, 110px);
+            padding: clamp(25px, 5vw, 75px);
+            isolation: isolate;
+        }
+
+        /* BRAND SIDE */
+
+        .brand-panel {
+            color: var(--white);
+            max-width: 670px;
+            padding: 15px 0;
+            animation: slideInLeft 0.8s ease both;
+        }
+
+        .brand-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: clamp(45px, 9vh, 95px);
+        }
+
+        .logo-mark {
+            width: 52px;
+            height: 52px;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            border-radius: 16px;
+            color: var(--white);
+            font-family: "Manrope", sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(
+                145deg,
+                var(--orange-light),
+                var(--orange) 65%,
+                var(--orange-hover)
+            );
+            box-shadow:
+                0 10px 30px rgba(242, 140, 40, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.35);
+        }
+
+        .logo-text {
+            font-family: "Manrope", sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.7px;
+        }
+
+        .logo-text span {
+            color: var(--orange-light);
+        }
+
+        .brand-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 22px;
+            padding: 9px 13px;
+            border: 1px solid rgba(255, 255, 255, 0.17);
+            border-radius: 100px;
+            color: #ffe0bc;
+            background: rgba(255, 255, 255, 0.07);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            backdrop-filter: blur(10px);
+        }
+
+        .eyebrow-dot {
+            width: 7px;
+            height: 7px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: var(--orange-light);
+            box-shadow: 0 0 12px rgba(255, 180, 95, 0.85);
+        }
+
+        .brand-title {
+            max-width: 650px;
+            font-family: "Manrope", sans-serif;
+            font-size: clamp(38px, 5.2vw, 73px);
+            font-weight: 800;
+            line-height: 1.09;
+            letter-spacing: -2.8px;
+            text-wrap: balance;
+        }
+
+        .brand-title .accent {
+            color: var(--orange-light);
+            position: relative;
+            display: inline-block;
+        }
+
+        .brand-description {
+            max-width: 490px;
+            margin-top: 25px;
+            color: rgba(255, 255, 255, 0.75);
+            font-size: clamp(14px, 1.2vw, 16px);
+            line-height: 1.9;
+        }
+
+        .brand-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 35px;
+        }
+
+        .feature {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 11px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 12px;
+            color: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.055);
+            font-size: 12px;
+            font-weight: 600;
+            backdrop-filter: blur(8px);
+            transition:
+                transform 0.25s ease,
+                background 0.25s ease,
+                border-color 0.25s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 180, 95, 0.5);
+        }
+
+        .feature-icon {
+            display: grid;
+            place-items: center;
+            width: 23px;
+            height: 23px;
+            border-radius: 7px;
+            color: var(--orange-light);
+            background: rgba(242, 140, 40, 0.17);
+            font-size: 14px;
+        }
+
+        .brand-footer {
+            margin-top: 70px;
+            color: rgba(255, 255, 255, 0.53);
+            font-size: 11px;
+            letter-spacing: 0.3px;
+        }
+
+        /* LOGIN PANEL */
+
+        .login-side {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 0;
+            animation: slideInRight 0.8s ease both;
         }
 
         .login-box {
-            width: 350px;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            width: 100%;
+            max-width: 465px;
+            padding: clamp(27px, 3.2vw, 43px);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.72);
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.96);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            transition: box-shadow 0.3s ease;
         }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 10px;
+        .login-box:hover {
+            box-shadow: 0 30px 90px rgba(11, 23, 41, 0.34);
+        }
+
+        .card-accent {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(
+                90deg,
+                var(--navy-dark),
+                var(--navy),
+                var(--orange),
+                var(--orange-light)
+            );
+            background-size: 200% 100%;
+            animation: gradientFlow 5s linear infinite;
+        }
+
+        .mobile-logo {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 32px;
+        }
+
+        .mobile-logo .logo-mark {
+            width: 44px;
+            height: 44px;
+            border-radius: 13px;
+            font-size: 19px;
+        }
+
+        .mobile-logo .logo-text {
+            color: var(--navy);
+            font-size: 18px;
+        }
+
+        .welcome-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+            color: var(--orange-hover);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .welcome-label::before {
+            content: "";
+            width: 23px;
+            height: 2px;
+            border-radius: 5px;
+            background: var(--orange);
+        }
+
+        .login-title {
+            color: var(--navy-dark);
+            font-family: "Manrope", sans-serif;
+            font-size: clamp(29px, 3vw, 36px);
+            font-weight: 800;
+            letter-spacing: -1.2px;
+            line-height: 1.2;
         }
 
         .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 25px;
+            margin-top: 12px;
+            margin-bottom: 30px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        /* ERROR MESSAGE */
+
+        .error {
+            display: flex;
+            align-items: flex-start;
+            gap: 11px;
+            margin-bottom: 23px;
+            padding: 14px 15px;
+            border: 1px solid #f3c7cc;
+            border-radius: 12px;
+            color: #842029;
+            background: #fff0f1;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+            animation: shakeIn 0.35s ease both;
+        }
+
+        .error-icon {
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            color: white;
+            background: var(--red);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        /* FORM */
+
+        .form-group {
+            margin-bottom: 21px;
+        }
+
+        .label-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 9px;
         }
 
         label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: bold;
+            color: var(--navy);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            width: 19px;
+            height: 19px;
+            transform: translateY(-50%);
+            color: #8492a6;
+            pointer-events: none;
+            transition: color 0.2s ease;
+        }
+
+        .input-wrap:focus-within .input-icon {
+            color: var(--orange-hover);
         }
 
         input {
+            display: block;
             width: 100%;
-            padding: 11px;
-            margin-bottom: 18px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
+            min-width: 0;
+            height: 53px;
+            padding: 0 45px 0 45px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            outline: none;
+            color: var(--navy-dark);
+            background: #f9fafc;
+            font-size: 13px;
+            font-weight: 500;
+            transition:
+                border-color 0.22s ease,
+                box-shadow 0.22s ease,
+                background 0.22s ease;
         }
 
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #222;
-            color: white;
+        input::placeholder {
+            color: #a0aaba;
+            font-weight: 400;
+        }
+
+        input:hover {
+            border-color: #cbd5e1;
+            background: var(--white);
+        }
+
+        input:focus {
+            border-color: var(--orange);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(242, 140, 40, 0.12);
+        }
+
+        input:autofill,
+        input:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 1000px #fff inset;
+            -webkit-text-fill-color: var(--navy-dark);
+        }
+
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            display: grid;
+            place-items: center;
+            width: 34px;
+            height: 34px;
+            transform: translateY(-50%);
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
+            color: #7d899a;
+            background: transparent;
+            cursor: pointer;
+            transition:
+                color 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .toggle-password:hover {
+            color: var(--navy);
+            background: #edf1f7;
+        }
+
+        .toggle-password svg {
+            width: 19px;
+            height: 19px;
+        }
+
+        .form-options {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: -1px;
+            margin-bottom: 24px;
+        }
+
+        .remember-option {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            font-size: 12px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .remember-option input {
+            width: 15px;
+            height: 15px;
+            min-width: 15px;
+            padding: 0;
+            margin: 0;
+            accent-color: var(--orange);
             cursor: pointer;
         }
 
-        button:hover {
-            background: #444;
+        .secure-note {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #8290a3;
+            font-size: 10px;
+            font-weight: 600;
         }
 
-        .error {
-            background: #f8d7da;
-            color: #842029;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 18px;
+        .secure-note svg {
+            width: 14px;
+            height: 14px;
+            color: var(--green);
+        }
+
+        /* LOGIN BUTTON */
+
+        .login-button {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            min-height: 54px;
+            padding: 14px 20px;
+            overflow: hidden;
+            border: none;
+            border-radius: 12px;
+            color: var(--white);
+            background: linear-gradient(
+                110deg,
+                var(--navy-dark) 0%,
+                var(--navy) 46%,
+                var(--navy-light) 100%
+            );
+            background-size: 180% 100%;
+            box-shadow: 0 8px 20px rgba(20, 43, 74, 0.19);
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            cursor: pointer;
+            transition:
+                transform 0.22s ease,
+                box-shadow 0.22s ease,
+                background-position 0.3s ease,
+                opacity 0.2s ease;
+        }
+
+        .login-button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            transform: skewX(-22deg);
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.16),
+                transparent
+            );
+            transition: left 0.65s ease;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            background-position: 100% 50%;
+            box-shadow: 0 12px 26px rgba(20, 43, 74, 0.27);
+        }
+
+        .login-button:hover::before {
+            left: 140%;
+        }
+
+        .login-button:active {
+            transform: translateY(0) scale(0.99);
+        }
+
+        .login-button:disabled {
+            cursor: wait;
+            opacity: 0.8;
+            transform: none;
+        }
+
+        .button-arrow {
+            width: 18px;
+            height: 18px;
+            transition: transform 0.2s ease;
+        }
+
+        .login-button:hover .button-arrow {
+            transform: translateX(4px);
+        }
+
+        .spinner {
+            display: none;
+            width: 17px;
+            height: 17px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.65s linear infinite;
+        }
+
+        .login-button.is-loading .spinner {
+            display: inline-block;
+        }
+
+        .login-button.is-loading .button-arrow {
+            display: none;
+        }
+
+        .login-button.is-loading::before {
+            display: none;
+        }
+
+        .form-footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 24px;
+            color: var(--muted);
+            font-size: 11px;
             text-align: center;
+            line-height: 1.7;
+        }
+
+        .footer-shield {
+            width: 17px;
+            height: 17px;
+            flex-shrink: 0;
+            color: var(--green);
+        }
+
+        .bottom-note {
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid #edf0f5;
+            color: #98a3b2;
+            font-size: 10px;
+            line-height: 1.7;
+            text-align: center;
+        }
+
+        .bottom-note strong {
+            color: var(--navy-light);
+            font-weight: 700;
+        }
+
+        /* DECORATIVE BACKGROUND DETAILS */
+
+        .floating-orb {
+            position: fixed;
+            z-index: -1;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(242, 140, 40, 0.12);
+            filter: blur(65px);
+            pointer-events: none;
+            animation: floatOrb 10s ease-in-out infinite alternate;
+        }
+
+        .orb-one {
+            top: 12%;
+            left: 35%;
+        }
+
+        .orb-two {
+            right: 8%;
+            bottom: 7%;
+            width: 230px;
+            height: 230px;
+            background: rgba(66, 112, 163, 0.22);
+            animation-delay: -4s;
+        }
+
+        /* ANIMATIONS */
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes backgroundReveal {
+            from {
+                opacity: 0.4;
+                transform: scale(1.09);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1.04);
+            }
+        }
+
+        @keyframes gradientFlow {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 200% 50%;
+            }
+        }
+
+        @keyframes floatOrb {
+            from {
+                transform: translate3d(0, 0, 0);
+            }
+            to {
+                transform: translate3d(30px, -25px, 0);
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes shakeIn {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-3px);
+            }
+            75% {
+                transform: translateX(3px);
+            }
+        }
+
+        /* TABLET */
+
+        @media (max-width: 1050px) {
+            .page {
+                grid-template-columns: minmax(0, 0.9fr) minmax(360px, 1fr);
+                gap: 38px;
+                padding: 35px;
+            }
+
+            .brand-title {
+                font-size: clamp(38px, 5vw, 58px);
+                letter-spacing: -2px;
+            }
+
+            .brand-features {
+                gap: 9px;
+            }
+
+            .feature {
+                padding: 9px 11px;
+            }
+
+            .login-box {
+                padding: 32px 27px;
+            }
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 760px) {
+            .page {
+                grid-template-columns: 1fr;
+                align-items: center;
+                gap: 0;
+                padding: 30px 20px;
+            }
+
+            .brand-panel {
+                display: none;
+            }
+
+            .login-side {
+                width: 100%;
+                min-height: calc(100vh - 60px);
+                min-height: calc(100dvh - 60px);
+            }
+
+            .login-box {
+                max-width: 440px;
+                padding: 34px clamp(23px, 6vw, 36px);
+                border-radius: 22px;
+            }
+
+            .mobile-logo {
+                display: flex;
+            }
+
+            .login-title {
+                font-size: 32px;
+            }
+
+            .subtitle {
+                margin-bottom: 27px;
+            }
+
+            .background {
+                background-position: center;
+                filter: blur(4px);
+            }
+
+            .background-overlay {
+                background:
+                    linear-gradient(
+                        145deg,
+                        rgba(11, 23, 41, 0.87),
+                        rgba(20, 43, 74, 0.82),
+                        rgba(32, 62, 99, 0.78)
+                    );
+            }
+
+            .orb-one {
+                left: -80px;
+                top: 5%;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .page {
+                padding: 16px 12px;
+            }
+
+            .login-side {
+                min-height: calc(100vh - 32px);
+                min-height: calc(100dvh - 32px);
+            }
+
+            .login-box {
+                padding: 27px 21px;
+                border-radius: 19px;
+            }
+
+            .mobile-logo {
+                margin-bottom: 27px;
+            }
+
+            .mobile-logo .logo-mark {
+                width: 40px;
+                height: 40px;
+            }
+
+            .mobile-logo .logo-text {
+                font-size: 17px;
+            }
+
+            .login-title {
+                font-size: 29px;
+            }
+
+            .subtitle {
+                font-size: 12px;
+                line-height: 1.75;
+            }
+
+            input {
+                height: 51px;
+                font-size: 13px;
+            }
+
+            .form-options {
+                align-items: flex-start;
+                flex-wrap: wrap;
+                row-gap: 12px;
+            }
+
+            .login-button {
+                min-height: 52px;
+            }
+
+            .bottom-note {
+                margin-top: 23px;
+            }
+        }
+
+        /* SHORT SCREENS */
+
+        @media (max-height: 700px) and (min-width: 761px) {
+            .page {
+                padding-top: 25px;
+                padding-bottom: 25px;
+            }
+
+            .brand-logo {
+                margin-bottom: 35px;
+            }
+
+            .brand-footer {
+                margin-top: 35px;
+            }
+
+            .login-box {
+                padding-top: 27px;
+                padding-bottom: 27px;
+            }
+
+            .subtitle {
+                margin-bottom: 20px;
+            }
+
+            .form-group {
+                margin-bottom: 16px;
+            }
+
+            .form-options {
+                margin-bottom: 18px;
+            }
+
+            .form-footer {
+                margin-top: 18px;
+            }
+
+            .bottom-note {
+                margin-top: 20px;
+                padding-top: 15px;
+            }
+        }
+
+        /* ACCESSIBILITY */
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <div class="login-box">
+    <div class="background" aria-hidden="true"></div>
+    <div class="background-overlay" aria-hidden="true"></div>
+    <div class="floating-orb orb-one" aria-hidden="true"></div>
+    <div class="floating-orb orb-two" aria-hidden="true"></div>
 
-        <h1>Construction MS</h1>
+    <main class="page">
 
-        <p class="subtitle">Construction Project and Labor Management System</p>
+        <!-- BRAND SECTION -->
 
-        <% if (error) { %>
-            <div class="error">
-                <%= error %>
+        <section class="brand-panel" aria-label="About Construction MS">
+
+            <div>
+                <div class="brand-logo">
+                    <div class="logo-mark">MS</div>
+                    <div class="logo-text">Construction <span>MS</span></div>
+                </div>
+
+                <div class="brand-eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    Built for better project management
+                </div>
+
+                <h1 class="brand-title">
+                    Build smarter.<br>
+                    Manage <span class="accent">better.</span>
+                </h1>
+
+                <p class="brand-description">
+                    Your projects, workforce, materials, and resources in one place.
+                    Keep every construction project organized, efficient, and moving forward.
+                </p>
+
+                <div class="brand-features">
+                    <div class="feature">
+                        <span class="feature-icon">✓</span>
+                        Project Tracking
+                    </div>
+
+                    <div class="feature">
+                        <span class="feature-icon">✓</span>
+                        Workforce Management
+                    </div>
+
+                    <div class="feature">
+                        <span class="feature-icon">✓</span>
+                        Resource Monitoring
+                    </div>
+                </div>
             </div>
-        <% } %>
 
-        <form action="/login" method="POST">
+            <div class="brand-footer">
+                CONSTRUCTION PROJECT AND LABOR MANAGEMENT SYSTEM
+            </div>
 
-            <label for="username">Username</label>
+        </section>
 
-            <input
-                type="text"
-                id="username"
-                name="username"
-                placeholder="Enter username"
-                required
-            >
+        <!-- LOGIN SECTION -->
 
-            <label for="password">Password</label>
+        <section class="login-side" aria-label="Login">
 
-            <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Enter password"
-                required
-            >
+            <div class="login-box">
 
-            <button type="submit">Login</button>
+                <div class="card-accent"></div>
 
-        </form>
+                <div class="mobile-logo">
+                    <div class="logo-mark">MS</div>
+                    <div class="logo-text">Construction <span>MS</span></div>
+                </div>
 
-    </div>
+                <div class="welcome-label">Welcome back</div>
+
+                <h2 class="login-title">Sign in to your account</h2>
+
+                <p class="subtitle">
+                    Enter your credentials to access your construction management dashboard.
+                </p>
+
+                <% if (typeof error !== 'undefined' && error) { %>
+                    <div class="error" role="alert" aria-live="polite">
+                        <span class="error-icon">!</span>
+                        <span><%= error %></span>
+                    </div>
+                <% } %>
+
+                <form id="loginForm" action="/login" method="POST">
+
+                    <div class="form-group">
+                        <div class="label-row">
+                            <label for="username">Username</label>
+                        </div>
+
+                        <div class="input-wrap">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.8"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                aria-hidden="true">
+                                <circle cx="12" cy="8" r="4"></circle>
+                                <path d="M5 21v-2a7 7 0 0 1 14 0v2"></path>
+                            </svg>
+
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                placeholder="Enter your username"
+                                autocomplete="username"
+                                autocapitalize="none"
+                                spellcheck="false"
+                                required
+                                autofocus
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="label-row">
+                            <label for="password">Password</label>
+                        </div>
+
+                        <div class="input-wrap">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.8"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                aria-hidden="true">
+                                <rect x="4" y="10" width="16" height="11" rx="2"></rect>
+                                <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+                            </svg>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="toggle-password"
+                                id="togglePassword"
+                                aria-label="Show password"
+                                aria-pressed="false"
+                                title="Show password"
+                            >
+                                <svg id="eyeIcon" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="1.8"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    aria-hidden="true">
+                                    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="remember-option" for="rememberUsername">
+                            <input
+                                type="checkbox"
+                                id="rememberUsername"
+                            >
+                            Remember username
+                        </label>
+
+                        <div class="secure-note">
+                            <svg viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                aria-hidden="true">
+                                <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"></path>
+                                <path d="m9 12 2 2 4-4"></path>
+                            </svg>
+                            Secure login
+                        </div>
+                    </div>
+
+                    <button type="submit" class="login-button" id="loginButton">
+                        <span class="button-text">Sign In to Dashboard</span>
+
+                        <svg class="button-arrow" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round"
+                            aria-hidden="true">
+                            <path d="M5 12h14"></path>
+                            <path d="m12 5 7 7-7 7"></path>
+                        </svg>
+
+                        <span class="spinner" aria-hidden="true"></span>
+                    </button>
+
+                </form>
+
+                <div class="form-footer">
+                    <svg class="footer-shield" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.8"
+                        stroke-linecap="round" stroke-linejoin="round"
+                        aria-hidden="true">
+                        <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"></path>
+                        <path d="m9 12 2 2 4-4"></path>
+                    </svg>
+
+                    Your account is protected by secure authentication.
+                </div>
+
+                <div class="bottom-note">
+                    <strong>Construction MS</strong><br>
+                    Construction Project and Labor Management System
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+        const passwordInput = document.getElementById("password");
+        const togglePassword = document.getElementById("togglePassword");
+        const eyeIcon = document.getElementById("eyeIcon");
+        const loginForm = document.getElementById("loginForm");
+        const loginButton = document.getElementById("loginButton");
+        const usernameInput = document.getElementById("username");
+        const rememberUsername = document.getElementById("rememberUsername");
+
+        // Show or hide the password.
+        togglePassword.addEventListener("click", function () {
+            const isPasswordHidden = passwordInput.type === "password";
+
+            passwordInput.type = isPasswordHidden ? "text" : "password";
+
+            togglePassword.setAttribute(
+                "aria-label",
+                isPasswordHidden ? "Hide password" : "Show password"
+            );
+
+            togglePassword.setAttribute(
+                "title",
+                isPasswordHidden ? "Hide password" : "Show password"
+            );
+
+            togglePassword.setAttribute(
+                "aria-pressed",
+                String(isPasswordHidden)
+            );
+
+            eyeIcon.innerHTML = isPasswordHidden
+                ? '<path d="M3 3l18 18"></path><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path><path d="M9.9 5.2A10.6 10.6 0 0 1 12 5c6.5 0 10 7 10 7a15.8 15.8 0 0 1-3.1 3.9"></path><path d="M6.2 6.2C3.5 8 2 12 2 12s3.5 7 10 7a10.5 10.5 0 0 0 4-.8"></path>'
+                : '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle>';
+        });
+
+        // Remember only the username, never the password.
+        try {
+            const savedUsername = sessionStorage.getItem("constructionMSUsername");
+
+            if (savedUsername) {
+                usernameInput.value = savedUsername;
+                rememberUsername.checked = true;
+            }
+        } catch (error) {
+            // Login still works if browser storage is unavailable.
+        }
+
+        // Preserve normal POST /login form submission.
+        loginForm.addEventListener("submit", function (event) {
+            if (!loginForm.checkValidity()) {
+                event.preventDefault();
+                loginForm.reportValidity();
+                return;
+            }
+
+            try {
+                if (rememberUsername.checked) {
+                    sessionStorage.setItem(
+                        "constructionMSUsername",
+                        usernameInput.value.trim()
+                    );
+                } else {
+                    sessionStorage.removeItem("constructionMSUsername");
+                }
+            } catch (error) {
+                // Browser storage is optional.
+            }
+
+            // Do not prevent the form's normal submission.
+            loginButton.classList.add("is-loading");
+            loginButton.disabled = true;
+
+            loginButton.querySelector(".button-text").textContent =
+                "Signing In...";
+        });
+
+        // Allow Enter to submit naturally and keep focus styling accessible.
+        passwordInput.addEventListener("keydown", function (event) {
+            if (event.key === "Escape" && passwordInput.type === "text") {
+                passwordInput.type = "password";
+                togglePassword.setAttribute("aria-label", "Show password");
+                togglePassword.setAttribute("title", "Show password");
+                togglePassword.setAttribute("aria-pressed", "false");
+
+                eyeIcon.innerHTML =
+                    '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle>';
+            }
+        });
+    </script>
 
 </body>
 </html>
