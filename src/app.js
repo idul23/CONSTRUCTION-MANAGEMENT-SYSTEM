@@ -2,6 +2,7 @@
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
+const helmet = require("helmet");
 
 require("dotenv").config();
 
@@ -32,11 +33,26 @@ const userProfileRoutes = require("./routes/userProfileRoutes");
 
 const app = express();
 
+app.disable("x-powered-by");
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(
+    helmet({
+        contentSecurityPolicy: false
+    })
+);
+
+app.use(express.urlencoded({
+    extended: true,
+    limit: "100kb"
+}));
+
+app.use(express.json({
+    limit: "100kb"
+}));
+
 app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, "..", "public")));
@@ -66,6 +82,24 @@ app.get("/", (req, res) => {
     res.redirect("/login");
 });
 
+app.use((err, req, res, next) => {
+    if (res.headersSent) {
+        return next(err);
+    }
+
+    if (err.type === "entity.too.large") {
+        return res.status(413).send("Request is too large.");
+    }
+
+    if (err.type === "entity.parse.failed") {
+        return res.status(400).send("Invalid request data.");
+    }
+
+    console.error("Request error:", err.message);
+
+    res.status(500).send("An unexpected error occurred.");
+});
+
 const PORT = process.env.PORT || 3000;
 
 async function startServer() {
@@ -79,8 +113,8 @@ async function startServer() {
             console.log(`Server running at http://localhost:${PORT}`);
         });
     } catch (error) {
-        console.error("Database connection failed:");
-        console.error(error.message);
+        console.error("Database connection failed:", error.message);
+        process.exitCode = 1;
     }
 }
 
