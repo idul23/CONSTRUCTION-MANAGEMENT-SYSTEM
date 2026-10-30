@@ -1,4 +1,3 @@
-
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -7,8 +6,7 @@ const helmet = require("helmet");
 require("dotenv").config();
 
 const sequelize = require("./config/database");
-
-require("./models");
+const { User, Role } = require("./models");
 
 const authRoutes = require("./routes/authRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
@@ -107,13 +105,46 @@ async function startServer() {
         await sequelize.authenticate();
 
         console.log("PostgreSQL connected successfully.");
-        console.log("All models loaded successfully.");
+
+        await sequelize.sync();
+
+        console.log("Database tables created successfully.");
+
+        const [adminRole] = await Role.findOrCreate({
+            where: { role_name: "Administrator" }
+        });
+
+        await Role.findOrCreate({
+            where: { role_name: "Project Manager" }
+        });
+
+        await Role.findOrCreate({
+            where: { role_name: "Site Staff" }
+        });
+
+        await User.findOrCreate({
+            where: { username: "admin" },
+            defaults: {
+                role_id: adminRole.role_id,
+                username: "admin",
+                email: "admin@example.com",
+                password_hash: "$2b$12$omTfbgF9tpEhXg77nkfLq.uNqTsuhMVR6L7TNx0894gbaBB.PGSIa",
+                is_active: true
+            }
+        });
+
+        console.log("Initial roles and Administrator account checked.");
 
         app.listen(PORT, () => {
-            console.log(`Server running at http://localhost:${PORT}`);
+            console.log(`Server running on port ${PORT}`);
         });
+
     } catch (error) {
-        console.error("Database connection failed:", error.message);
+        console.error(
+            "Database connection or synchronization failed:",
+            error
+        );
+
         process.exitCode = 1;
     }
 }
