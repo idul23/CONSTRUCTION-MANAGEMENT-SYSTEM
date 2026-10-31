@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#142b4a">
+    <title>Add Client | Construction MS</title>
+
+    <style>
+        :root {
+            --navy: #142b4a;
+            --navy-light: #203e63;
+            --orange: #f28c28;
+            --orange-hover: #df7618;
+            --bg: #f3f6fb;
+            --white: #ffffff;
+            --text: #263445;
+            --muted: #718096;
+            --border: #e2e8f0;
+            --red: #b42332;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .topbar {
+            height: 68px;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .brand {
+            color: var(--navy);
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .brand span {
+            color: var(--orange);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 13px;
+        }
+
+        .user-info strong {
+            color: var(--navy);
+        }
+
+        .logout {
+            background: var(--navy);
+            color: white;
+            text-decoration: none;
+            padding: 9px 15px;
+            border-radius: 7px;
+            transition: 0.2s;
+        }
+
+        .logout:hover {
+            background: var(--navy-light);
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 68px;
+            left: 0;
+            width: 250px;
+            height: calc(100vh - 68px);
+            background: var(--navy);
+            padding: 22px 14px;
+            overflow-y: auto;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #dce5f1;
+            text-decoration: none;
+            padding: 12px 15px;
+            margin-bottom: 5px;
+            border-radius: 7px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: var(--orange);
+            color: white;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 32px;
+            min-height: calc(100vh - 68px);
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            color: var(--navy);
+            font-size: 26px;
+            margin-bottom: 7px;
+        }
+
+        .page-heading p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            max-width: 850px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(20, 43, 74, 0.04);
+        }
+
+        .panel-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-header h2 {
+            color: var(--navy);
+            font-size: 17px;
+        }
+
+        .panel-header p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .form-content {
+            padding: 25px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            color: var(--navy);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.13);
+        }
+
+        .error-message {
+            background: #fff0f0;
+            border: 1px solid #f5c2c7;
+            color: var(--red);
+            padding: 12px 15px;
+            border-radius: 7px;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn {
+            padding: 11px 19px;
+            border: none;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--orange);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--orange-hover);
+        }
+
+        .btn-secondary {
+            background: #edf1f6;
+            color: var(--navy);
+        }
+
+        .btn-secondary:hover {
+            background: #dfe6ef;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 22px 16px;
+            }
+
+            .topbar {
+                padding: 0 16px;
+            }
+
+            .user-info {
+                gap: 8px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .topbar {
+                height: auto;
+                min-height: 68px;
+                gap: 10px;
+                flex-wrap: wrap;
+                padding: 12px;
+            }
+
+            .user-info {
+                font-size: 11px;
+            }
+
+            .main-content {
+                padding: 20px 12px;
+            }
+
+            .form-content {
+                padding: 18px;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+            .form-actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="brand">Construction <span>MS</span></div>
+
+    <div class="user-info">
+        <div>
+            <strong><%= user.username %></strong><br>
+            <span><%= user.role_name %></span>
+        </div>
+
+        <a href="/logout" class="logout">Logout</a>
+    </div>
+</header>
+
+<aside class="sidebar">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/projects">Projects</a>
+    <a href="/clients" class="active">Clients</a>
+    <a href="/workers">Workers</a>
+    <a href="/assignments">Assignments</a>
+    <a href="/tasks">Tasks</a>
+    <a href="/attendance">Attendance</a>
+    <a href="/materials">Materials</a>
+    <a href="/material-usage">Material Usage</a>
+    <a href="/suppliers">Suppliers</a>
+    <a href="/equipment">Equipment</a>
+    <a href="/equipment-usage">Equipment Usage</a>
+    <a href="/expenses">Expenses</a>
+    <a href="/reports">Reports</a>
+
+    <% if (user.role_name === "Administrator") { %>
+        <a href="/users">Users</a>
+        <a href="/audit-logs">Audit Logs</a>
+    <% } %>
+</aside>
+
+<main class="main-content">
+
+    <div class="page-heading">
+        <h1>Add Client</h1>
+        <p>Register a new client in your construction management system.</p>
+    </div>
+
+    <section class="panel">
+
+        <div class="panel-header">
+            <h2>Client Information</h2>
+            <p>Enter the client's details below.</p>
+        </div>
+
+        <div class="form-content">
+
+            <% if (error) { %>
+                <div class="error-message"><%= error %></div>
+            <% } %>
+
+            <form action="/clients/add" method="POST">
+
+                <div class="form-grid">
+
+                    <div class="form-group full">
+                        <label for="client_name">Client Name *</label>
+                        <input
+                            type="text"
+                            id="client_name"
+                            name="client_name"
+                            maxlength="120"
+                            value="<%= formData.client_name || '' %>"
+                            placeholder="Enter client name"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact_no">Contact Number</label>
+                        <input
+                            type="tel"
+                            id="contact_no"
+                            name="contact_no"
+                            maxlength="30"
+                            value="<%= formData.contact_no || '' %>"
+                            placeholder="Enter contact number"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            maxlength="120"
+                            value="<%= formData.email || '' %>"
+                            placeholder="Enter email address"
+                        >
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <a href="/clients" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">
+                        Save Client
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </section>
+
+</main>
+
+</body>
+</html>

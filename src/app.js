@@ -11,6 +11,7 @@ const { User, Role } = require("./models");
 const authRoutes = require("./routes/authRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const projectRoutes = require("./routes/projectRoutes");
+const clientRoutes = require("./routes/clientRoutes");
 const workerRoutes = require("./routes/workerRoutes");
 const taskRoutes = require("./routes/taskRoutes");
 const phaseRoutes = require("./routes/phaseRoutes");
@@ -55,9 +56,11 @@ app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, "..", "public")));
 
+// APPLICATION ROUTES
 app.use("/", authRoutes);
 app.use("/", dashboardRoutes);
 app.use("/", projectRoutes);
+app.use("/", clientRoutes);
 app.use("/", workerRoutes);
 app.use("/", taskRoutes);
 app.use("/", phaseRoutes);
@@ -80,6 +83,7 @@ app.get("/", (req, res) => {
     res.redirect("/login");
 });
 
+// ERROR HANDLING
 app.use((err, req, res, next) => {
     if (res.headersSent) {
         return next(err);
@@ -103,6 +107,25 @@ const PORT = process.env.PORT || 3000;
 async function startServer() {
     try {
         await sequelize.authenticate();
+
+        const [dbInfo] = await sequelize.query(`
+    SELECT
+        current_database() AS database_name,
+        current_schema() AS schema_name,
+        current_setting('search_path') AS search_path
+`);
+
+console.log("NODE DATABASE INFO:", dbInfo);
+
+const [constraints] = await sequelize.query(`
+    SELECT
+        conname,
+        pg_get_constraintdef(oid) AS definition
+    FROM pg_constraint
+    WHERE conrelid = 'public.projects'::regclass
+`);
+
+console.log("PROJECT CONSTRAINTS:", constraints);
 
         console.log("PostgreSQL connected successfully.");
 
