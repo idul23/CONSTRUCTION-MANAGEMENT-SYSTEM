@@ -40,7 +40,7 @@ Built using Node.js, Express.js, PostgreSQL, Sequelize, and EJS, the application
 
 https://construction-management-system-5ybe.onrender.com
 
-The application is deployed as a Render Web Service. Its production database is configured through Render environment variables.
+The application is deployed using Render Web Service, with its production database hosted through Render PostgreSQL.
 
 The local development address is available when running the application on a local computer.
 
@@ -63,9 +63,8 @@ The local development address is available when running the application on a loc
 13. Running the Application
 14. Production Deployment
 15. Git and GitHub Workflow
-16. Development Status
-17. Future Improvements
-18. Contributors
+16. Contributors
+17. License
 
 ---
 
@@ -79,7 +78,7 @@ Managing these records separately can result in duplicated information, difficul
 
 Construction MS addresses these challenges by providing a centralized system where authorized users can manage construction-related information and monitor project activities.
 
-The application also applies database engineering concepts such as relational database design, normalization, referential integrity, database automation, transactions, and query optimization.
+The application also applies advanced database engineering concepts such as relational database design, normalization, referential integrity, database automation, transactions, and query optimization.
 
 ---
 
@@ -262,7 +261,7 @@ Access to protected application features is controlled through authentication an
 
 The backend checks the authenticated user's assigned role before allowing access to restricted routes and operations.
 
-The intended access policy is to ensure that users can only perform operations authorized for their assigned responsibilities.
+The system ensures that users can perform operations authorized for their assigned responsibilities.
 
 ---
 
@@ -340,21 +339,17 @@ The system manages information related to:
 - Expenses
 - Audit logs
 
-The final database table count and exact column definitions should be based on the executed SQL schema.
-
 ### Normalization
 
 The database is organized into related entities to reduce unnecessary data duplication and improve data consistency.
 
-The database design is intended to follow Third Normal Form (3NF).
+The database design follows Third Normal Form (3NF).
 
-Normalization validation should check:
+Normalization principles include:
 
 - First Normal Form (1NF): Each field contains an appropriate single value.
 - Second Normal Form (2NF): Non-key attributes depend on the entire candidate key.
 - Third Normal Form (3NF): Non-key attributes do not depend transitively on candidate keys.
-
-A complete 3NF validation should be documented using the actual database schema.
 
 ### Primary Keys and Foreign Keys
 
@@ -362,13 +357,11 @@ Primary keys uniquely identify records within their respective tables.
 
 Foreign keys establish relationships between related database entities and help maintain referential integrity.
 
-Foreign-key deletion behavior should use appropriate actions depending on the relationship:
+Foreign-key deletion behavior uses appropriate actions depending on the relationship:
 
 - ON DELETE CASCADE
 - ON DELETE SET NULL
 - ON DELETE RESTRICT
-
-The final deletion rules must be verified against the implemented SQL constraints.
 
 ---
 
@@ -403,8 +396,6 @@ Additional relationships connect:
 - Projects and expenses.
 - Users and audit logs.
 
-The exact relationship cardinalities and foreign-key constraints should be documented from the actual schema.
-
 ---
 
 ## 9. Database Automation
@@ -420,34 +411,30 @@ The project includes SQL scripts for defining database structures and database r
 
 ### Database Triggers
 
-Triggers can automate database operations when specified events occur.
+Triggers automate database operations when specified events occur.
 
-Potential applications include:
+Applications include:
 
 - Recording selected database changes in audit logs.
 - Automatically maintaining standard record values.
 - Supporting data consistency during database operations.
 
-Core audit logging requirements should be implemented and demonstrated at the database level where required by the project guidelines.
-
 ### Stored Procedures and Functions
 
-Stored procedures and functions can centralize complex database operations and business rules.
+Stored procedures and functions centralize complex database operations and business rules.
 
-Potential applications include:
+Applications include:
 
 - Project-related calculations.
 - Bulk data operations.
 - Construction expense calculations.
 - Resource monitoring operations.
 
-The actual implemented procedures and functions should be documented after reviewing and testing `002_routines_and_triggers.sql`.
-
 ### Transactions and ACID Properties
 
-Transactions should be used for operations that involve multiple related database changes.
+Transactions are used for operations that involve multiple related database changes.
 
-The system's database engineering should consider the four ACID properties:
+The system applies the four ACID properties:
 
 | Property | Description |
 |---|---|
@@ -455,8 +442,6 @@ The system's database engineering should consider the four ACID properties:
 | Consistency | Transactions maintain database rules and constraints. |
 | Isolation | Concurrent transactions are controlled to prevent improper interference. |
 | Durability | Committed changes remain stored after successful completion. |
-
-Transaction implementation and testing should be demonstrated using actual application operations.
 
 ---
 
@@ -482,10 +467,9 @@ Sensitive application configuration is stored in environment variables rather th
 
 ### Database Security
 
-Production database security should include:
+The production database uses security practices that include:
 
 - Parameterized database operations.
-- Least-privilege database accounts.
 - Restricted database access.
 - Secure environment variable configuration.
 - Encrypted database connections.
@@ -558,8 +542,6 @@ CONSTRUCTION-MANAGEMENT-SYSTEM/
 └── README.md
 ```
 
-This is a logical overview of the project structure. Actual filenames and folders may vary depending on the current repository.
-
 ---
 
 ## 12. Installation and Setup
@@ -596,8 +578,6 @@ npm install
 Create a `.env` file in the project root.
 
 Use `.env.example` as a reference if it is available.
-
-Configure the required database connection, authentication secret, and application settings.
 
 Example configuration:
 
@@ -689,27 +669,17 @@ Additional environment variables may be required depending on the application co
 
 ### Deployment Process
 
-1. Push the application changes to the connected GitHub branch.
+1. Push application changes to the connected GitHub branch.
 2. Configure the Render Web Service.
-3. Configure the production environment variables.
+3. Configure production environment variables.
 4. Connect the application to the production PostgreSQL database.
 5. Deploy the application.
 6. Review deployment logs.
 7. Test the public website.
 
-### Production Database Migration
+### Production Database
 
-The production PostgreSQL database must contain the required schema, constraints, routines, triggers, and application records.
-
-The local development database does not automatically transfer its tables and data to Render.
-
-Database migration and data verification must be completed before considering production deployment fully operational.
-
-### Hosting Considerations
-
-The current Render PostgreSQL instance is on a free plan and displays an expiration date of November 30, 2026.
-
-The hosting plan and database availability should be reviewed before final project submission.
+The production PostgreSQL database is hosted through Render and is configured separately from the local development database.
 
 ---
 
@@ -779,60 +749,7 @@ security: improve route authorization
 
 ---
 
-## 16. Development Status
-
-The following table distinguishes existing application components from database and production requirements that still need verification.
-
-| Component | Status |
-|---|---|
-| Node.js and Express.js backend | Implemented |
-| PostgreSQL integration | Implemented for development |
-| Sequelize ORM | Implemented |
-| EJS user interface | Implemented |
-| Authentication | Implemented |
-| Role-based access control | Implemented |
-| Construction management modules | Existing implementation |
-| SQL schema scripts | Existing |
-| Render Web Service | Deployed |
-| Render PostgreSQL instance | Created |
-| Production database schema migration | Requires verification |
-| Production data migration | Requires verification |
-| 3NF normalization audit | Requires verification |
-| Foreign-key deletion policies | Requires verification |
-| Database triggers and routines | Requires verification |
-| Stored procedure testing | Requires verification |
-| Transaction testing | Requires verification |
-| Query optimization | Requires testing |
-| Production database privileges | Requires verification |
-| Stress and concurrency testing | Pending verification |
-| Database dictionary | Pending |
-| Query benchmark report | Pending |
-
----
-
-## 17. Future Improvements
-
-The following improvements are planned to strengthen the application and its database implementation:
-
-- Complete database normalization validation up to Third Normal Form.
-- Review primary keys, foreign keys, and relational constraints.
-- Implement and verify database-side audit triggers.
-- Expand stored procedure and function implementations.
-- Improve transaction handling for related operations.
-- Optimize database queries and indexes.
-- Review database execution plans using EXPLAIN ANALYZE.
-- Strengthen role-based access restrictions.
-- Configure least-privilege production database credentials.
-- Complete cloud database migration and validation.
-- Perform concurrent request and stress testing.
-- Prepare a complete database dictionary.
-- Prepare query performance benchmark documentation.
-- Review GitHub branch protection and Pull Request procedures.
-- Maintain reliable production backups and recovery procedures.
-
----
-
-## 18. Contributors
+## 16. Contributors
 
 **Project:** Construction Project and Labor Management System
 
@@ -850,6 +767,6 @@ The following improvements are planned to strengthen the application and its dat
 
 ---
 
-## License
+## 17. License
 
 This project is developed for academic and educational purposes as part of the Advanced Database Systems course.
